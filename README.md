@@ -1,0 +1,1 @@
+# Template for Node projects

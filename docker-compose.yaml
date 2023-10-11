@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  db:
+    image: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_USER: root
+      MYSQL_DATABASE: app
+    ports:
+      - 5432:5432
+    volumes:
+      - ./database.sql:/docker-entrypoint-initdb.d/database.sql
+      - ./.docker/data:/var/lib/postgresql/data
