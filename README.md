@@ -1,1 +1,1 @@
-# Template for Node projects
+# LML Commerce
