@@ -2,10 +2,14 @@ import { ProductRepository } from "../Domain/Repository/ProductRepository";
 import { Order } from "../Domain/Entity/Order";
 import { Id } from "../Domain/ValueObjects/Id";
 import { Email } from "../Domain/ValueObjects/Email";
+import { OrderRepository } from "../Domain/Repository/OrderRepository";
 
 export class PlaceOrderUseCase {
 
-    constructor(private productRepository: ProductRepository) {
+    constructor(
+        private productRepository: ProductRepository, 
+        private orderRepository: OrderRepository
+    ) {
         
     }
 
@@ -18,6 +22,8 @@ export class PlaceOrderUseCase {
             order.addItem(product, item.amount);
         }
 
+        await this.orderRepository.save(order);
+        
         return {
             total: order.total
         }
