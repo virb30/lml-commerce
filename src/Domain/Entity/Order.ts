@@ -20,7 +20,7 @@ export class Order {
     }
 
     public addItem(product: Product, amount: number): void {   
-        this._items.push(new OrderItem(product, amount));
+        this._items.push(new OrderItem(product.id, product.price, amount));
     }
 
     public get total(): number {
