@@ -4,6 +4,7 @@ import mysql from "mysql2";
 export class MysqlConnectionAdapter implements Connection {
     private mysql: any;
     constructor(connectionString: string) {
+        console.log('con', connectionString);
         this.mysql = mysql
             .createConnection(connectionString);
     }

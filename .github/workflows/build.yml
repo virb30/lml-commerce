@@ -35,6 +35,9 @@ jobs:
 
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "npm"
         env:
           DB_TYPE: mysql
           DB_PORT: ${{ job.services.mariadb.ports[3306] }}
@@ -42,8 +45,5 @@ jobs:
           DB_USER: root
           DB_PASS: 123456
           DB_NAME: app
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: "npm"
       - run: npm install
       - run: npm test
