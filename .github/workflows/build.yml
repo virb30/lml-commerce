@@ -13,6 +13,18 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    services:
+      mysql:
+        image: mysql
+        ports:
+          - 3306
+        env:
+          MYSQL_USER: user
+          MYSQL_PASSWORD: 123456
+          MYSQL_DATABASE: app
+          MYSQL_ROOT_PASSWORD: 123456
+        options: --health-cmd="mysqladmin ping" --health-interval=5s --health-timeout=2s --health-retries=3
+
     strategy:
       matrix:
         node-version: [20.x]
@@ -20,8 +32,16 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
+        env:
+          DB_TYPE: mysql
+          DB_PORT: ${{ job.services.mariadb.ports[3306] }}
+          DB_HOST: mysql
+          DB_USER: root
+          DB_PASS: 123456
+          DB_NAME: app
         with:
           node-version: ${{ matrix.node-version }}
           cache: "npm"
