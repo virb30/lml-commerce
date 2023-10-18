@@ -1,13 +1,17 @@
 
-import {Product} from "./Product"
+import { Id } from "../ValueObjects/Id";
 export class OrderItem{
 
-    constructor(public product: Product,public amount:number){
+    constructor(
+        public productId: Id,
+        public price: number,
+        public amount: number
+    ){
         
     }
 
     public get total(){
         
-        return this.product.price * this.amount;
+        return this.price * this.amount;
     }
 }
