@@ -1,22 +1,20 @@
-import { Dimensions } from '../ValueObjects/Dimensions'
-import { Id } from '../ValueObjects/Id'
+import { Dimensions } from "../ValueObjects/Dimensions";
+import { Id } from "../ValueObjects/Id";
 
 export class Product {
-    constructor(
-        public readonly id: Id, 
-        public readonly name: string, 
-        public readonly price: number, 
-        public readonly dimensions: Dimensions, 
-        public readonly weight: number
-    ) {
-    }
+  constructor(
+    public readonly id: Id,
+    public readonly name: string,
+    public readonly price: number,
+    public readonly dimensions: Dimensions,
+    public readonly weight: number,
+  ) {}
 
-    public getDensity(): number
-    {
-        if (this.dimensions && this.weight) {
-            return this.weight / this.dimensions.getVolume();
-        } else {
-            return 0;
-        }
+  public getDensity(): number {
+    if (this.dimensions && this.weight) {
+      return this.weight / this.dimensions.getVolume();
+    } else {
+      return 0;
     }
+  }
 }
