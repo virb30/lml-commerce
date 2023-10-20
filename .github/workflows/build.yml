@@ -39,6 +39,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: "npm"
       - run: npm install
+      - run: npm run lint
       - run: npm test
         env:
           DB_TYPE: mysql
