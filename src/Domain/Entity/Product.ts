@@ -1,7 +1,8 @@
-import { Dimensions } from '../ValueObjects/Dimensions'
-import { Id } from '../ValueObjects/Id'
+import { Dimensions } from "../ValueObjects/Dimensions";
+import { Id } from "../ValueObjects/Id";
 
 export class Product {
+  
     constructor(
         public readonly id: Id,
         public readonly name: string,
@@ -28,3 +29,4 @@ export class Product {
         }
     }
 }
+

@@ -12,13 +12,16 @@ describe("Place order use case tests", () => {
     productRepositoryMemory.save(new Product(new Id("2"), "Bicicleta", 1500.0, new Dimensions(10, 20, 30), 0));
     const useCase = new PlaceOrderUseCase(productRepositoryMemory, new OrderRepositoryMemory());
     const input = {
-        email: "cliente@email.com", 
-        items: [{id: '1', amount: 2}, {id: '2', amount: 2}]
+      email: "cliente@email.com",
+      items: [
+        { id: "1", amount: 2 },
+        { id: "2", amount: 2 },
+      ],
     };
     const output = await useCase.execute(input);
 
     expect(output).toStrictEqual({
-        total: 3020
+      total: 3020,
     });
   });
 
@@ -27,12 +30,10 @@ describe("Place order use case tests", () => {
       const productRepositoryMemory = new ProductRepositoryMemory();
       const useCase = new PlaceOrderUseCase(productRepositoryMemory, new OrderRepositoryMemory());
       const input = {
-        email: "cliente@email.com", 
-        items:[
-          {id: '1', amount: 1}
-        ]
+        email: "cliente@email.com",
+        items: [{ id: "1", amount: 1 }],
       };
       await useCase.execute(input);
     }).rejects.toThrow(new Error("Product not found"));
   });
-})
+});
