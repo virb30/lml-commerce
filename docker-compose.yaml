@@ -8,3 +8,5 @@ services:
       MYSQL_DATABASE: app
     ports:
       - 3307:3306
+    volumes:
+      - ./migrations:/docker-entrypoint-initdb.d
