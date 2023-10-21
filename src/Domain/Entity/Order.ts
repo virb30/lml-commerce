@@ -9,10 +9,10 @@ export class Order {
   public readonly code: OrderCode;
 
   constructor(
-    private id: Id,
-    private email: Email,
-    private date: Date,
-    private sequency: number,
+    public readonly id: Id,
+    public readonly email: Email,
+    public readonly date: Date,
+    public readonly sequency: number,
   ) {
     this.code = new OrderCode(date, sequency);
   }
@@ -30,5 +30,9 @@ export class Order {
 
   public get items(): OrderItem[] {
     return this._items;
+  }
+
+  public set items(items: OrderItem[]) {
+    this._items = items;
   }
 }
