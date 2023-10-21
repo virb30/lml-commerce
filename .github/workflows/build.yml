@@ -34,7 +34,7 @@ jobs:
       - uses: actions/checkout@v3
 
       - name: Run Migrations
-        run: mysql -h 127.0.0.1 -p 3306 -uroot --password=123456 app < ./migrations/database.sql
+        run: mysql --host 127.0.0.1 --port=${{ job.services.mysql.ports[3306] }} -uroot --password=123456 app < ./migrations/database.sql
 
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
