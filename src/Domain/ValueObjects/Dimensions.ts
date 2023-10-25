@@ -1,8 +1,8 @@
 export class Dimensions {
   constructor(
-    private readonly height: number,
-    private readonly width: number,
-    private readonly length: number,
+    public readonly height: number,
+    public readonly width: number,
+    public readonly length: number,
   ) {
     if (height <= 0 || width <= 0 || length <= 0) {
       throw new Error("Invalid values");
