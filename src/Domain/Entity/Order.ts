@@ -18,7 +18,13 @@ export class Order {
   }
 
   public addItem(product: Product, amount: number): void {
-    this._items.push(new OrderItem(product.id, product.price, amount));
+    const orderItem = this.getItem(product.id);
+
+    if (orderItem) {
+      orderItem.incrementAmount(amount);
+    } else {
+      this._items.push(new OrderItem(product.id, product.price, amount));
+    }
   }
 
   public get total(): number {
@@ -34,5 +40,9 @@ export class Order {
 
   public set items(items: OrderItem[]) {
     this._items = items;
+  }
+
+  private getItem(productId: Id): OrderItem | undefined {
+    return this._items.find((item) => item.productId.value == productId.value);
   }
 }

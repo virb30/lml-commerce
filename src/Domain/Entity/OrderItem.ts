@@ -9,4 +9,8 @@ export class OrderItem {
   public get total() {
     return this.price * this.amount;
   }
+
+  public incrementAmount(amount: number) {
+    this.amount += amount;
+  }
 }
