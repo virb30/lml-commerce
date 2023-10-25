@@ -22,4 +22,17 @@ describe("Order tests", () => {
     expect(order.total).toBe(50.0);
     expect(order.code.value).toEqual("202300000001");
   });
+
+  it("should increment amount on duplicated items", async () => {
+    const order = new Order(new Id("1"), new Email("cliente@email.com"), new Date("2023-01-01T00:00:00"), 1);
+    const product1 = new Product(new Id("1"), "Bicicleta", 20.0, new Dimensions(10, 10, 2), 50);
+    const product2 = new Product(new Id("2"), "Fone de ouvido", 5.0, new Dimensions(2, 2, 2), 2);
+
+    order.addItem(product1, 1);
+    order.addItem(product2, 1);
+    order.addItem(product1, 1);
+
+    expect(order.items).toHaveLength(2);
+    expect(order.total).toBe(45.0);
+  });
 });
