@@ -1,3 +1,7 @@
+DROP TABLE IF EXISTS app.order_item;
+DROP TABLE IF EXISTS app.order;
+DROP TABLE IF EXISTS app.product;
+
 CREATE TABLE app.order (
     id CHAR(32) PRIMARY KEY NOT NULL,
     email VARCHAR(255) NOT NULL,
