@@ -5,4 +5,4 @@ export interface Http {
 
 export type HttpMethod = "GET" | "POST" | "PUT" | "DELETE" | "OPTIONS" | "PATCH";
 
-export type CallbackFunction = (params: any, body: any) => any;
+export type CallbackFunction = (params: any, body: any) => Promise<{ status: number; data: any }>;

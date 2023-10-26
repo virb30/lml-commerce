@@ -19,7 +19,8 @@ export class ExpressHttpAdapter implements Http {
     const routeMethod = method.toLowerCase();
     this.app[routeMethod](uri, async (request: Request, response: Response) => {
       const output = await callback(request.params, request.body);
-      return response.json(output);
+      response.status(output.status);
+      return response.json(output.data);
     });
   }
 
