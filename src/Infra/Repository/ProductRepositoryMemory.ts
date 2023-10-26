@@ -20,6 +20,7 @@ export class ProductRepositoryMemory implements ProductRepository {
   public async save(product: Product): Promise<void> {
     this.products.push(product);
   }
+
   public async clear(): Promise<void> {
     this.products = [];
   }

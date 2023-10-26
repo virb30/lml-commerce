@@ -7,7 +7,10 @@ describe("API tests", () => {
 
     http.on("GET", "/test", async function (params: any, body: any) {
       return {
-        ok: true,
+        status: 200,
+        data: {
+          ok: true,
+        },
       };
     });
 
