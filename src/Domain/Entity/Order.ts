@@ -3,10 +3,12 @@ import { Email } from "../ValueObjects/Email";
 import { Id } from "../ValueObjects/Id";
 import { OrderItem } from "./OrderItem";
 import { Product } from "./Product";
+import { Freight } from "./Freight";
 
 export class Order {
   private _items: OrderItem[] = [];
   public readonly code: OrderCode;
+  public freight = new Freight();
 
   constructor(
     public readonly id: Id,
@@ -25,13 +27,16 @@ export class Order {
     } else {
       this._items.push(new OrderItem(product.id, product.price, amount));
     }
+    this.freight.addItem(product, amount);
   }
 
   public get total(): number {
-    return this._items.reduce((acc, orderItem) => {
-      acc += orderItem.total;
-      return acc;
+    let total = this._items.reduce((sum, orderItem) => {
+      sum += orderItem.total;
+      return sum;
     }, 0);
+    total += this.freight.getTotal();
+    return total;
   }
 
   public get items(): OrderItem[] {
@@ -40,6 +45,10 @@ export class Order {
 
   public set items(items: OrderItem[]) {
     this._items = items;
+  }
+
+  public getFreight(): number {
+    return this.freight.getTotal();
   }
 
   private getItem(productId: Id): OrderItem | undefined {

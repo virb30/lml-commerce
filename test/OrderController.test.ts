@@ -30,6 +30,6 @@ describe("OrderController tests", () => {
     const response = await supertest(http.app).post("/orders").send(input);
 
     expect(response.statusCode).toBe(HttpStatus.CREATED);
-    expect(response.body.total).toBe(3820.0);
+    expect(response.body.total).toBe(3880.0);
   });
 });

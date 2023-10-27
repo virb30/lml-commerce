@@ -9,20 +9,22 @@ export class OrderRepositoryDatabase implements OrderRepository {
   constructor(private connection: Connection) {}
 
   public async getById(id: Id): Promise<Order> {
-    const [dbOrder] = await this.connection.query("SELECT * FROM app.order WHERE id = ?", [id.value]);
+    const [orderData] = await this.connection.query("SELECT * FROM app.order WHERE id = ?", [id.value]);
 
     const order = new Order(
-      new Id(dbOrder.id),
-      new Email(dbOrder.email),
-      new Date(dbOrder.issue_date),
-      dbOrder.sequency,
+      new Id(orderData.id),
+      new Email(orderData.email),
+      new Date(orderData.issue_date),
+      orderData.sequency,
     );
 
-    const dbOrderItems = await this.connection.query("SELECT * FROM app.order_item WHERE id_order = ?", [
+    order.freight.total = parseFloat(orderData.freight);
+
+    const orderItemsData = await this.connection.query("SELECT * FROM app.order_item WHERE id_order = ?", [
       order.id.value,
     ]);
 
-    order.items = dbOrderItems.map((orderItem: any) => {
+    order.items = orderItemsData.map((orderItem: any) => {
       return new OrderItem(new Id(orderItem.id_product), parseFloat(orderItem.price), parseInt(orderItem.amount));
     });
 
@@ -31,8 +33,16 @@ export class OrderRepositoryDatabase implements OrderRepository {
 
   public async save(order: Order): Promise<void> {
     await this.connection.query(
-      "INSERT INTO app.order (id, email, code, sequency, total, issue_date) VALUES (?,?,?,?,?,?)",
-      [order.id.value, order.email.value, order.code.value, order.sequency, order.total, order.date],
+      "INSERT INTO app.order (id, email, code, sequency, total, issue_date, freight) VALUES (?,?,?,?,?,?,?)",
+      [
+        order.id.value,
+        order.email.value,
+        order.code.value,
+        order.sequency,
+        order.total,
+        order.date,
+        order.getFreight(),
+      ],
     );
 
     for (const orderItem of order.items) {
