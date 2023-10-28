@@ -12,6 +12,10 @@ export class OrderRepositoryDatabase implements OrderRepository {
   public async getById(id: Id): Promise<Order> {
     const [orderData] = await this.connection.query("SELECT * FROM app.order WHERE id = ?", [id.value]);
 
+    if (!orderData) {
+      throw new Error("Order not found");
+    }
+
     const order = new Order(
       new Id(orderData.id),
       new Email(orderData.email),
