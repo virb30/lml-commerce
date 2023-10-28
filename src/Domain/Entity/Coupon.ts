@@ -14,7 +14,10 @@ export default class Coupon {
   }
 
   public calculateDiscount(amount: number): number {
-    const discountPercentage = amount * (this.percentage / 100);
-    return amount - Math.min(discountPercentage, this.discountLimit);
+    let discount = amount * (this.percentage / 100);
+    if (this.discountLimit !== 0 && discount > this.discountLimit) {
+      discount = this.discountLimit;
+    }
+    return amount - discount;
   }
 }
