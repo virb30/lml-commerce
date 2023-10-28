@@ -11,6 +11,9 @@ CREATE TABLE app.order (
     issue_date DATETIME NOT NULL,
     total DECIMAL(10, 2) NOT NULL,
     freight DECIMAL(10,2) NULL DEFAULT NULL,
+    coupon_code VARCHAR(100) NULL DEFAULT NULL,
+    coupon_percentage DECIMAL(3, 1) NULL DEFAULT NULL,
+    coupon_discount_limit DECIMAL(10, 2) NULL DEFAULT NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     deleted_at DATETIME DEFAULT NULL

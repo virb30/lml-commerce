@@ -9,15 +9,7 @@ export default class Coupon {
     public readonly expirationDate: Date,
   ) {}
 
-  public isExpired(now: Date): boolean {
+  public isValid(now: Date): boolean {
     return now <= this.expirationDate;
-  }
-
-  public calculateDiscount(amount: number): number {
-    let discount = amount * (this.percentage / 100);
-    if (this.discountLimit !== 0 && discount > this.discountLimit) {
-      discount = this.discountLimit;
-    }
-    return amount - discount;
   }
 }
