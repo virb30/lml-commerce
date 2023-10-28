@@ -25,8 +25,8 @@ describe("Order repository", () => {
 
     await orderRepositoryDatabase.save(order);
 
-    const dbOrder = await orderRepositoryDatabase.getById(new Id("1"));
+    const orderData = await orderRepositoryDatabase.getById(new Id("1"));
 
-    expect(dbOrder).toStrictEqual(order);
+    expect(orderData).toEqual(order);
   });
 });
