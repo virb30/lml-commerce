@@ -1,6 +1,7 @@
 DROP TABLE IF EXISTS app.order_item;
 DROP TABLE IF EXISTS app.order;
 DROP TABLE IF EXISTS app.product;
+DROP TABLE IF EXISTS app.coupon;
 
 CREATE TABLE app.order (
     id CHAR(32) PRIMARY KEY NOT NULL,
@@ -35,4 +36,15 @@ CREATE TABLE app.order_item (
     amount INT NOT NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id_order,id_product)
+);
+
+CREATE TABLE app.coupon (
+    id CHAR(32) PRIMARY KEY NOT NULL,
+    code VARCHAR(100) NOT NULL,
+    percentage DECIMAL(3, 1) NOT NULL,
+    discount_limit DECIMAL(10, 2) DEFAULT 0,
+    expiration_date DATETIME NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    deleted_at DATETIME DEFAULT NULL
 );
