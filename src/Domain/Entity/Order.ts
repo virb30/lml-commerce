@@ -4,11 +4,14 @@ import { Id } from "../ValueObjects/Id";
 import { OrderItem } from "./OrderItem";
 import { Product } from "./Product";
 import { Freight } from "./Freight";
+import Coupon from "./Coupon";
+import { OrderCoupon } from "./OrderCoupon";
 
 export class Order {
   private _items: OrderItem[] = [];
   public readonly code: OrderCode;
   public freight = new Freight();
+  public coupon?: OrderCoupon;
 
   constructor(
     public readonly id: Id,
@@ -17,6 +20,12 @@ export class Order {
     public readonly sequency: number,
   ) {
     this.code = new OrderCode(date, sequency);
+  }
+
+  public applyCoupon(coupon: Coupon): void {
+    if (coupon.isValid(this.date)) {
+      this.coupon = new OrderCoupon(coupon.code, coupon.percentage, coupon.discountLimit);
+    }
   }
 
   public addItem(product: Product, amount: number): void {
@@ -35,6 +44,11 @@ export class Order {
       sum += orderItem.total;
       return sum;
     }, 0);
+
+    if (this.coupon) {
+      total -= this.coupon.calculateDiscount(total);
+    }
+
     total += this.freight.getTotal();
     return total;
   }

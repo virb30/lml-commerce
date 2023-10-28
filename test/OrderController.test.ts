@@ -7,16 +7,18 @@ import { Id } from "../src/Domain/ValueObjects/Id";
 import { Dimensions } from "../src/Domain/ValueObjects/Dimensions";
 import HttpStatus from "http-status-codes";
 import { OrderController } from "../src/Infra/Controller/OrderController";
+import { CouponRepositoryMemory } from "../src/Infra/Repository/CouponRepositoryMemory";
 
 describe("OrderController tests", () => {
   it("POST /orders", async () => {
     const http = new ExpressHttpAdapter();
+    const couponRepository = new CouponRepositoryMemory();
     const orderRepository = new OrderRepositoryMemory();
     const productRepository = new ProductRepositoryMemory();
     await productRepository.save(new Product(new Id("1"), "Fone de ouvido", 10.0, new Dimensions(1, 2, 3), 0.5));
     await productRepository.save(new Product(new Id("2"), "Placa de vídeo", 3800.0, new Dimensions(2, 2, 5), 5));
 
-    new OrderController(http, orderRepository, productRepository);
+    new OrderController(http, orderRepository, productRepository, couponRepository);
 
     const input = {
       email: "cliente@email.com",

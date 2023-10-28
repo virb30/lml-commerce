@@ -1,4 +1,5 @@
 import { Order } from "../../Domain/Entity/Order";
+import { OrderCoupon } from "../../Domain/Entity/OrderCoupon";
 import { OrderItem } from "../../Domain/Entity/OrderItem";
 import { OrderRepository } from "../../Domain/Repository/OrderRepository";
 import { Email } from "../../Domain/ValueObjects/Email";
@@ -18,6 +19,14 @@ export class OrderRepositoryDatabase implements OrderRepository {
       orderData.sequency,
     );
 
+    if (orderData.coupon_code) {
+      order.coupon = new OrderCoupon(
+        orderData.coupon_code,
+        parseFloat(orderData.coupon_percentage),
+        parseFloat(orderData.coupon_discount_limit),
+      );
+    }
+
     order.freight.total = parseFloat(orderData.freight);
 
     const orderItemsData = await this.connection.query("SELECT * FROM app.order_item WHERE id_order = ?", [
@@ -33,7 +42,7 @@ export class OrderRepositoryDatabase implements OrderRepository {
 
   public async save(order: Order): Promise<void> {
     await this.connection.query(
-      "INSERT INTO app.order (id, email, code, sequency, total, issue_date, freight) VALUES (?,?,?,?,?,?,?)",
+      "INSERT INTO app.order (id, email, code, sequency, total, issue_date, freight, coupon_code, coupon_percentage, coupon_discount_limit) VALUES (?,?,?,?,?,?,?,?,?,?)",
       [
         order.id.value,
         order.email.value,
@@ -42,6 +51,9 @@ export class OrderRepositoryDatabase implements OrderRepository {
         order.total,
         order.date,
         order.getFreight(),
+        order.coupon?.code ?? null,
+        order.coupon?.percentage ?? null,
+        order.coupon?.discountLimit ?? null,
       ],
     );
 
