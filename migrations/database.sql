@@ -2,6 +2,7 @@ DROP TABLE IF EXISTS app.order_item;
 DROP TABLE IF EXISTS app.order;
 DROP TABLE IF EXISTS app.product;
 DROP TABLE IF EXISTS app.coupon;
+DROP TABLE IF EXISTS app.stock_entry;
 
 CREATE TABLE app.order (
     id CHAR(32) PRIMARY KEY NOT NULL,
@@ -50,4 +51,13 @@ CREATE TABLE app.coupon (
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     deleted_at DATETIME DEFAULT NULL
+);
+
+CREATE TABLE app.stock_entry (
+    id BIGINT(20) PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    id_product CHAR(32) NOT NULL,
+    operation ENUM('in', 'out') NOT NULL,
+    quantity INT NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
