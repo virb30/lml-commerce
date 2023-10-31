@@ -10,6 +10,10 @@ export class ProductRepositoryDatabase implements ProductRepository {
   public async getById(id: Id): Promise<Product> {
     const [product] = await this.connection.query("SELECT * FROM app.product WHERE id =?", [id.value]);
 
+    if (!product) {
+      throw new Error("Product not found");
+    }
+
     const productItem = new Product(
       new Id(product.id),
       product.name,

@@ -24,4 +24,10 @@ describe("Product Repository", () => {
     const dbProduct = await productRepositoryDatabase.getById(new Id("1"));
     expect(dbProduct).toStrictEqual(product);
   });
+
+  it("Should throw an error if product not found", async () => {
+    expect(async () => {
+      await productRepositoryDatabase.getById(new Id("1"));
+    }).rejects.toThrow(new Error("Product not found"));
+  });
 });
