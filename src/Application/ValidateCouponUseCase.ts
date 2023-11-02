@@ -4,10 +4,8 @@ export class ValidateCouponUseCase {
   constructor(private readonly couponRepository: CouponRepository) {}
   public async execute(input: ValidateCouponUseCaseInput): Promise<ValidateCouponUseCaseOutput> {
     const coupon = await this.couponRepository.getByCode(input.code);
-    if (!coupon.isValid(input.date)) {
-      throw new Error("Expired coupon");
-    }
-    return { isValid: true };
+    const isValid = coupon.isValid(input.date);
+    return { isValid };
   }
 }
 
