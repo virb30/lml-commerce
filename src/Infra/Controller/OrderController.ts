@@ -1,20 +1,13 @@
 import { PlaceOrderUseCase, PlaceOrderUseCaseInput } from "../../Application/PlaceOrderUseCase";
-import { CouponRepository } from "../../Domain/Repository/CouponRepository";
-import { OrderRepository } from "../../Domain/Repository/OrderRepository";
-import { ProductRepository } from "../../Domain/Repository/ProductRepository";
+import { RepositoryFactory } from "../../Domain/Factory/RepositoryFactory";
 import { Http } from "../Http/Http";
 import { Controller } from "./Controller";
 
 export class OrderController extends Controller {
-  constructor(
-    http: Http,
-    orderRepository: OrderRepository,
-    productRepository: ProductRepository,
-    couponRepository: CouponRepository,
-  ) {
+  constructor(http: Http, repositoryFactory: RepositoryFactory) {
     super();
     http.on("POST", "/orders", async (params, body) => {
-      const usecase = new PlaceOrderUseCase(productRepository, orderRepository, couponRepository);
+      const usecase = new PlaceOrderUseCase(repositoryFactory);
 
       const input: PlaceOrderUseCaseInput = {
         email: body.email,

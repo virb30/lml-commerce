@@ -1,9 +1,14 @@
 import { Freight } from "../Domain/Entity/Freight";
+import { RepositoryFactory } from "../Domain/Factory/RepositoryFactory";
 import { ProductRepository } from "../Domain/Repository/ProductRepository";
 import { Id } from "../Domain/ValueObjects/Id";
 
 export class SimulateFreightUseCase {
-  constructor(private productRepository: ProductRepository) {}
+  private productRepository: ProductRepository;
+
+  constructor(repositoryFactory: RepositoryFactory) {
+    this.productRepository = repositoryFactory.makeProductRepository();
+  }
 
   public async execute(input: SimulateFreightUseCaseInput): Promise<SimulateFreightUseCaseOutput> {
     const freight = new Freight();

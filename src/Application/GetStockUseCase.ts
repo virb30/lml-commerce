@@ -1,9 +1,13 @@
+import { RepositoryFactory } from "../Domain/Factory/RepositoryFactory";
 import { StockEntryRepository } from "../Domain/Repository/StockEntryRepository";
 import { StockCalculator } from "../Domain/Service/StockCalculator";
 import { Id } from "../Domain/ValueObjects/Id";
 
 export class GetStockUseCase {
-  public constructor(private stockEntryRepository: StockEntryRepository) {}
+  private stockEntryRepository: StockEntryRepository;
+  public constructor(repositoryFactory: RepositoryFactory) {
+    this.stockEntryRepository = repositoryFactory.makeStockEntryRepository();
+  }
 
   public async execute(input: GetStockInput): Promise<GetStockOutput> {
     const stockEntries = await this.stockEntryRepository.getByProductId(new Id(input.productId));
