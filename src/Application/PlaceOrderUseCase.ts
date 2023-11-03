@@ -4,13 +4,18 @@ import { Id } from "../Domain/ValueObjects/Id";
 import { Email } from "../Domain/ValueObjects/Email";
 import { OrderRepository } from "../Domain/Repository/OrderRepository";
 import { CouponRepository } from "../Domain/Repository/CouponRepository";
+import { RepositoryFactory } from "../Domain/Factory/RepositoryFactory";
 
 export class PlaceOrderUseCase {
-  constructor(
-    private productRepository: ProductRepository,
-    private orderRepository: OrderRepository,
-    private couponRepository: CouponRepository,
-  ) {}
+  private productRepository: ProductRepository;
+  private orderRepository: OrderRepository;
+  private couponRepository: CouponRepository;
+
+  constructor(repositoryFactory: RepositoryFactory) {
+    this.productRepository = repositoryFactory.makeProductRepository();
+    this.orderRepository = repositoryFactory.makeOrderRepository();
+    this.couponRepository = repositoryFactory.makeCouponRepository();
+  }
 
   public async execute(input: PlaceOrderUseCaseInput): Promise<PlaceOrderUseCaseOutput> {
     const order = new Order(new Id(), new Email(input.email), input.date ?? new Date(), 1);

@@ -3,13 +3,15 @@ import { Product } from "../src/Domain/Entity/Product";
 import { ProductRepository } from "../src/Domain/Repository/ProductRepository";
 import { Dimensions } from "../src/Domain/ValueObjects/Dimensions";
 import { Id } from "../src/Domain/ValueObjects/Id";
+import { MemoryRepositoryFactory } from "../src/Infra/Factory/MemoryRepositoryFactory";
 import { ProductRepositoryMemory } from "../src/Infra/Repository/ProductRepositoryMemory";
 
 describe("SimulateFreightUseCase tests", () => {
+  const repositoryFactory = new MemoryRepositoryFactory();
   let productRepository: ProductRepository;
 
   beforeAll(() => {
-    productRepository = new ProductRepositoryMemory();
+    productRepository = repositoryFactory.makeProductRepository();
   });
 
   beforeEach(async () => {
@@ -20,7 +22,7 @@ describe("SimulateFreightUseCase tests", () => {
     productRepository.save(new Product(new Id("1"), "Licença Anti-virus", 200));
     productRepository.save(new Product(new Id("2"), "Fone de ouvido", 200, new Dimensions(2, 2, 1), 1));
     productRepository.save(new Product(new Id("3"), "Placa mãe", 1200, new Dimensions(10, 2, 1), 5));
-    const usecase = new SimulateFreightUseCase(productRepository);
+    const usecase = new SimulateFreightUseCase(repositoryFactory);
     const input = {
       items: [
         { id: "1", quantity: 1 },
