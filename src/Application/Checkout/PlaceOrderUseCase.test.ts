@@ -6,18 +6,19 @@ import { ProductRepository } from "../../Domain/Product/Repository/ProductReposi
 import { Dimensions } from "../../Domain/Product/ValueObject/Dimensions";
 import { Id } from "../../Domain/@shared/ValueObject/Id";
 import { MemoryRepositoryFactory } from "../../Infra/@shared/Factory/MemoryRepositoryFactory";
-import { CouponRepositoryMemory } from "../../Infra/Checkout/Repository/Memory/CouponRepositoryMemory";
-import { OrderRepositoryMemory } from "../../Infra/Checkout/Repository/Memory/OrderRepositoryMemory";
-import { ProductRepositoryMemory } from "../../Infra/Product/Repository/Memory/ProductRepositoryMemory";
+import { Queue } from "../../Infra/@shared/Queue/Queue";
+import { MemoryQueueAdapter } from "../../Infra/@shared/Queue/MemoryQueueAdapter";
 
 describe("Place order use case tests", () => {
   const repositoryFactory = new MemoryRepositoryFactory();
   let productRepository: ProductRepository;
   let couponRepository: CouponRepository;
+  let queue: Queue;
 
   beforeEach(async () => {
     productRepository = repositoryFactory.makeProductRepository();
     couponRepository = repositoryFactory.makeCouponRepository();
+    queue = new MemoryQueueAdapter();
     await productRepository.clear();
     await couponRepository.clear();
   });
@@ -25,7 +26,8 @@ describe("Place order use case tests", () => {
   it("should place an order", async () => {
     productRepository.save(new Product(new Id("1"), "Fone de ouvido", 10.0, new Dimensions(10, 20, 30), 0));
     productRepository.save(new Product(new Id("2"), "Bicicleta", 1500.0, new Dimensions(10, 20, 30), 0));
-    const useCase = new PlaceOrderUseCase(repositoryFactory);
+
+    const useCase = new PlaceOrderUseCase(repositoryFactory, queue);
     const input = {
       email: "cliente@email.com",
       items: [
@@ -42,7 +44,7 @@ describe("Place order use case tests", () => {
 
   it("should throw exception if product not exists ", async () => {
     expect(async () => {
-      const useCase = new PlaceOrderUseCase(repositoryFactory);
+      const useCase = new PlaceOrderUseCase(repositoryFactory, queue);
       const input = {
         email: "cliente@email.com",
         items: [{ id: "1", amount: 1 }],
@@ -55,7 +57,7 @@ describe("Place order use case tests", () => {
     couponRepository.save(new Coupon(new Id("1"), "VALE10", 10, 10.0, new Date("2023-10-15T00:00:00")));
     productRepository.save(new Product(new Id("1"), "Fone de ouvido", 10.0, new Dimensions(10, 20, 30), 0));
     productRepository.save(new Product(new Id("2"), "Bicicleta", 1500.0, new Dimensions(10, 20, 30), 0));
-    const useCase = new PlaceOrderUseCase(repositoryFactory);
+    const useCase = new PlaceOrderUseCase(repositoryFactory, queue);
     const input = {
       email: "cliente@email.com",
       items: [
@@ -76,7 +78,7 @@ describe("Place order use case tests", () => {
     expect(async () => {
       productRepository.save(new Product(new Id("1"), "Fone de ouvido", 10.0, new Dimensions(10, 20, 30), 0));
       productRepository.save(new Product(new Id("2"), "Bicicleta", 1500.0, new Dimensions(10, 20, 30), 0));
-      const useCase = new PlaceOrderUseCase(repositoryFactory);
+      const useCase = new PlaceOrderUseCase(repositoryFactory, queue);
       const input = {
         email: "cliente@email.com",
         items: [
