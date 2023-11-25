@@ -34,3 +34,8 @@ npm start
 ```
 
 Check if the server is running by accessing `http://localhost:<PORT>/health-check`
+
+## Structure Standards
+
+Directory names must be written in PascalCase
+Directory names must be written in Singular
