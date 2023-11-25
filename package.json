@@ -5,6 +5,7 @@
     "main": "index.js",
     "scripts": {
         "test": "jest --no-coverage",
+        "test:watch": "jest --watch",
         "prepare": "husky install",
         "start": "nodemon --watch 'src/' --exec 'ts-node src/main.ts' -e ts",
         "lint": "eslint --fix ."
