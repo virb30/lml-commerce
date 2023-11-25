@@ -1,12 +1,12 @@
 import supertest from "supertest";
-import { ExpressHttpAdapter } from "../src/Infra/Http/ExpressHttpAdapter";
-import { Product } from "../src/Domain/Entity/Product";
-import { Id } from "../src/Domain/ValueObjects/Id";
-import { Dimensions } from "../src/Domain/ValueObjects/Dimensions";
+import { ExpressHttpAdapter } from "../Http/ExpressHttpAdapter";
+import { Product } from "../../Domain/Entity/Product";
+import { Id } from "../../Domain/ValueObjects/Id";
+import { Dimensions } from "../../Domain/ValueObjects/Dimensions";
 import HttpStatus from "http-status-codes";
-import { OrderController } from "../src/Infra/Controller/OrderController";
-import { MemoryRepositoryFactory } from "../src/Infra/Factory/MemoryRepositoryFactory";
-import { ProductRepository } from "../src/Domain/Repository/ProductRepository";
+import { OrderController } from "./OrderController";
+import { MemoryRepositoryFactory } from "../Factory/MemoryRepositoryFactory";
+import { ProductRepository } from "../../Domain/Repository/ProductRepository";
 
 describe("OrderController tests", () => {
   const repositoryFactory = new MemoryRepositoryFactory();

@@ -1,14 +1,14 @@
-import { PlaceOrderUseCase } from "../src/Application/PlaceOrderUseCase";
-import Coupon from "../src/Domain/Entity/Coupon";
-import { Product } from "../src/Domain/Entity/Product";
-import { CouponRepository } from "../src/Domain/Repository/CouponRepository";
-import { ProductRepository } from "../src/Domain/Repository/ProductRepository";
-import { Dimensions } from "../src/Domain/ValueObjects/Dimensions";
-import { Id } from "../src/Domain/ValueObjects/Id";
-import { MemoryRepositoryFactory } from "../src/Infra/Factory/MemoryRepositoryFactory";
-import { CouponRepositoryMemory } from "../src/Infra/Repository/CouponRepositoryMemory";
-import { OrderRepositoryMemory } from "../src/Infra/Repository/OrderRepositoryMemory";
-import { ProductRepositoryMemory } from "../src/Infra/Repository/ProductRepositoryMemory";
+import { PlaceOrderUseCase } from "./PlaceOrderUseCase";
+import { Coupon } from "../Domain/Entity/Coupon";
+import { Product } from "../Domain/Entity/Product";
+import { CouponRepository } from "../Domain/Repository/CouponRepository";
+import { ProductRepository } from "../Domain/Repository/ProductRepository";
+import { Dimensions } from "../Domain/ValueObjects/Dimensions";
+import { Id } from "../Domain/ValueObjects/Id";
+import { MemoryRepositoryFactory } from "../Infra/Factory/MemoryRepositoryFactory";
+import { CouponRepositoryMemory } from "../Infra/Repository/CouponRepositoryMemory";
+import { OrderRepositoryMemory } from "../Infra/Repository/OrderRepositoryMemory";
+import { ProductRepositoryMemory } from "../Infra/Repository/ProductRepositoryMemory";
 
 describe("Place order use case tests", () => {
   const repositoryFactory = new MemoryRepositoryFactory();

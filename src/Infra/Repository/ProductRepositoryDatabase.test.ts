@@ -1,9 +1,9 @@
-import { Product } from "../src/Domain/Entity/Product";
-import { Dimensions } from "../src/Domain/ValueObjects/Dimensions";
-import { Id } from "../src/Domain/ValueObjects/Id";
-import { MysqlConnectionAdapter } from "../src/Infra/Database/MysqlConnectionAdapter";
-import { ProductRepositoryDatabase } from "../src/Infra/Repository/ProductRepositoryDatabase";
-import { getDbConnectionString } from "../src/config";
+import { Product } from "../../Domain/Entity/Product";
+import { Dimensions } from "../../Domain/ValueObjects/Dimensions";
+import { Id } from "../../Domain/ValueObjects/Id";
+import { MysqlConnectionAdapter } from "../Database/MysqlConnectionAdapter";
+import { ProductRepositoryDatabase } from "./ProductRepositoryDatabase";
+import { getDbConnectionString } from "../../config";
 
 describe("Product Repository", () => {
   const connection = new MysqlConnectionAdapter(getDbConnectionString());

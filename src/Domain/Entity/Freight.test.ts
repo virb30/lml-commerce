@@ -1,7 +1,7 @@
-import { Freight } from "../src/Domain/Entity/Freight";
-import { Product } from "../src/Domain/Entity/Product";
-import { Dimensions } from "../src/Domain/ValueObjects/Dimensions";
-import { Id } from "../src/Domain/ValueObjects/Id";
+import { Freight } from "./Freight";
+import { Product } from "./Product";
+import { Dimensions } from "../ValueObjects/Dimensions";
+import { Id } from "../ValueObjects/Id";
 
 describe("Freight tests", () => {
   it("should calculate freight", () => {

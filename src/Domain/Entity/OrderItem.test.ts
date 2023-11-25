@@ -1,7 +1,7 @@
-import { OrderItem } from "../src/Domain/Entity/OrderItem";
-import { Product } from "../src/Domain/Entity/Product";
-import { Dimensions } from "../src/Domain/ValueObjects/Dimensions";
-import { Id } from "../src/Domain/ValueObjects/Id";
+import { OrderItem } from "./OrderItem";
+import { Product } from "./Product";
+import { Dimensions } from "../ValueObjects/Dimensions";
+import { Id } from "../ValueObjects/Id";
 
 describe("OrderItem", () => {
   it("Should calculate total", () => {

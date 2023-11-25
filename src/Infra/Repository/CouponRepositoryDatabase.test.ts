@@ -1,8 +1,8 @@
-import Coupon from "../src/Domain/Entity/Coupon";
-import { Id } from "../src/Domain/ValueObjects/Id";
-import { MysqlConnectionAdapter } from "../src/Infra/Database/MysqlConnectionAdapter";
-import CouponRepositoryDatabase from "../src/Infra/Repository/CouponRepositoryDatabase";
-import { getDbConnectionString } from "../src/config";
+import { Coupon } from "../../Domain/Entity/Coupon";
+import { Id } from "../../Domain/ValueObjects/Id";
+import { MysqlConnectionAdapter } from "../Database/MysqlConnectionAdapter";
+import { CouponRepositoryDatabase } from "./CouponRepositoryDatabase";
+import { getDbConnectionString } from "../../config";
 
 describe("CouponRepository tests", () => {
   const connection = new MysqlConnectionAdapter(getDbConnectionString());

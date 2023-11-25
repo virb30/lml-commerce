@@ -1,4 +1,4 @@
-import { Email } from "../src/Domain/ValueObjects/Email";
+import { Email } from "./Email";
 describe("Email tests", () => {
   it("should create an email", () => {
     const email = new Email("cliente@email.com");

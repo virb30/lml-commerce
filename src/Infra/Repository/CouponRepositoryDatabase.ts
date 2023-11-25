@@ -1,9 +1,9 @@
-import Coupon from "../../Domain/Entity/Coupon";
+import { Coupon } from "../../Domain/Entity/Coupon";
 import { CouponRepository } from "../../Domain/Repository/CouponRepository";
 import { Id } from "../../Domain/ValueObjects/Id";
 import { Connection } from "../Database/Connection";
 
-export default class CouponRepositoryDatabase implements CouponRepository {
+export class CouponRepositoryDatabase implements CouponRepository {
   constructor(private connection: Connection) {}
 
   public async getByCode(code: string): Promise<Coupon> {

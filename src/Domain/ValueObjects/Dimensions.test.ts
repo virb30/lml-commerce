@@ -1,4 +1,4 @@
-import { Dimensions } from "../src/Domain/ValueObjects/Dimensions";
+import { Dimensions } from "./Dimensions";
 
 describe("Dimesion tests", () => {
   const dataDimensions = [

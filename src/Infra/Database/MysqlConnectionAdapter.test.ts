@@ -1,5 +1,5 @@
-import { MysqlConnectionAdapter } from "../src/Infra/Database/MysqlConnectionAdapter";
-import { getDbConnectionString } from "../src/config";
+import { MysqlConnectionAdapter } from "./MysqlConnectionAdapter";
+import { getDbConnectionString } from "../../config";
 
 describe("Database connection tests", () => {
   it("should connect to a database", async () => {

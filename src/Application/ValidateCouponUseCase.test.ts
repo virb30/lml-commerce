@@ -1,7 +1,7 @@
-import { ValidateCouponUseCase } from "../src/Application/ValidateCouponUseCase";
-import Coupon from "../src/Domain/Entity/Coupon";
-import { Id } from "../src/Domain/ValueObjects/Id";
-import { CouponRepositoryMemory } from "../src/Infra/Repository/CouponRepositoryMemory";
+import { ValidateCouponUseCase } from "./ValidateCouponUseCase";
+import { Coupon } from "../Domain/Entity/Coupon";
+import { Id } from "../Domain/ValueObjects/Id";
+import { CouponRepositoryMemory } from "../Infra/Repository/CouponRepositoryMemory";
 
 describe("Validate Coupon Use Case tests", () => {
   const couponRepository = new CouponRepositoryMemory();

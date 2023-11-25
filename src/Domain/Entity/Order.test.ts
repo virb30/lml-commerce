@@ -1,9 +1,9 @@
-import { Id } from "../src/Domain/ValueObjects/Id";
-import { Email } from "../src/Domain/ValueObjects/Email";
-import { Dimensions } from "../src/Domain/ValueObjects/Dimensions";
-import { Product } from "../src/Domain/Entity/Product";
-import { Order } from "../src/Domain/Entity/Order";
-import Coupon from "../src/Domain/Entity/Coupon";
+import { Id } from "../ValueObjects/Id";
+import { Email } from "../ValueObjects/Email";
+import { Dimensions } from "../ValueObjects/Dimensions";
+import { Product } from "./Product";
+import { Order } from "./Order";
+import { Coupon } from "./Coupon";
 
 describe("Order tests", () => {
   it("should create an order", () => {

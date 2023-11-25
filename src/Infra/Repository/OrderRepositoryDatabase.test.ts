@@ -1,12 +1,12 @@
-import { OrderRepositoryDatabase } from "../src/Infra/Repository/OrderRepositoryDatabase";
-import { Order } from "../src/Domain/Entity/Order";
-import { Product } from "../src/Domain/Entity/Product";
-import { Id } from "../src/Domain/ValueObjects/Id";
-import { Email } from "../src/Domain/ValueObjects/Email";
-import { Dimensions } from "../src/Domain/ValueObjects/Dimensions";
-import { getDbConnectionString } from "../src/config";
-import { MysqlConnectionAdapter } from "../src/Infra/Database/MysqlConnectionAdapter";
-import Coupon from "../src/Domain/Entity/Coupon";
+import { OrderRepositoryDatabase } from "./OrderRepositoryDatabase";
+import { Order } from "../../Domain/Entity/Order";
+import { Product } from "../../Domain/Entity/Product";
+import { Id } from "../../Domain/ValueObjects/Id";
+import { Email } from "../../Domain/ValueObjects/Email";
+import { Dimensions } from "../../Domain/ValueObjects/Dimensions";
+import { getDbConnectionString } from "../../config";
+import { MysqlConnectionAdapter } from "../Database/MysqlConnectionAdapter";
+import { Coupon } from "../../Domain/Entity/Coupon";
 
 describe("Order repository", () => {
   const connection = new MysqlConnectionAdapter(getDbConnectionString());

@@ -1,6 +1,6 @@
-import { Dimensions } from "../src/Domain/ValueObjects/Dimensions";
-import { Id } from "../src/Domain/ValueObjects/Id";
-import { Product } from "../src/Domain/Entity/Product";
+import { Dimensions } from "../ValueObjects/Dimensions";
+import { Id } from "../ValueObjects/Id";
+import { Product } from "./Product";
 
 describe("Product", () => {
   it("Should create a product", () => {

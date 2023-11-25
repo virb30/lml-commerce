@@ -1,6 +1,6 @@
 import { Id } from "../ValueObjects/Id";
 
-export default class Coupon {
+export class Coupon {
   public constructor(
     public readonly id: Id,
     public readonly code: string,

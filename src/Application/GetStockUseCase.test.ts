@@ -1,8 +1,8 @@
-import { GetStockUseCase } from "../src/Application/GetStockUseCase";
-import { StockEntry } from "../src/Domain/Entity/StockEntry";
-import { Id } from "../src/Domain/ValueObjects/Id";
-import { MemoryRepositoryFactory } from "../src/Infra/Factory/MemoryRepositoryFactory";
-import { StockEntryRepositoryMemory } from "../src/Infra/Repository/StockEntryRepositoryMemory";
+import { GetStockUseCase } from "./GetStockUseCase";
+import { StockEntry } from "../Domain/Entity/StockEntry";
+import { Id } from "../Domain/ValueObjects/Id";
+import { MemoryRepositoryFactory } from "../Infra/Factory/MemoryRepositoryFactory";
+import { StockEntryRepositoryMemory } from "../Infra/Repository/StockEntryRepositoryMemory";
 
 describe("GetStockUseCase tests", () => {
   const repositoryFactory = new MemoryRepositoryFactory();

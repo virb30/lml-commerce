@@ -4,7 +4,7 @@ import { Id } from "../ValueObjects/Id";
 import { OrderItem } from "./OrderItem";
 import { Product } from "./Product";
 import { Freight } from "./Freight";
-import Coupon from "./Coupon";
+import { Coupon } from "./Coupon";
 import { OrderCoupon } from "./OrderCoupon";
 
 export class Order {

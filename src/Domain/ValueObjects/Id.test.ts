@@ -1,4 +1,4 @@
-import { Id } from "../src/Domain/ValueObjects/Id";
+import { Id } from "./Id";
 
 describe("Id tests", () => {
   it("should create id with value", () => {

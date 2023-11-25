@@ -1,6 +1,6 @@
-import { StockEntry } from "../src/Domain/Entity/StockEntry";
-import { StockCalculator } from "../src/Domain/Service/StockCalculator";
-import { Id } from "../src/Domain/ValueObjects/Id";
+import { StockEntry } from "../Entity/StockEntry";
+import { StockCalculator } from "./StockCalculator";
+import { Id } from "../ValueObjects/Id";
 
 describe("StockCalculator tests", () => {
   it("should calculate stock", () => {

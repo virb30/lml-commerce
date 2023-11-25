@@ -1,4 +1,4 @@
-import Coupon from "../../Domain/Entity/Coupon";
+import { Coupon } from "../../Domain/Entity/Coupon";
 import { CouponRepository } from "../../Domain/Repository/CouponRepository";
 
 export class CouponRepositoryMemory implements CouponRepository {

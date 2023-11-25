@@ -1,9 +1,9 @@
 import { after } from "node:test";
-import { StockEntry } from "../src/Domain/Entity/StockEntry";
-import { Id } from "../src/Domain/ValueObjects/Id";
-import { MysqlConnectionAdapter } from "../src/Infra/Database/MysqlConnectionAdapter";
-import { getDbConnectionString } from "../src/config";
-import { StockEntryRepositoryDatabase } from "../src/Infra/Repository/StockEntryRepositoryDatabase";
+import { StockEntry } from "../../Domain/Entity/StockEntry";
+import { Id } from "../../Domain/ValueObjects/Id";
+import { MysqlConnectionAdapter } from "../Database/MysqlConnectionAdapter";
+import { getDbConnectionString } from "../../config";
+import { StockEntryRepositoryDatabase } from "./StockEntryRepositoryDatabase";
 
 describe("StockEntryRepositoryDatabase tests", () => {
   const connection = new MysqlConnectionAdapter(getDbConnectionString());

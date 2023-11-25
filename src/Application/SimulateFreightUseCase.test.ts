@@ -1,10 +1,10 @@
-import { SimulateFreightUseCase } from "../src/Application/SimulateFreightUseCase";
-import { Product } from "../src/Domain/Entity/Product";
-import { ProductRepository } from "../src/Domain/Repository/ProductRepository";
-import { Dimensions } from "../src/Domain/ValueObjects/Dimensions";
-import { Id } from "../src/Domain/ValueObjects/Id";
-import { MemoryRepositoryFactory } from "../src/Infra/Factory/MemoryRepositoryFactory";
-import { ProductRepositoryMemory } from "../src/Infra/Repository/ProductRepositoryMemory";
+import { SimulateFreightUseCase } from "./SimulateFreightUseCase";
+import { Product } from "../Domain/Entity/Product";
+import { ProductRepository } from "../Domain/Repository/ProductRepository";
+import { Dimensions } from "../Domain/ValueObjects/Dimensions";
+import { Id } from "../Domain/ValueObjects/Id";
+import { MemoryRepositoryFactory } from "../Infra/Factory/MemoryRepositoryFactory";
+import { ProductRepositoryMemory } from "../Infra/Repository/ProductRepositoryMemory";
 
 describe("SimulateFreightUseCase tests", () => {
   const repositoryFactory = new MemoryRepositoryFactory();

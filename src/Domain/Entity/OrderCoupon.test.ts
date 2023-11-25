@@ -1,4 +1,4 @@
-import { OrderCoupon } from "../src/Domain/Entity/OrderCoupon";
+import { OrderCoupon } from "./OrderCoupon";
 
 describe("OrderCoupon tests", () => {
   it("should create OrderCoupon with limit", () => {

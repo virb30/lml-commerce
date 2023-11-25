@@ -1,4 +1,4 @@
-import { OrderCode } from "../src/Domain/ValueObjects/OrderCode";
+import { OrderCode } from "./OrderCode";
 
 describe("OrderCode tests", () => {
   it("should create a code in valid format", () => {

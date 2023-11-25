@@ -1,5 +1,5 @@
-import Coupon from "../src/Domain/Entity/Coupon";
-import { Id } from "../src/Domain/ValueObjects/Id";
+import { Coupon } from "./Coupon";
+import { Id } from "../ValueObjects/Id";
 
 describe("Coupon tests", () => {
   it("Should create an coupon", () => {

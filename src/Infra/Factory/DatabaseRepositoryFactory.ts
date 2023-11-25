@@ -4,7 +4,7 @@ import { OrderRepository } from "../../Domain/Repository/OrderRepository";
 import { ProductRepository } from "../../Domain/Repository/ProductRepository";
 import { StockEntryRepository } from "../../Domain/Repository/StockEntryRepository";
 import { Connection } from "../Database/Connection";
-import CouponRepositoryDatabase from "../Repository/CouponRepositoryDatabase";
+import { CouponRepositoryDatabase } from "../Repository/CouponRepositoryDatabase";
 import { OrderRepositoryDatabase } from "../Repository/OrderRepositoryDatabase";
 import { ProductRepositoryDatabase } from "../Repository/ProductRepositoryDatabase";
 import { StockEntryRepositoryDatabase } from "../Repository/StockEntryRepositoryDatabase";

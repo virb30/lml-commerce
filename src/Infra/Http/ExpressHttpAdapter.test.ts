@@ -1,4 +1,4 @@
-import { ExpressHttpAdapter } from "../src/Infra/Http/ExpressHttpAdapter";
+import { ExpressHttpAdapter } from "./ExpressHttpAdapter";
 import request from "supertest";
 
 describe("API tests", () => {
