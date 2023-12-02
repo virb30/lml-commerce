@@ -37,5 +37,5 @@ Check if the server is running by accessing `http://localhost:<PORT>/health-chec
 
 ## Structure Standards
 
-Directory names must be written in PascalCase
-Directory names must be written in Singular
+- Directory names must be written in PascalCase
+- Directory names must be written in Singular
