@@ -5,13 +5,18 @@ import { Email } from "../../Domain/@shared/ValueObject/Email";
 import { OrderRepository } from "../../Domain/Checkout/Repository/OrderRepository";
 import { CouponRepository } from "../../Domain/Checkout/Repository/CouponRepository";
 import { RepositoryFactory } from "../../Domain/@shared/Factory/RepositoryFactory";
+import { OrderPlaced } from "../../Domain/Checkout/Event/OrderPlaced";
+import { Queue } from "../../Infra/@shared/Queue/Queue";
 
 export class PlaceOrderUseCase {
   private productRepository: ProductRepository;
   private orderRepository: OrderRepository;
   private couponRepository: CouponRepository;
 
-  constructor(repositoryFactory: RepositoryFactory) {
+  constructor(
+    repositoryFactory: RepositoryFactory,
+    private queue: Queue,
+  ) {
     this.productRepository = repositoryFactory.makeProductRepository();
     this.orderRepository = repositoryFactory.makeOrderRepository();
     this.couponRepository = repositoryFactory.makeCouponRepository();
@@ -31,6 +36,17 @@ export class PlaceOrderUseCase {
     }
 
     await this.orderRepository.save(order);
+    const orderPlaced = new OrderPlaced({
+      orderId: order.id.value,
+      items: order.items.map((item) => {
+        return {
+          productId: item.productId,
+          amount: item.amount,
+        };
+      }),
+      total: order.total,
+    });
+    await this.queue.publish(orderPlaced);
 
     return {
       total: order.total,
