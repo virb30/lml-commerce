@@ -8,7 +8,7 @@ describe("Coupon tests", () => {
     expect(coupon.code).toEqual("VALE10");
     expect(coupon.percentage).toBe(10);
     expect(coupon.discountLimit).toBe(10.0);
-    expect(coupon.isValid(new Date())).toBeTruthy();
+    expect(coupon.isValid(new Date("2023-11-01T00:00:00"))).toBeTruthy();
   });
 
   it("Should return false for expired coupon", () => {
