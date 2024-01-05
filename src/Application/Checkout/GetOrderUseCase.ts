@@ -3,10 +3,10 @@ import { OrderRepository } from "../../Domain/Checkout/Repository/OrderRepositor
 import { Id } from "../../Domain/@shared/ValueObject/Id";
 
 export class GetOrderUseCase {
-  public constructor(private OrderRepository: OrderRepository) { }
+  public constructor(private orderRepository: OrderRepository) {}
 
   public async execute(input: GetOrderInput): Promise<Order> {
-    return await this.OrderRepository.getById(new Id(input.id));
+    return await this.orderRepository.getById(new Id(input.id));
   }
 }
 
