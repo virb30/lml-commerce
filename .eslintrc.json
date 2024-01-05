@@ -4,8 +4,7 @@
         "node": true
     },
     "extends": [
-        "eslint:recommended",
-        "plugin:@typescript-eslint/recommended",
+        "plugin:@stylistic/recommended-extends",
         "plugin:prettier/recommended"
     ],
     "parser": "@typescript-eslint/parser",
@@ -14,32 +13,51 @@
         "sourceType": "module"
     },
     "plugins": [
-        "@typescript-eslint",
+        "@stylistic",
         "prettier"
     ],
     "rules": {
         "prettier/prettier": "error",
-        "@typescript-eslint/no-unused-vars": "off",
-        "@typescript-eslint/no-explicit-any": "off",
-        "@typescript-eslint/indent": [
+        "@stylistic/ts/no-unused-vars": "off",
+        "@stylistic/ts/no-explicit-any": "off",
+        "@stylistic/indent": [
             "error",
-            2
+            2,
+            {
+                "ignoredNodes": [
+                    "PropertyDefinition"
+                ]
+            }
         ],
-        "indent": [
+        "semi": [
             "error",
-            2
+            "always"
         ],
         "linebreak-style": [
             "error",
             "unix"
         ],
-        "quotes": [
+        "@stylistic/quotes": [
             "error",
             "double"
         ],
-        "semi": [
+        "@stylistic/semi": [
             "error",
             "always"
+        ],
+        "@stylistic/arrow-parens": "off",
+        "@stylistic/member-delimiter-style": [
+            "error",
+            {
+                "singleline": {
+                    "delimiter": "semi",
+                    "requireLast": false
+                }
+            }
+        ],
+        "@stylistic/brace-style": [
+            "error",
+            "1tbs"
         ]
     }
 }

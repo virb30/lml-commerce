@@ -1,10 +1,14 @@
+import { inject } from "../DI/Registry";
 import { Http } from "../Http/Http";
 import { Controller } from "./Controller";
 
 export class HealthCheckController extends Controller {
-  constructor(http: Http) {
+  @inject("httpServer")
+  http?: Http;
+
+  constructor() {
     super();
-    http.on("GET", "/health-check", async (_params, _body) => {
+    this.http?.on("GET", "/health-check", async (_params, _body) => {
       return this.ok({ ok: true });
     });
   }
