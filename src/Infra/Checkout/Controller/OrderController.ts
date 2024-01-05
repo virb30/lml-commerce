@@ -1,29 +1,37 @@
-import { PlaceOrderUseCase, PlaceOrderUseCaseInput } from "../../../Application/Checkout/PlaceOrderUseCase";
-import { RepositoryFactory } from "../../../Domain/@shared/Factory/RepositoryFactory";
+import { PlaceOrderUseCase } from "../../../Application/Checkout/PlaceOrderUseCase";
 import { Http } from "../../@shared/Http/Http";
 import { Controller } from "../../@shared/Controller/Controller";
-import { Queue } from "../../@shared/Queue/Queue";
+import { inject } from "../../@shared/DI/Registry";
 
 export class OrderController extends Controller {
-  constructor(http: Http, repositoryFactory: RepositoryFactory, queue: Queue) {
-    super();
-    http.on("POST", "/orders", async (params, body) => {
-      const usecase = new PlaceOrderUseCase(repositoryFactory, queue);
+  @inject("httpServer")
+  http?: Http;
 
-      const input: PlaceOrderUseCaseInput = {
+  @inject("placeOrder")
+  placeOrder?: PlaceOrderUseCase;
+
+  constructor() {
+    super();
+    this.http?.on("POST", "/orders", async (params, body) => {
+      const input = {
         email: body.email,
-        items: body.items.map((item: { product_id: string; amount: number }) => ({
+        items: body.items.map((item: ItemInput) => ({
           id: item.product_id,
           amount: item.amount,
         })),
       };
 
-      const output = await usecase.execute(input);
+      const output = await this.placeOrder?.execute(input);
       const data = {
-        total: output.total,
+        total: output?.total,
       };
 
       return this.created(data);
     });
   }
 }
+
+type ItemInput = {
+  product_id: string;
+  amount: number;
+};

@@ -6,13 +6,28 @@ import { getDbConnectionString } from "./config";
 import { OrderController } from "./Infra/Checkout/Controller/OrderController";
 import "./config";
 import { MemoryQueueAdapter } from "./Infra/@shared/Queue/MemoryQueueAdapter";
+import { PlaceOrderUseCase } from "./Application/Checkout/PlaceOrderUseCase";
+import { Registry } from "./Infra/@shared/DI/Registry";
 
 const port = parseInt(process.env.PORT ?? "8008");
 
 const http = new ExpressHttpAdapter();
 const connection = new MysqlConnectionAdapter(getDbConnectionString());
-const repositoryFactory = new DatabaseRepositoryFactory(connection);
-new HealthCheckController(http);
 const queue = new MemoryQueueAdapter();
-new OrderController(http, repositoryFactory, queue);
+
+const repositoryFactory = new DatabaseRepositoryFactory(connection);
+
+// usecases
+const placeOrder = new PlaceOrderUseCase(repositoryFactory, queue);
+
+// di
+const registry = Registry.getInstance();
+registry.register("httpServer", http);
+registry.register("queue", queue);
+registry.register("placeOrder", placeOrder);
+
+// controllers
+new HealthCheckController();
+new OrderController();
+
 http.listen(port);

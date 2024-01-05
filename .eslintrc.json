@@ -22,7 +22,16 @@
         "@stylistic/ts/no-explicit-any": "off",
         "@stylistic/indent": [
             "error",
-            2
+            2,
+            {
+                "ignoredNodes": [
+                    "PropertyDefinition"
+                ]
+            }
+        ],
+        "semi": [
+            "error",
+            "always"
         ],
         "linebreak-style": [
             "error",
@@ -35,6 +44,15 @@
         "@stylistic/semi": [
             "error",
             "always"
+        ],
+        "@stylistic/member-delimiter-style": [
+            "error",
+            {
+                "singleline": {
+                    "delimiter": "comma",
+                    "requireLast": false
+                }
+            }
         ]
     }
 }
