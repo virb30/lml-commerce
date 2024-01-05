@@ -21,12 +21,14 @@ export class CouponRepositoryDatabase implements CouponRepository {
       new Date(couponData.expiration_date),
     );
   }
+
   public async save(coupon: Coupon): Promise<void> {
     await this.connection.query(
       "INSERT INTO app.coupon (id, code, percentage, discount_limit, expiration_date) VALUES (?, ?, ?, ?, ?)",
       [coupon.id.value, coupon.code, coupon.percentage, coupon.discountLimit, coupon.expirationDate],
     );
   }
+
   public async clear(): Promise<void> {
     await this.connection.query("DELETE FROM app.coupon", []);
   }

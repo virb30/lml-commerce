@@ -45,14 +45,19 @@
             "error",
             "always"
         ],
+        "@stylistic/arrow-parens": "off",
         "@stylistic/member-delimiter-style": [
             "error",
             {
                 "singleline": {
-                    "delimiter": "comma",
+                    "delimiter": "semi",
                     "requireLast": false
                 }
             }
+        ],
+        "@stylistic/brace-style": [
+            "error",
+            "1tbs"
         ]
     }
 }

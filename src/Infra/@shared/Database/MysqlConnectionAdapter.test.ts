@@ -6,6 +6,6 @@ describe("Database connection tests", () => {
     const connection = new MysqlConnectionAdapter(getDbConnectionString());
     const [result] = await connection.query("SELECT 1");
     await connection.close();
-    expect(result).toEqual({ "1": 1 });
+    expect(result).toEqual({ 1: 1 });
   });
 });
