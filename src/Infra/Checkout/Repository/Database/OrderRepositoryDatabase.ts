@@ -9,6 +9,26 @@ import { Connection } from "../../../@shared/Database/Connection";
 export class OrderRepositoryDatabase implements OrderRepository {
   constructor(private connection: Connection) {}
 
+  public async findByEmail(email: Email, page: number, limit: number): Promise<Order[]> {
+    const offset = (page - 1) * limit;
+
+    const ordersData = await this.connection.query("SELECT id FROM app.order WHERE email = ? LIMIT ?, ?", [
+      email.value,
+      offset.toString(),
+      limit.toString(),
+    ]);
+
+    if (!ordersData) {
+      throw new Error("Order not found");
+    }
+
+    return Promise.all(
+      ordersData.map(async (orderData: any) => {
+        return this.getById(new Id(orderData.id));
+      }),
+    );
+  }
+
   public async getById(id: Id): Promise<Order> {
     const [orderData] = await this.connection.query("SELECT * FROM app.order WHERE id = ?", [id.value]);
 
