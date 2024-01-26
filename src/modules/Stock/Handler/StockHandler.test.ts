@@ -1,5 +1,5 @@
 import { Id } from "../../../Domain/@shared/ValueObject/Id";
-import { OrderPlaced } from "../../../Domain/Checkout/Event/OrderPlaced";
+import { OrderPlaced } from "../../Checkout/Domain/Event/OrderPlaced";
 import { MemoryRepositoryFactory } from "../../../Infra/@shared/Factory/MemoryRepositoryFactory";
 import { StockHandler } from "./StockHandler";
 

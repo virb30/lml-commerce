@@ -1,11 +1,11 @@
 import { RepositoryFactory } from "../../../Domain/@shared/Factory/RepositoryFactory";
-import { CouponRepository } from "../../../Domain/Checkout/Repository/CouponRepository";
-import { OrderRepository } from "../../../Domain/Checkout/Repository/OrderRepository";
-import { ProductRepository } from "../../../Domain/Product/Repository/ProductRepository";
+import { CouponRepository } from "../../../modules/Checkout/Domain/Repository/CouponRepository";
+import { OrderRepository } from "../../../modules/Checkout/Domain/Repository/OrderRepository";
+import { ProductRepository } from "../../../modules/Checkout/Domain/Repository/ProductRepository";
 import { StockEntryRepository } from "../../../modules/Stock/Domain/Repository/StockEntryRepository";
-import { CouponRepositoryMemory } from "../../Checkout/Repository/Memory/CouponRepositoryMemory";
-import { OrderRepositoryMemory } from "../../Checkout/Repository/Memory/OrderRepositoryMemory";
-import { ProductRepositoryMemory } from "../../Product/Repository/Memory/ProductRepositoryMemory";
+import { CouponRepositoryMemory } from "../../../modules/Checkout/Repository/Memory/CouponRepositoryMemory";
+import { OrderRepositoryMemory } from "../../../modules/Checkout/Repository/Memory/OrderRepositoryMemory";
+import { ProductRepositoryMemory } from "../../../modules/Checkout/Repository/Memory/ProductRepositoryMemory";
 import { StockEntryRepositoryMemory } from "../../../modules/Stock/Repository/Memory/StockEntryRepositoryMemory";
 
 export class MemoryRepositoryFactory implements RepositoryFactory {

@@ -1,12 +1,12 @@
 import { RepositoryFactory } from "../../../Domain/@shared/Factory/RepositoryFactory";
-import { CouponRepository } from "../../../Domain/Checkout/Repository/CouponRepository";
-import { OrderRepository } from "../../../Domain/Checkout/Repository/OrderRepository";
-import { ProductRepository } from "../../../Domain/Product/Repository/ProductRepository";
+import { CouponRepository } from "../../../modules/Checkout/Domain/Repository/CouponRepository";
+import { OrderRepository } from "../../../modules/Checkout/Domain/Repository/OrderRepository";
+import { ProductRepository } from "../../../modules/Checkout/Domain/Repository/ProductRepository";
 import { StockEntryRepository } from "../../../modules/Stock/Domain/Repository/StockEntryRepository";
 import { Connection } from "../Database/Connection";
-import { CouponRepositoryDatabase } from "../../Checkout/Repository/Database/CouponRepositoryDatabase";
-import { OrderRepositoryDatabase } from "../../Checkout/Repository/Database/OrderRepositoryDatabase";
-import { ProductRepositoryDatabase } from "../../Product/Repository/Database/ProductRepositoryDatabase";
+import { CouponRepositoryDatabase } from "../../../modules/Checkout/Repository/Database/CouponRepositoryDatabase";
+import { OrderRepositoryDatabase } from "../../../modules/Checkout/Repository/Database/OrderRepositoryDatabase";
+import { ProductRepositoryDatabase } from "../../../modules/Checkout/Repository/Database/ProductRepositoryDatabase";
 import { StockEntryRepositoryDatabase } from "../../../modules/Stock/Repository/Database/StockEntryRepositoryDatabase";
 
 export class DatabaseRepositoryFactory implements RepositoryFactory {

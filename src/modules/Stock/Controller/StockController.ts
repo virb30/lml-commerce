@@ -1,6 +1,6 @@
 import { StockHandler } from "../../../modules/Stock/Handler/StockHandler";
 import { RepositoryFactory } from "../../../Domain/@shared/Factory/RepositoryFactory";
-import { OrderPlaced } from "../../../Domain/Checkout/Event/OrderPlaced";
+import { OrderPlaced } from "../../Checkout/Domain/Event/OrderPlaced";
 import { Queue } from "../../../Infra/@shared/Queue/Queue";
 
 export class StockController {
