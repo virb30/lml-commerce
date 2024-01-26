@@ -4,12 +4,12 @@ import { Product } from "../../Domain/Entity/Product";
 import { Id } from "../../../@shared/Domain/ValueObject/Id";
 import { Email } from "../../../@shared/Domain/ValueObject/Email";
 import { Dimensions } from "../../Domain/Entity/Dimensions";
-import { getDbConnectionString } from "../../../../config";
+import { db } from "../../../../Infra/Config";
 import { MysqlConnectionAdapter } from "../../../../Infra/Database/MysqlConnectionAdapter";
 import { Coupon } from "../../Domain/Entity/Coupon";
 
 describe("Order repository", () => {
-  const connection = new MysqlConnectionAdapter(getDbConnectionString());
+  const connection = new MysqlConnectionAdapter(db.getConnectionString());
   const orderRepositoryDatabase = new OrderRepositoryDatabase(connection);
 
   beforeEach(async () => {

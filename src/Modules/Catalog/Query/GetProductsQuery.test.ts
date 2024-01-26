@@ -1,13 +1,13 @@
 import { Connection } from "../../../Infra/Database/Connection";
 import { MysqlConnectionAdapter } from "../../../Infra/Database/MysqlConnectionAdapter";
-import { getDbConnectionString } from "../../../config";
+import { db } from "../../../Infra/Config";
 import { GetProductsQuery } from "./GetProductsQuery";
 
 describe("GetProductsQuery tests", () => {
   let databaseConnection: Connection;
 
   beforeAll(() => {
-    databaseConnection = new MysqlConnectionAdapter(getDbConnectionString());
+    databaseConnection = new MysqlConnectionAdapter(db.getConnectionString());
   });
 
   beforeEach(() => {

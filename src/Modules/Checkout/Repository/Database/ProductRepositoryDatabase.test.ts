@@ -3,10 +3,10 @@ import { Dimensions } from "../../Domain/Entity/Dimensions";
 import { Id } from "../../../@shared/Domain/ValueObject/Id";
 import { MysqlConnectionAdapter } from "../../../../Infra/Database/MysqlConnectionAdapter";
 import { ProductRepositoryDatabase } from "./ProductRepositoryDatabase";
-import { getDbConnectionString } from "../../../../config";
+import { db } from "../../../../Infra/Config";
 
 describe("Product Repository", () => {
-  const connection = new MysqlConnectionAdapter(getDbConnectionString());
+  const connection = new MysqlConnectionAdapter(db.getConnectionString());
   const productRepositoryDatabase = new ProductRepositoryDatabase(connection);
 
   afterAll(async () => {

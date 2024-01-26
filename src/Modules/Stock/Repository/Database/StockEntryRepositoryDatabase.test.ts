@@ -1,11 +1,11 @@
 import { StockEntry } from "../../Domain/Entity/StockEntry";
 import { Id } from "../../../@shared/Domain/ValueObject/Id";
 import { MysqlConnectionAdapter } from "../../../../Infra/Database/MysqlConnectionAdapter";
-import { getDbConnectionString } from "../../../../config";
+import { db } from "../../../../Infra/Config";
 import { StockEntryRepositoryDatabase } from "./StockEntryRepositoryDatabase";
 
 describe("StockEntryRepositoryDatabase tests", () => {
-  const connection = new MysqlConnectionAdapter(getDbConnectionString());
+  const connection = new MysqlConnectionAdapter(db.getConnectionString());
   const stockEntryRepository = new StockEntryRepositoryDatabase(connection);
 
   beforeEach(async () => {

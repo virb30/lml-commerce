@@ -2,10 +2,10 @@ import { Coupon } from "../../Domain/Entity/Coupon";
 import { Id } from "../../../@shared/Domain/ValueObject/Id";
 import { MysqlConnectionAdapter } from "../../../../Infra/Database/MysqlConnectionAdapter";
 import { CouponRepositoryDatabase } from "./CouponRepositoryDatabase";
-import { getDbConnectionString } from "../../../../config";
+import { db } from "../../../../Infra/Config";
 
 describe("CouponRepository tests", () => {
-  const connection = new MysqlConnectionAdapter(getDbConnectionString());
+  const connection = new MysqlConnectionAdapter(db.getConnectionString());
   const couponRepositoryDatabase = new CouponRepositoryDatabase(connection);
 
   afterAll(async () => {
