@@ -1,7 +1,7 @@
-import { RepositoryFactory } from "../../Domain/@shared/Factory/RepositoryFactory";
-import { StockEntryRepository } from "../../Domain/Stock/Repository/StockEntryRepository";
-import { StockCalculator } from "../../Domain/Stock/Service/StockCalculator";
-import { Id } from "../../Domain/@shared/ValueObject/Id";
+import { RepositoryFactory } from "../../../Domain/@shared/Factory/RepositoryFactory";
+import { StockEntryRepository } from "../Domain/Repository/StockEntryRepository";
+import { StockCalculator } from "../Domain/Service/StockCalculator";
+import { Id } from "../../../Domain/@shared/ValueObject/Id";
 
 export class GetStockUseCase {
   private stockEntryRepository: StockEntryRepository;

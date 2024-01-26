@@ -1,5 +1,5 @@
 import { StockEntry } from "./StockEntry";
-import { Id } from "../../@shared/ValueObject/Id";
+import { Id } from "../../../../Domain/@shared/ValueObject/Id";
 
 describe("StockEntry tests", () => {
   it("should create a stock entry", () => {

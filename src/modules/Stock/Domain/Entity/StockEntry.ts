@@ -1,4 +1,4 @@
-import { Id } from "../../@shared/ValueObject/Id";
+import { Id } from "../../../../Domain/@shared/ValueObject/Id";
 
 export class StockEntry {
   constructor(

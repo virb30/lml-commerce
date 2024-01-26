@@ -1,5 +1,5 @@
-import { StockEntry } from "../../../../Domain/Stock/Entity/StockEntry";
-import { StockEntryRepository } from "../../../../Domain/Stock/Repository/StockEntryRepository";
+import { StockEntry } from "../../Domain/Entity/StockEntry";
+import { StockEntryRepository } from "../../Domain/Repository/StockEntryRepository";
 import { Id } from "../../../../Domain/@shared/ValueObject/Id";
 
 export class StockEntryRepositoryMemory implements StockEntryRepository {

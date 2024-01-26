@@ -1,6 +1,6 @@
 import { StockEntry } from "../Entity/StockEntry";
 import { StockCalculator } from "./StockCalculator";
-import { Id } from "../../@shared/ValueObject/Id";
+import { Id } from "../../../../Domain/@shared/ValueObject/Id";
 
 describe("StockCalculator tests", () => {
   it("should calculate stock", () => {

@@ -1,7 +1,6 @@
-import { after } from "node:test";
-import { StockEntry } from "../../../../Domain/Stock/Entity/StockEntry";
+import { StockEntry } from "../../Domain/Entity/StockEntry";
 import { Id } from "../../../../Domain/@shared/ValueObject/Id";
-import { MysqlConnectionAdapter } from "../../../@shared/Database/MysqlConnectionAdapter";
+import { MysqlConnectionAdapter } from "../../../../Infra/@shared/Database/MysqlConnectionAdapter";
 import { getDbConnectionString } from "../../../../config";
 import { StockEntryRepositoryDatabase } from "./StockEntryRepositoryDatabase";
 

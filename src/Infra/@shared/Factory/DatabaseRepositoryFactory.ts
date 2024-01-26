@@ -2,12 +2,12 @@ import { RepositoryFactory } from "../../../Domain/@shared/Factory/RepositoryFac
 import { CouponRepository } from "../../../Domain/Checkout/Repository/CouponRepository";
 import { OrderRepository } from "../../../Domain/Checkout/Repository/OrderRepository";
 import { ProductRepository } from "../../../Domain/Product/Repository/ProductRepository";
-import { StockEntryRepository } from "../../../Domain/Stock/Repository/StockEntryRepository";
+import { StockEntryRepository } from "../../../modules/Stock/Domain/Repository/StockEntryRepository";
 import { Connection } from "../Database/Connection";
 import { CouponRepositoryDatabase } from "../../Checkout/Repository/Database/CouponRepositoryDatabase";
 import { OrderRepositoryDatabase } from "../../Checkout/Repository/Database/OrderRepositoryDatabase";
 import { ProductRepositoryDatabase } from "../../Product/Repository/Database/ProductRepositoryDatabase";
-import { StockEntryRepositoryDatabase } from "../../Stock/Repository/Database/StockEntryRepositoryDatabase";
+import { StockEntryRepositoryDatabase } from "../../../modules/Stock/Repository/Database/StockEntryRepositoryDatabase";
 
 export class DatabaseRepositoryFactory implements RepositoryFactory {
   private orderRepository?: OrderRepository;

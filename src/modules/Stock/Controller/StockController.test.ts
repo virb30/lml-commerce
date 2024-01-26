@@ -1,8 +1,8 @@
 import { Id } from "../../../Domain/@shared/ValueObject/Id";
 import { OrderPlaced } from "../../../Domain/Checkout/Event/OrderPlaced";
-import { MemoryRepositoryFactory } from "../../@shared/Factory/MemoryRepositoryFactory";
-import { MemoryQueueAdapter } from "../../@shared/Queue/MemoryQueueAdapter";
-import { Queue } from "../../@shared/Queue/Queue";
+import { MemoryRepositoryFactory } from "../../../Infra/@shared/Factory/MemoryRepositoryFactory";
+import { MemoryQueueAdapter } from "../../../Infra/@shared/Queue/MemoryQueueAdapter";
+import { Queue } from "../../../Infra/@shared/Queue/Queue";
 import { StockController } from "./StockController";
 
 describe("StockController tests", () => {

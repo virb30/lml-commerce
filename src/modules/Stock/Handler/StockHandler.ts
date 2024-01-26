@@ -1,8 +1,8 @@
 import { DomainEvent } from "../../../Domain/@shared/Event/DomainEvent";
 import { RepositoryFactory } from "../../../Domain/@shared/Factory/RepositoryFactory";
 import { Id } from "../../../Domain/@shared/ValueObject/Id";
-import { StockEntry } from "../../../Domain/Stock/Entity/StockEntry";
-import { StockEntryRepository } from "../../../Domain/Stock/Repository/StockEntryRepository";
+import { StockEntry } from "../Domain/Entity/StockEntry";
+import { StockEntryRepository } from "../Domain/Repository/StockEntryRepository";
 
 export class StockHandler {
   private stockEntryRepository: StockEntryRepository;

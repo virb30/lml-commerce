@@ -1,7 +1,7 @@
-import { StockEntry } from "../../../../Domain/Stock/Entity/StockEntry";
-import { StockEntryRepository } from "../../../../Domain/Stock/Repository/StockEntryRepository";
+import { StockEntry } from "../../Domain/Entity/StockEntry";
+import { StockEntryRepository } from "../../Domain/Repository/StockEntryRepository";
 import { Id } from "../../../../Domain/@shared/ValueObject/Id";
-import { Connection } from "../../../@shared/Database/Connection";
+import { Connection } from "../../../../Infra/@shared/Database/Connection";
 
 export class StockEntryRepositoryDatabase implements StockEntryRepository {
   public constructor(private connection: Connection) {}

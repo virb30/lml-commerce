@@ -2,11 +2,11 @@ import { RepositoryFactory } from "../../../Domain/@shared/Factory/RepositoryFac
 import { CouponRepository } from "../../../Domain/Checkout/Repository/CouponRepository";
 import { OrderRepository } from "../../../Domain/Checkout/Repository/OrderRepository";
 import { ProductRepository } from "../../../Domain/Product/Repository/ProductRepository";
-import { StockEntryRepository } from "../../../Domain/Stock/Repository/StockEntryRepository";
+import { StockEntryRepository } from "../../../modules/Stock/Domain/Repository/StockEntryRepository";
 import { CouponRepositoryMemory } from "../../Checkout/Repository/Memory/CouponRepositoryMemory";
 import { OrderRepositoryMemory } from "../../Checkout/Repository/Memory/OrderRepositoryMemory";
 import { ProductRepositoryMemory } from "../../Product/Repository/Memory/ProductRepositoryMemory";
-import { StockEntryRepositoryMemory } from "../../Stock/Repository/Memory/StockEntryRepositoryMemory";
+import { StockEntryRepositoryMemory } from "../../../modules/Stock/Repository/Memory/StockEntryRepositoryMemory";
 
 export class MemoryRepositoryFactory implements RepositoryFactory {
   private orderRepository?: OrderRepository;
