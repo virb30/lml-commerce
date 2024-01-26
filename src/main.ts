@@ -1,14 +1,14 @@
 import "./config";
 
-import { ExpressHttpAdapter } from "./Infra/@shared/Http/ExpressHttpAdapter";
-import { HealthCheckController } from "./Infra/@shared/Controller/HealthCheckController";
-import { DatabaseRepositoryFactory } from "./Infra/@shared/Factory/DatabaseRepositoryFactory";
-import { MysqlConnectionAdapter } from "./Infra/@shared/Database/MysqlConnectionAdapter";
+import { ExpressHttpAdapter } from "./Infra/Http/ExpressHttpAdapter";
+import { HealthCheckController } from "./Modules/@shared/Controller/HealthCheckController";
+import { DatabaseRepositoryFactory } from "./Modules/@shared/Factory/DatabaseRepositoryFactory";
+import { MysqlConnectionAdapter } from "./Infra/Database/MysqlConnectionAdapter";
 import { getDbConnectionString } from "./config";
-import { OrderController } from "./modules/Checkout/Controller/OrderController";
-import { MemoryQueueAdapter } from "./Infra/@shared/Queue/MemoryQueueAdapter";
-import { PlaceOrderUseCase } from "./modules/Checkout/UseCase/PlaceOrderUseCase";
-import { Registry } from "./Infra/@shared/DI/Registry";
+import { OrderController } from "./Modules/Checkout/Controller/OrderController";
+import { MemoryQueueAdapter } from "./Infra/Queue/MemoryQueueAdapter";
+import { PlaceOrderUseCase } from "./Modules/Checkout/UseCase/PlaceOrderUseCase";
+import { Registry } from "./Infra/DI/Registry";
 
 const port = parseInt(process.env.PORT ?? "8008");
 
