@@ -1,6 +1,6 @@
-import { Connection } from "../../Infra/@shared/Database/Connection";
-import { MysqlConnectionAdapter } from "../../Infra/@shared/Database/MysqlConnectionAdapter";
-import { getDbConnectionString } from "../../config";
+import { Connection } from "../../../Infra/@shared/Database/Connection";
+import { MysqlConnectionAdapter } from "../../../Infra/@shared/Database/MysqlConnectionAdapter";
+import { getDbConnectionString } from "../../../config";
 import { GetProductsQuery } from "./GetProductsQuery";
 
 describe("GetProductsQuery tests", () => {

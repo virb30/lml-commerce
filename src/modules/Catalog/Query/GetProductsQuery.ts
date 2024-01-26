@@ -1,4 +1,4 @@
-import { Connection } from "../../Infra/@shared/Database/Connection";
+import { Connection } from "../../../Infra/@shared/Database/Connection";
 
 export class GetProductsQuery {
   constructor(private connection: Connection) {}
