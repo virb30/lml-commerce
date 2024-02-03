@@ -5,7 +5,7 @@ DROP TABLE IF EXISTS app.coupon;
 DROP TABLE IF EXISTS app.stock_entry;
 
 CREATE TABLE app.order (
-    id CHAR(32) PRIMARY KEY NOT NULL,
+    id CHAR(36) PRIMARY KEY NOT NULL,
     email VARCHAR(255) NOT NULL,
     code VARCHAR(16) NOT NULL,
     sequency BIGINT NOT NULL,
@@ -21,7 +21,7 @@ CREATE TABLE app.order (
 );
 
 CREATE TABLE app.product (
-    id CHAR(32) PRIMARY KEY NOT NULL,
+    id CHAR(36) PRIMARY KEY NOT NULL,
     name VARCHAR(255) NOT NULL,
     price DECIMAL(10, 2) NOT NULL,
     height INT DEFAULT NULL, 
@@ -34,8 +34,8 @@ CREATE TABLE app.product (
 );
 
 CREATE TABLE app.order_item (
-    id_order CHAR(32) NOT NULL,
-    id_product CHAR(32) NOT NULL,
+    id_order CHAR(36) NOT NULL,
+    id_product CHAR(36) NOT NULL,
     price DECIMAL(10, 2) NOT NULL,
     amount INT NOT NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
@@ -43,7 +43,7 @@ CREATE TABLE app.order_item (
 );
 
 CREATE TABLE app.coupon (
-    id CHAR(32) PRIMARY KEY NOT NULL,
+    id CHAR(36) PRIMARY KEY NOT NULL,
     code VARCHAR(100) NOT NULL,
     percentage DECIMAL(3, 1) NOT NULL,
     discount_limit DECIMAL(10, 2) DEFAULT 0,
@@ -55,7 +55,7 @@ CREATE TABLE app.coupon (
 
 CREATE TABLE app.stock_entry (
     id BIGINT(20) PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    id_product CHAR(32) NOT NULL,
+    id_product CHAR(36) NOT NULL,
     operation ENUM('in', 'out') NOT NULL,
     quantity INT NOT NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
