@@ -1,18 +1,17 @@
-import { ExpressHttpAdapter } from "./Infra/@shared/Http/ExpressHttpAdapter";
-import { HealthCheckController } from "./Infra/@shared/Controller/HealthCheckController";
-import { DatabaseRepositoryFactory } from "./Infra/@shared/Factory/DatabaseRepositoryFactory";
-import { MysqlConnectionAdapter } from "./Infra/@shared/Database/MysqlConnectionAdapter";
-import { getDbConnectionString } from "./config";
-import { OrderController } from "./Infra/Checkout/Controller/OrderController";
-import "./config";
-import { MemoryQueueAdapter } from "./Infra/@shared/Queue/MemoryQueueAdapter";
-import { PlaceOrderUseCase } from "./Application/Checkout/PlaceOrderUseCase";
-import { Registry } from "./Infra/@shared/DI/Registry";
+import { ExpressHttpAdapter } from "./Infra/Http/ExpressHttpAdapter";
+import { HealthCheckController } from "./Modules/@shared/Controller/HealthCheckController";
+import { DatabaseRepositoryFactory } from "./Modules/@shared/Factory/DatabaseRepositoryFactory";
+import { MysqlConnectionAdapter } from "./Infra/Database/MysqlConnectionAdapter";
+import { db } from "./Infra/Config";
+import { OrderController } from "./Modules/Checkout/Controller/OrderController";
+import { MemoryQueueAdapter } from "./Infra/Queue/MemoryQueueAdapter";
+import { PlaceOrderUseCase } from "./Modules/Checkout/UseCase/PlaceOrderUseCase";
+import { Registry } from "./Infra/DI/Registry";
 
 const port = parseInt(process.env.PORT ?? "8008");
 
 const http = new ExpressHttpAdapter();
-const connection = new MysqlConnectionAdapter(getDbConnectionString());
+const connection = new MysqlConnectionAdapter(db.getConnectionString());
 const queue = new MemoryQueueAdapter();
 
 const repositoryFactory = new DatabaseRepositoryFactory(connection);
