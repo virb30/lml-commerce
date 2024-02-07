@@ -1,32 +1,29 @@
-import { ExpressHttpAdapter } from "./Infra/Http/ExpressHttpAdapter";
-import { HealthCheckController } from "./Modules/@shared/Controller/HealthCheckController";
-import { DatabaseRepositoryFactory } from "./Modules/@shared/Factory/DatabaseRepositoryFactory";
-import { MysqlConnectionAdapter } from "./Infra/Database/MysqlConnectionAdapter";
-import { db } from "./Infra/Config";
-import { OrderController } from "./Modules/Checkout/Controller/OrderController";
-import { MemoryQueueAdapter } from "./Infra/Queue/MemoryQueueAdapter";
-import { PlaceOrderUseCase } from "./Modules/Checkout/UseCase/PlaceOrderUseCase";
-import { Registry } from "./Infra/DI/Registry";
+import { NestFactory } from "@nestjs/core";
+import { AppModule } from "./modules/app.module";
 
 const port = parseInt(process.env.PORT ?? "8008");
 
-const http = new ExpressHttpAdapter();
-const connection = new MysqlConnectionAdapter(db.getConnectionString());
-const queue = new MemoryQueueAdapter();
+async function bootstrap() {
+  const app = await NestFactory.create(AppModule);
+  await app.listen(port);
+}
 
-const repositoryFactory = new DatabaseRepositoryFactory(connection);
+bootstrap();
+// import { DatabaseRepositoryFactory } from "./Modules/@shared/Factory/DatabaseRepositoryFactory";
+// import { MysqlConnectionAdapter } from "./Infra/Database/MysqlConnectionAdapter";
+// import { db } from "./Infra/Config";
+// import { MemoryQueueAdapter } from "./Infra/Queue/MemoryQueueAdapter";
+// import { OrderController } from "./Modules/Checkout/Controller/OrderController";
+// import { PlaceOrderUseCase } from "./Modules/Checkout/UseCase/PlaceOrderUseCase";
 
-// usecases
-const placeOrder = new PlaceOrderUseCase(repositoryFactory, queue);
+// const http = new ExpressHttpAdapter();
+// const connection = new MysqlConnectionAdapter(db.getConnectionString());
+// const queue = new MemoryQueueAdapter();
 
-// di
-const registry = Registry.getInstance();
-registry.register("httpServer", http);
-registry.register("queue", queue);
-registry.register("placeOrder", placeOrder);
+// const repositoryFactory = new DatabaseRepositoryFactory(connection);
 
-// controllers
-new HealthCheckController();
-new OrderController();
+// // controllers
+// new HealthCheckController();
+// new OrderController();
 
-http.listen(port);
+// http.listen(port);
