@@ -9,6 +9,7 @@ describe("CouponRepository tests", () => {
   const couponRepositoryDatabase = new CouponRepositoryDatabase(connection);
 
   afterAll(async () => {
+    await couponRepositoryDatabase.clear();
     await connection.close();
   });
 

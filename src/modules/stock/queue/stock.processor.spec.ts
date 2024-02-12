@@ -3,11 +3,10 @@ import { OrderPlaced } from "src/modules/checkout/domain/event/order-placed";
 import { MemoryQueueAdapter } from "../../queue/adapter/memory/memory-queue.adapter";
 import { Queue } from "../../queue/queue.interface";
 import { StockProcessor } from "./stock.processor";
-import { MemoryRepositoryFactory } from "src/modules/shared/factory/memory.repository.factory";
+import { StockEntryRepositoryMemory } from "../repository/memory/stock-entry.repository";
 
 describe("StockProcessor tests", () => {
-  const repositoryFactory = new MemoryRepositoryFactory();
-  const stockEntryRepository = repositoryFactory.makeStockEntryRepository();
+  const stockEntryRepository = new StockEntryRepositoryMemory();
   let queue: Queue;
 
   beforeEach(async () => {
@@ -15,7 +14,7 @@ describe("StockProcessor tests", () => {
     queue = new MemoryQueueAdapter();
   });
   it("should update stock after order placed", async () => {
-    new StockProcessor(queue, repositoryFactory);
+    new StockProcessor(queue, stockEntryRepository);
 
     await queue.publish(
       new OrderPlaced({

@@ -13,6 +13,7 @@ describe("StockEntryRepositoryDatabase tests", () => {
   });
 
   afterAll(async () => {
+    await stockEntryRepository.clear();
     await connection.close();
   });
 

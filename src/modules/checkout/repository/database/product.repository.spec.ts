@@ -10,6 +10,7 @@ describe("Product Repository", () => {
   const productRepositoryDatabase = new ProductRepositoryDatabase(connection);
 
   afterAll(async () => {
+    await productRepositoryDatabase.clear();
     await connection.close();
   });
 

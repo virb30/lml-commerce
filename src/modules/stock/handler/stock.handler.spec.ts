@@ -1,18 +1,17 @@
 import { Id } from "src/modules/shared/domain/value-object/id";
 import { OrderPlaced } from "src/modules/checkout/domain/event/order-placed";
-import { MemoryRepositoryFactory } from "src/modules/shared/factory/memory.repository.factory";
 import { StockHandler } from "./stock.handler";
+import { StockEntryRepositoryMemory } from "../repository/memory/stock-entry.repository";
 
 describe("StockHandler tests", () => {
-  const repositoryFactory = new MemoryRepositoryFactory();
-  const stockEntryRepository = repositoryFactory.makeStockEntryRepository();
+  const stockEntryRepository = new StockEntryRepositoryMemory();
 
   beforeEach(async () => {
     await stockEntryRepository.clear();
   });
 
   it("should register stock entry on OrderPlaced", async () => {
-    const handler = new StockHandler(repositoryFactory);
+    const handler = new StockHandler(stockEntryRepository);
     const payload = {
       orderId: "1",
       items: [

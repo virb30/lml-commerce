@@ -40,7 +40,7 @@ export class PlaceOrderUseCase {
       orderId: order.id.value,
       items: order.items.map((item) => {
         return {
-          productId: item.productId,
+          productId: item.productId.value,
           amount: item.amount,
         };
       }),

@@ -5,11 +5,7 @@ import { StockEntry } from "../domain/entity/stock-entry.entity";
 import { StockEntryRepository } from "../domain/repository/stock-entry.repository.interface";
 
 export class StockHandler {
-  private stockEntryRepository: StockEntryRepository;
-
-  constructor(repositoryFactory: RepositoryFactory) {
-    this.stockEntryRepository = repositoryFactory.makeStockEntryRepository();
-  }
+  constructor(private readonly stockEntryRepository: StockEntryRepository) {}
 
   public async handle(event: DomainEvent): Promise<void> {
     const payload = event.getPayload();

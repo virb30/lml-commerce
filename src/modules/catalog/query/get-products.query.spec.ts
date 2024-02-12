@@ -27,6 +27,7 @@ describe("GetProductsQuery tests", () => {
   });
 
   afterAll(async () => {
+    await databaseConnection.query("TRUNCATE TABLE app.product", []);
     await databaseConnection.close();
   });
 

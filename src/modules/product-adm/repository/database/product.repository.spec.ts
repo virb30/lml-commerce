@@ -13,6 +13,7 @@ describe("Product repository database tests", () => {
   });
 
   afterAll(async () => {
+    await productRepository.clear();
     await connection.close();
   });
 

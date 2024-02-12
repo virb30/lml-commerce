@@ -17,6 +17,7 @@ describe("Order repository", () => {
   });
 
   afterAll(async () => {
+    await orderRepositoryDatabase.clear();
     await connection.close();
   });
 
