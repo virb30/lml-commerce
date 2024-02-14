@@ -11,71 +11,87 @@ import { db } from "../../../Infra/Config";
 
 describe("GetOrdersUseCase tests", () => {
   const connection = new MysqlConnectionAdapter(db.getConnectionString());
-  const orderRepository = new OrderRepositoryDatabase(connection);
+  let orderRepository: OrderRepositoryDatabase;
+
+  beforeAll(() => {
+    orderRepository = new OrderRepositoryDatabase(connection);
+  });
 
   beforeEach(async () => {
     await orderRepository.clear();
   });
 
   afterAll(async () => {
+    await orderRepository.clear();
     await connection.close();
   });
 
-  /**
-   * Buscas os pedidos por e-mail
-   * Retorna uma lista de pedidos com as informações: code do pedido, total, date
-   * Pagine 1,2,3
-   *
-   * email
-   * Pag: 1
-   * limit: 10
-   *
-   */
-  it("should returns a list of orders", async () => {
-    const order01 = new Order(new Id("1"), new Email("email@1234.com"), new Date("2023-01-01T00:00:00"), 1);
-    const product = new Product(new Id("1"), "Fone de ouvido", 10.0, new Dimensions(10, 20, 30), 0);
-    order01.addItem(product, 1);
+  const createOrder = (id: string, email: string, date: string, total: number) => {
+    const order = new Order(new Id(id), new Email(email), new Date(date), total);
+    const orderCode = new OrderCode(new Date(date), parseInt(id));
+    return { order, code: orderCode.value };
+  };
 
-    const ordersBase = [
-      {
-        order: order01,
-        code: new OrderCode(new Date("2023-01-01T00:00:00"), 1).value,
-      },
-      {
-        order: new Order(new Id("2"), new Email("email@1234.com"), new Date("2023-02-02T00:00:00"), 2),
-        code: new OrderCode(new Date("2023-02-02T00:00:00"), 2).value,
-      },
-      {
-        order: new Order(new Id("3"), new Email("email@1234.com"), new Date("2023-03-03T00:00:00"), 3),
-        code: new OrderCode(new Date("2023-03-03T00:00:00"), 3).value,
-      },
-      {
-        order: new Order(new Id("4"), new Email("email@1234.com"), new Date("2023-04-04T00:00:00"), 4),
-        code: new OrderCode(new Date("2023-04-04T00:00:00"), 4).value,
-      },
-      {
-        order: new Order(new Id("5"), new Email("email@1234.com"), new Date("2023-05-05T00:00:00"), 5),
-        code: new OrderCode(new Date("2023-05-05T00:00:00"), 5).value,
-      },
-    ];
+  const saveOrders = async (orders: any[]) => {
+    for (const orderData of orders) {
+      await orderRepository.save(orderData.order);
+    }
+  };
 
-    ordersBase.forEach((orderBase) => orderRepository.save(orderBase.order));
+  const ordersData = [
+    createOrder("1", "email@1234.com", "2023-01-01T00:00:00", 1),
+    createOrder("2", "email@1234.com", "2023-02-02T00:00:00", 2),
+    createOrder("3", "email@1234.com", "2023-03-03T00:00:00", 3),
+    createOrder("4", "email@1234.com", "2023-04-04T00:00:00", 4),
+    createOrder("5", "email@1234.com", "2023-05-05T00:00:00", 5),
+  ];
+
+  it.each([
+    [1, 2, ordersData.slice(0, 2)],
+    [2, 2, ordersData.slice(2, 4)],
+    [3, 2, ordersData.slice(4, 5)],
+  ])("should return the correct orders for page %i and limit %i", async (page, limit, dataPagination) => {
+    await saveOrders(ordersData);
     const getOrdersUseCase = new GetOrdersUseCase(orderRepository);
 
-    const orders = await getOrdersUseCase.execute({
+    const ordersPage1 = await getOrdersUseCase.execute({
       email: "email@1234.com",
-      page: 1,
-      limit: 2,
+      page: page,
+      limit: limit,
     });
 
-    expect(orders.length).toBe(2);
+    expect(ordersPage1.length).toBe(dataPagination.length);
+    expect(ordersPage1).toEqual(
+      dataPagination.map((orderData) => {
+        return {
+          code: orderData.code,
+          total: orderData.order.total,
+          date: orderData.order.date,
+        };
+      }),
+    );
+  });
 
-    expect(orders[0].code).toEqual(ordersBase[0].order.code.value);
-    expect(orders[0].date).toEqual(ordersBase[0].order.date);
-    expect(orders[0].total).toEqual(ordersBase[0].order.total);
+  it("should return message to an email without requests", async () => {
+    const getOrdersUseCase = new GetOrdersUseCase(orderRepository);
+    expect(async () => {
+      await getOrdersUseCase.execute({
+        email: "email@1234.com",
+        page: 1,
+        limit: 5,
+      });
+    }).rejects.toThrow(new Error("No orders found for it email"));
+  });
 
-    expect(orders[1].code).toEqual(ordersBase[1].order.code.value);
-    expect(orders[1].date).toEqual(ordersBase[1].order.date);
-    expect(orders[1].total).toEqual(ordersBase[1].order.total);
+  it("It should not return results to an invalid page", async () => {
+    await saveOrders(ordersData);
+    const getOrdersUseCase = new GetOrdersUseCase(orderRepository);
+    expect(async () => {
+      await getOrdersUseCase.execute({
+        email: "email@1234.com",
+        page: 2,
+        limit: 5,
+      });
+    }).rejects.toThrow(new Error("No orders found for it email"));
   });
 });

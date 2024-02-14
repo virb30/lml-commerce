@@ -7,6 +7,11 @@ export class GetOrdersUseCase {
 
   public async execute(input: GetOrdersInput): Promise<GetOrdersOutput[]> {
     const orders = await this.orderRepository.findByEmail(new Email(input.email), input.page, input.limit);
+
+    if (!orders.length) {
+      throw new Error("No orders found for it email");
+    }
+
     return orders.map((node: Order) => {
       return {
         code: node.code.value,
