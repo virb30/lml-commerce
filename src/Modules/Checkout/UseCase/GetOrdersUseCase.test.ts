@@ -1,58 +1,36 @@
 import { Email } from "../../@shared/Domain/ValueObject/Email";
 import { Id } from "../../@shared/Domain/ValueObject/Id";
-import { MysqlConnectionAdapter } from "../../../Infra/Database/MysqlConnectionAdapter";
-import { OrderRepositoryDatabase } from "../Repository/Database/OrderRepositoryDatabase";
 import { Order } from "../Domain/Entity/Order";
-import { Product } from "../Domain/Entity/Product";
-import { Dimensions } from "../Domain/Entity/Dimensions";
-import { OrderCode } from "../Domain/ValueObject/OrderCode";
 import { GetOrdersUseCase } from "./GetOrdersUseCase";
-import { db } from "../../../Infra/Config";
+import { MemoryOrdersQuery } from "../Query/MemoryOrdersQuery";
+import { OrdersQuery } from "../Query/OrdersQuery";
+
+const createOrder = (id: string, email: string, date: Date, total: number) => {
+  const order = new Order(new Id(id), new Email(email), date, total);
+  return order;
+};
 
 describe("GetOrdersUseCase tests", () => {
-  const connection = new MysqlConnectionAdapter(db.getConnectionString());
-  let orderRepository: OrderRepositoryDatabase;
-
-  beforeAll(() => {
-    orderRepository = new OrderRepositoryDatabase(connection);
-  });
-
-  beforeEach(async () => {
-    await orderRepository.clear();
-  });
-
-  afterAll(async () => {
-    await orderRepository.clear();
-    await connection.close();
-  });
-
-  const createOrder = (id: string, email: string, date: string, total: number) => {
-    const order = new Order(new Id(id), new Email(email), new Date(date), total);
-    const orderCode = new OrderCode(new Date(date), parseInt(id));
-    return { order, code: orderCode.value };
-  };
-
-  const saveOrders = async (orders: any[]) => {
-    for (const orderData of orders) {
-      await orderRepository.save(orderData.order);
-    }
-  };
+  let ordersGateway: OrdersQuery;
 
   const ordersData = [
-    createOrder("1", "email@1234.com", "2023-01-01T00:00:00", 1),
-    createOrder("2", "email@1234.com", "2023-02-02T00:00:00", 2),
-    createOrder("3", "email@1234.com", "2023-03-03T00:00:00", 3),
-    createOrder("4", "email@1234.com", "2023-04-04T00:00:00", 4),
-    createOrder("5", "email@1234.com", "2023-05-05T00:00:00", 5),
+    createOrder("1", "email@1234.com", new Date("2023-01-01T00:00:00"), 1),
+    createOrder("2", "email@1234.com", new Date("2023-02-02T00:00:00"), 2),
+    createOrder("3", "email@1234.com", new Date("2023-03-03T00:00:00"), 3),
+    createOrder("4", "email@1234.com", new Date("2023-04-04T00:00:00"), 4),
+    createOrder("5", "email@1234.com", new Date("2023-05-05T00:00:00"), 5),
   ];
 
+  beforeEach(() => {
+    ordersGateway = new MemoryOrdersQuery(ordersData);
+  });
+
   it.each([
-    [1, 2, ordersData.slice(0, 2)],
-    [2, 2, ordersData.slice(2, 4)],
-    [3, 2, ordersData.slice(4, 5)],
-  ])("should return the correct orders for page %i and limit %i", async (page, limit, dataPagination) => {
-    await saveOrders(ordersData);
-    const getOrdersUseCase = new GetOrdersUseCase(orderRepository);
+    { page: 1, limit: 2, expected: ordersData.slice(0, 2) },
+    { page: 2, limit: 2, expected: ordersData.slice(2, 4) },
+    { page: 3, limit: 2, expected: ordersData.slice(4, 5) },
+  ])("returns orders for page $page and limit $limit", async ({ page, limit, expected }) => {
+    const getOrdersUseCase = new GetOrdersUseCase(ordersGateway);
 
     const ordersPage1 = await getOrdersUseCase.execute({
       email: "email@1234.com",
@@ -60,23 +38,23 @@ describe("GetOrdersUseCase tests", () => {
       limit: limit,
     });
 
-    expect(ordersPage1.length).toBe(dataPagination.length);
+    expect(ordersPage1.length).toBe(expected.length);
     expect(ordersPage1).toEqual(
-      dataPagination.map((orderData) => {
+      expected.map((order) => {
         return {
-          code: orderData.code,
-          total: orderData.order.total,
-          date: orderData.order.date,
+          code: order.code.value,
+          total: order.total,
+          date: order.date,
         };
       }),
     );
   });
 
   it("should return message to an email without requests", async () => {
-    const getOrdersUseCase = new GetOrdersUseCase(orderRepository);
+    const getOrdersUseCase = new GetOrdersUseCase(ordersGateway);
     expect(async () => {
       await getOrdersUseCase.execute({
-        email: "email@1234.com",
+        email: "wrong@email.com",
         page: 1,
         limit: 5,
       });
@@ -84,8 +62,7 @@ describe("GetOrdersUseCase tests", () => {
   });
 
   it("It should not return results to an invalid page", async () => {
-    await saveOrders(ordersData);
-    const getOrdersUseCase = new GetOrdersUseCase(orderRepository);
+    const getOrdersUseCase = new GetOrdersUseCase(ordersGateway);
     expect(async () => {
       await getOrdersUseCase.execute({
         email: "email@1234.com",
