@@ -1,0 +1,12 @@
+POST http://localhost:8010/orders HTTP/1.1
+Content-Type: application/json
+
+{
+    "email": "john.doe@email.com",
+    "items": [
+        {
+            "product_id": "78bb77de-22ce-46c8-a371-3908ee39bba6",
+            "amount": 2
+        } 
+    ]
+}

@@ -1,0 +1,2 @@
+GET http://localhost:8010/stock/1 HTTP/1.1
+Content-Type: application/json
