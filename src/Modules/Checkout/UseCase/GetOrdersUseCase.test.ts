@@ -50,7 +50,7 @@ describe("GetOrdersUseCase tests", () => {
     );
   });
 
-  it("should return message to an email without requests", async () => {
+  it("throws error if email has no orders", async () => {
     const getOrdersUseCase = new GetOrdersUseCase(ordersGateway);
     expect(async () => {
       await getOrdersUseCase.execute({
@@ -61,7 +61,7 @@ describe("GetOrdersUseCase tests", () => {
     }).rejects.toThrow(new Error("No orders found for it email"));
   });
 
-  it("It should not return results to an invalid page", async () => {
+  it("throws an error if invalid page provided", async () => {
     const getOrdersUseCase = new GetOrdersUseCase(ordersGateway);
     expect(async () => {
       await getOrdersUseCase.execute({
