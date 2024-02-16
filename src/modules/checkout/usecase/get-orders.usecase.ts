@@ -1,5 +1,5 @@
-import { Email } from "../../@shared/Domain/ValueObject/Email";
-import { OrderDTO, OrdersQuery } from "../Query/OrdersQuery";
+import { Email } from "src/modules/shared/domain/value-object/email";
+import { OrderDTO, OrdersQuery } from "../query/orders.query.interface";
 
 export class GetOrdersUseCase {
   constructor(private ordersGateway: OrdersQuery) {}

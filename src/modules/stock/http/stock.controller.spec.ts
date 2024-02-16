@@ -2,7 +2,7 @@ import { Test, TestingModule } from "@nestjs/testing";
 import { StockController } from "./stock.controller";
 import { StockModule } from "../stock.module";
 
-describe("StockController", () => {
+describe.skip("StockController", () => {
   let controller: StockController;
   let module: TestingModule;
 

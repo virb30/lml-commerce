@@ -1,7 +1,7 @@
 import { Connection } from "../../database/connection/connection.interface";
-import { MysqlConnectionAdapter } from "../../database/adapter/mysql/mysql-connection.adapter";
+import { MysqlConnectionAdapter } from "../../database/connection/mysql/mysql-connection.adapter";
 import { GetProductsQuery } from "./get-products.query";
-import { dbConfig } from "src/modules/database/adapter/mysql/mysql-connection.adapter.spec";
+import { dbConfig } from "src/modules/database/connection/mysql/config";
 
 describe("GetProductsQuery tests", () => {
   let databaseConnection: Connection;

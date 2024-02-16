@@ -1,11 +1,11 @@
 import { Module } from "@nestjs/common";
 import { OrderController } from "./http/order.controller";
-import { provideCheckoutRepositories, provideCheckoutUsecases } from "./checkout.providers";
+import { provideCheckoutQueries, provideCheckoutRepositories, provideCheckoutUsecases } from "./checkout.providers";
 import { QueueModule } from "../queue/queue.module";
 
 @Module({
   imports: [QueueModule],
   controllers: [OrderController],
-  providers: [...provideCheckoutRepositories(), ...provideCheckoutUsecases()],
+  providers: [...provideCheckoutRepositories(), ...provideCheckoutQueries(), ...provideCheckoutUsecases()],
 })
 export class CheckoutModule {}

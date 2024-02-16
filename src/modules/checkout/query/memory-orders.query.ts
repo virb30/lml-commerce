@@ -1,6 +1,6 @@
-import { Email } from "../../@shared/Domain/ValueObject/Email";
-import { Order } from "../Domain/Entity/Order";
-import { FindByEmailOutput, OrdersQuery, OrderDTO } from "./OrdersQuery";
+import { Email } from "src/modules/shared/domain/value-object/email";
+import { Order } from "../domain/entity/order";
+import { FindByEmailOutput, OrdersQuery, OrderDTO } from "./orders.query.interface";
 
 export class MemoryOrdersQuery implements OrdersQuery {
   private orders: OrderDTO[] = [];

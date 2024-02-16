@@ -1,9 +1,9 @@
 import { Product } from "../../domain/entity/product";
 import { Dimensions } from "../../domain/entity/dimensions";
 import { Id } from "src/modules/shared/domain/value-object/id";
-import { MysqlConnectionAdapter } from "../../../database/adapter/mysql/mysql-connection.adapter";
+import { MysqlConnectionAdapter } from "../../../database/connection/mysql/mysql-connection.adapter";
 import { ProductRepositoryDatabase } from "./product.repository";
-import { dbConfig } from "src/modules/database/adapter/mysql/mysql-connection.adapter.spec";
+import { dbConfig } from "src/modules/database/connection/mysql/config";
 
 describe("Product Repository", () => {
   const connection = new MysqlConnectionAdapter(dbConfig);

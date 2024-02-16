@@ -1,4 +1,4 @@
-import { Email } from "../../@shared/Domain/ValueObject/Email";
+import { Email } from "src/modules/shared/domain/value-object/email";
 
 export interface OrdersQuery {
   findByEmail(email: Email, page: number, limit: number): Promise<FindByEmailOutput>;

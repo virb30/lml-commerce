@@ -16,6 +16,8 @@ import { CouponRepository } from "./domain/repository/coupon.repository.interfac
 import { Queue } from "../queue/queue.interface";
 import { QUEUE_PROVIDER_TOKEN } from "../queue/queue.providers";
 import { CONNECTION_PROVIDER_TOKEN } from "../database/database.providers";
+import { DatabaseOrdersQuery } from "./query/database-orders.query";
+import { MemoryOrdersQuery } from "./query/memory-orders.query";
 
 export const REPOSITORIES = {
   ORDER_REPOSITORY: {
@@ -65,13 +67,31 @@ export const REPOSITORIES = {
   },
 };
 
+export const QUERY = {
+  ORDERS_QUERY: {
+    provide: "OrdersQuery",
+    useExisting: DatabaseOrdersQuery,
+  },
+  ORDERS_QUERY_MEMORY: {
+    provide: MemoryOrdersQuery,
+    useClass: MemoryOrdersQuery,
+  },
+  ORDERS_QUERY_DATABASE: {
+    provide: DatabaseOrdersQuery,
+    useFactory: (connection: Connection) => {
+      return new DatabaseOrdersQuery(connection);
+    },
+    inject: [CONNECTION_PROVIDER_TOKEN],
+  },
+};
+
 export const USE_CASES = {
-  GET_ORDER: {
+  GET_ORDERS: {
     provide: GetOrderUseCase,
     useFactory: (orderRepository: OrderRepository) => {
       return new GetOrderUseCase(orderRepository);
     },
-    inject: [REPOSITORIES.ORDER_REPOSITORY.provide],
+    inject: [QUERY.ORDERS_QUERY.provide],
   },
   PLACE_ORDER: {
     provide: PlaceOrderUseCase,
@@ -102,4 +122,8 @@ export function provideCheckoutUsecases(): Provider[] {
 
 export function provideCheckoutRepositories(): Provider[] {
   return Object.values(REPOSITORIES);
+}
+
+export function provideCheckoutQueries(): Provider[] {
+  return Object.values(QUERY);
 }

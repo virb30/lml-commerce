@@ -1,5 +1,5 @@
 import { Connection } from "../connection/connection.interface";
-import { MysqlConnectionAdapter } from "../adapter/mysql/mysql-connection.adapter";
+import { MysqlConnectionAdapter } from "../connection/mysql/mysql-connection.adapter";
 
 export class DbConnectionFactory {
   static make(type: DbConnectionType, options: DbConnectionOptions): Connection | undefined {

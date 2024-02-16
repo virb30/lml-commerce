@@ -1,8 +1,8 @@
-import { MysqlConnectionAdapter } from "../../../database/adapter/mysql/mysql-connection.adapter";
+import { MysqlConnectionAdapter } from "../../../database/connection/mysql/mysql-connection.adapter";
 import { Id } from "src/modules/shared/domain/value-object/id";
 import { Product } from "../../domain/entity/product";
 import { ProductRepositoryDatabase } from "./product.repository";
-import { dbConfig } from "src/modules/database/adapter/mysql/mysql-connection.adapter.spec";
+import { dbConfig } from "src/modules/database/connection/mysql/config";
 
 describe("Product repository database tests", () => {
   const connection = new MysqlConnectionAdapter(dbConfig);

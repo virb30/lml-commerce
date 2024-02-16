@@ -1,9 +1,9 @@
-import { Email } from "../../@shared/Domain/ValueObject/Email";
-import { Id } from "../../@shared/Domain/ValueObject/Id";
-import { Order } from "../Domain/Entity/Order";
-import { GetOrdersUseCase } from "./GetOrdersUseCase";
-import { MemoryOrdersQuery } from "../Query/MemoryOrdersQuery";
-import { OrdersQuery } from "../Query/OrdersQuery";
+import { Email } from "src/modules/shared/domain/value-object/email";
+import { Id } from "src/modules/shared/domain/value-object/id";
+import { Order } from "../domain/entity/order";
+import { GetOrdersUseCase } from "./get-orders.usecase";
+import { MemoryOrdersQuery } from "../query/memory-orders.query";
+import { OrdersQuery } from "../query/orders.query.interface";
 
 const createOrder = (id: string, email: string, date: Date, total: number) => {
   const order = new Order(new Id(id), new Email(email), date, total);

@@ -1,4 +1,4 @@
-import { Connection } from "../../connection/connection.interface";
+import { Connection } from "../connection.interface";
 import mysql from "mysql2";
 
 export class MysqlConnectionAdapter implements Connection {

@@ -1,6 +1,6 @@
-import { Connection } from "../../../Infra/Database/Connection";
-import { Email } from "../../@shared/Domain/ValueObject/Email";
-import { FindByEmailOutput, OrdersQuery } from "./OrdersQuery";
+import { Connection } from "src/modules/database/connection/connection.interface";
+import { Email } from "src/modules/shared/domain/value-object/email";
+import { FindByEmailOutput, OrdersQuery } from "./orders.query.interface";
 
 export class DatabaseOrdersQuery implements OrdersQuery {
   constructor(private connection: Connection) {}
