@@ -19,7 +19,7 @@ export class MysqlConnectionAdapter implements Connection {
 
   private buildConnectionString(options: MysqlConnectionOptions) {
     const { dbUser, dbPass, dbHost, dbName, dbPort } = options;
-    return `mysql://${dbUser}:${dbPass}@${dbHost}:${dbPort}/${dbName}?charset=utf8mb4`;
+    return `mysql://${dbUser}:${dbPass}@${dbHost}:${dbPort}/${dbName}?charset=utf8`;
   }
 }
 
