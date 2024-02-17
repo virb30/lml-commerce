@@ -3,7 +3,7 @@ import { Coupon } from "../domain/entity/coupon";
 import { Product } from "../domain/entity/product";
 import { CouponRepository } from "../domain/repository/coupon.repository.interface";
 import { ProductRepository } from "../domain/repository/product.repository.interface";
-import { Dimensions } from "../domain/entity/dimensions";
+import { Dimensions } from "../domain/value-object/dimensions";
 import { Id } from "src/modules/shared/domain/value-object/id";
 import { MemoryRepositoryFactory } from "src/modules/shared/factory/memory.repository.factory";
 import { Queue } from "../../queue/queue.interface";

@@ -5,7 +5,7 @@ import { MemoryRepositoryFactory } from "src/modules/shared/factory/memory.repos
 import { ProductRepository } from "../domain/repository/product.repository.interface";
 import { Product } from "../domain/entity/product";
 import { Id } from "src/modules/shared/domain/value-object/id";
-import { Dimensions } from "../domain/entity/dimensions";
+import { Dimensions } from "../domain/value-object/dimensions";
 import { PlaceOrderUseCase } from "../usecase/place-order.usecase";
 import { MemoryQueueAdapter } from "src/modules/queue/adapter/memory/memory-queue.adapter";
 import { CheckoutModule } from "../checkout.module";

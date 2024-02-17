@@ -1,6 +1,6 @@
 import { Product } from "../../domain/entity/product";
 import { ProductRepository } from "../../domain/repository/product.repository.interface";
-import { Dimensions } from "../../domain/entity/dimensions";
+import { Dimensions } from "../../domain/value-object/dimensions";
 import { Id } from "src/modules/shared/domain/value-object/id";
 import { Connection } from "../../../database/connection/connection.interface";
 

@@ -1,7 +1,7 @@
 import { GetOrderUseCase } from "./get-order.usecase";
 import { Order } from "../domain/entity/order";
 import { Product } from "../domain/entity/product";
-import { Dimensions } from "../domain/entity/dimensions";
+import { Dimensions } from "../domain/value-object/dimensions";
 import { Email } from "src/modules/shared/domain/value-object/email";
 import { Id } from "src/modules/shared/domain/value-object/id";
 import { OrderRepositoryMemory } from "../repository/memory/order.repository";

@@ -3,7 +3,7 @@ import { Order } from "../../domain/entity/order";
 import { Product } from "../../domain/entity/product";
 import { Id } from "src/modules/shared/domain/value-object/id";
 import { Email } from "src/modules/shared/domain/value-object/email";
-import { Dimensions } from "../../domain/entity/dimensions";
+import { Dimensions } from "../../domain/value-object/dimensions";
 import { MysqlConnectionAdapter } from "../../../database/connection/mysql/mysql-connection.adapter";
 import { Coupon } from "../../domain/entity/coupon";
 import { dbConfig } from "src/modules/database/connection/mysql/config";

@@ -1,5 +1,5 @@
 import { Product } from "../../domain/entity/product";
-import { Dimensions } from "../../domain/entity/dimensions";
+import { Dimensions } from "../../domain/value-object/dimensions";
 import { Id } from "src/modules/shared/domain/value-object/id";
 import { MysqlConnectionAdapter } from "../../../database/connection/mysql/mysql-connection.adapter";
 import { ProductRepositoryDatabase } from "./product.repository";
