@@ -1,12 +1,12 @@
 import { Connection } from "src/modules/database/connection/connection.interface";
-import { ProductRepositoryMemory } from "../memory/product.repository";
-import { ProductRepositoryDatabase } from "../database/product.repository";
+import { ProductRepositoryMemory } from "../repository/memory/product.repository";
+import { ProductRepositoryDatabase } from "../repository/database/product.repository";
 import { ConstructableObject, ProviderFactory } from "src/modules/shared/factory/provider.factory";
-import { ProductRepository } from "../../domain/repository/product.repository.interface";
+import { ProductRepository } from "../domain/repository/product.repository.interface";
 
-export class ProductRepositoryFactory extends ProviderFactory<ProductRepository> {
+export class ProductRepositoryProviderFactory extends ProviderFactory<ProductRepository> {
   constructor(options: ProductRepositoryFactoryOptions) {
-    const mapper: FactoryMap = {
+    const mapper = {
       adapter: {
         className: ProductRepositoryDatabase,
         options: {
@@ -23,14 +23,4 @@ export class ProductRepositoryFactory extends ProviderFactory<ProductRepository>
 
 export type ProductRepositoryFactoryOptions = {
   connection?: Connection;
-};
-
-type FactoryMap = {
-  adapter: {
-    className: ConstructableObject<ProductRepository>;
-    options: any;
-  };
-  memory: {
-    className: ConstructableObject<ProductRepository>;
-  };
 };

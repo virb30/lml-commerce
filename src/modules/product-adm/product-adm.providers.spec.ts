@@ -13,7 +13,7 @@ const registerDataSource = (source: string) => {
 
 describe("ProductAdmProvider tests", () => {
   describe("usecases tests", () => {
-    it("provides GetStockUseCase", async () => {
+    it("provides CreateProductUseCase", async () => {
       const module = await Test.createTestingModule({
         imports: [ProductAdmModule],
       }).compile();

@@ -7,10 +7,7 @@ import { Queue } from "../queue/queue.interface";
 import { CONNECTION_PROVIDER_TOKEN } from "../database/database.providers";
 import { TOKENS } from "./constants";
 import { ConfigService } from "@nestjs/config";
-import { ProviderFactory } from "../shared/factory/provider.factory";
-import { ProductRepositoryDatabase } from "./repository/database/product.repository";
-import { ProductRepositoryMemory } from "./repository/memory/product.repository";
-import { ProductRepositoryFactory } from "./repository/factory/product-repository.factory";
+import { ProductRepositoryProviderFactory } from "./factory/product-repository.provider.factory";
 
 export const REPOSITORIES = {
   PRODUCT_REPOSITORY: {
@@ -20,7 +17,7 @@ export const REPOSITORIES = {
       const options = {
         connection,
       };
-      const factory = new ProductRepositoryFactory(options);
+      const factory = new ProductRepositoryProviderFactory(options);
       return factory.make(dataSource);
     },
     inject: [ConfigService, CONNECTION_PROVIDER_TOKEN],

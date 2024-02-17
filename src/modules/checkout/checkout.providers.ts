@@ -1,95 +1,65 @@
 import { Provider } from "@nestjs/common";
 import { GetOrderUseCase } from "./usecase/get-order.usecase";
-import { OrderRepository } from "./domain/repository/order.repository.interface";
-import { OrderRepositoryDatabase } from "./repository/database/order.repository";
 import { Connection } from "../database/connection/connection.interface";
-import { OrderRepositoryMemory } from "./repository/memory/order.repository";
 import { PlaceOrderUseCase } from "./usecase/place-order.usecase";
-import { RepositoryFactory } from "../shared/domain/factory/repository-factory.interface";
-import { DatabaseRepositoryFactory } from "../shared/factory/database.repository.factory";
-import { MemoryRepositoryFactory } from "../shared/factory/memory.repository.factory";
+import { RepositoryFactory } from "./domain/factory/repository-factory.interface";
 import { SimulateFreightUseCase } from "./usecase/simulate-freight.usecase";
-import { CouponRepositoryDatabase } from "./repository/database/coupon.repository";
-import { CouponRepositoryMemory } from "./repository/memory/coupon.repository";
 import { ValidateCouponUseCase } from "./usecase/validate-coupon.usecase";
-import { CouponRepository } from "./domain/repository/coupon.repository.interface";
 import { Queue } from "../queue/queue.interface";
 import { QUEUE_PROVIDER_TOKEN } from "../queue/queue.providers";
 import { CONNECTION_PROVIDER_TOKEN } from "../database/database.providers";
-import { DatabaseOrdersQuery } from "./query/database-orders.query";
-import { MemoryOrdersQuery } from "./query/memory-orders.query";
+import { DatabaseOrdersQuery } from "./query/database/database-orders.query";
+import { MemoryOrdersQuery } from "./query/memory/memory-orders.query";
+import { ListOrdersUseCase } from "./usecase/list-orders.usecase";
+import { OrdersQuery } from "./query/orders.query.interface";
+import { ConfigService } from "@nestjs/config";
+import { RepositoryFactoryProviderFactory } from "./factory/repository-factory.provider.factory";
+import { TOKENS } from "./constants";
+import { OrdersQueryProviderFactory } from "./factory/orders-query.provider.factory";
+import dataSource from "../config/data.source";
 
 export const REPOSITORIES = {
-  ORDER_REPOSITORY: {
-    provide: "OrderRepository",
-    useExisting: OrderRepositoryDatabase,
-  },
-  ORDER_REPOSITORY_DATABASE: {
-    provide: OrderRepositoryDatabase,
-    useFactory: (connection: Connection) => {
-      return new OrderRepositoryDatabase(connection);
-    },
-    inject: [CONNECTION_PROVIDER_TOKEN],
-  },
-  ORDER_REPOSITORY_MEMORY: {
-    provide: OrderRepositoryMemory,
-    useClass: OrderRepositoryMemory,
-  },
   REPOSITORY_FACTORY: {
-    provide: "REPOSITORY_FACTORY",
-    useExisting: DatabaseRepositoryFactory,
-  },
-  DATABASE_REPOSITORY_FACTORY: {
-    provide: DatabaseRepositoryFactory,
-    useFactory: (connection: Connection) => {
-      return new DatabaseRepositoryFactory(connection);
+    provide: TOKENS.REPOSITORY_FACTORY,
+    useFactory: (configService: ConfigService, connection: Connection) => {
+      const options = {
+        connection,
+      };
+      const dataSource = configService.get("data.source");
+      const providerFactory = new RepositoryFactoryProviderFactory(options);
+      return providerFactory.make(dataSource);
     },
-    inject: [CONNECTION_PROVIDER_TOKEN],
-  },
-  MEMORY_REPOSITORY_FACTORY: {
-    provide: MemoryRepositoryFactory,
-    useClass: MemoryRepositoryFactory,
-  },
-  COUPON_REPOSITORY: {
-    provide: "CouponRepository",
-    useExisting: CouponRepositoryDatabase,
-  },
-  COUPON_REPOSITORY_MEMORY: {
-    provide: CouponRepositoryMemory,
-    useClass: CouponRepositoryMemory,
-  },
-  COUPON_REPOSITORY_DATABASE: {
-    provide: CouponRepositoryDatabase,
-    useFactory: (connection: Connection) => {
-      return new CouponRepositoryDatabase(connection);
-    },
-    inject: [CONNECTION_PROVIDER_TOKEN],
+    inject: [ConfigService, CONNECTION_PROVIDER_TOKEN],
   },
 };
 
 export const QUERY = {
   ORDERS_QUERY: {
     provide: "OrdersQuery",
-    useExisting: DatabaseOrdersQuery,
-  },
-  ORDERS_QUERY_MEMORY: {
-    provide: MemoryOrdersQuery,
-    useClass: MemoryOrdersQuery,
-  },
-  ORDERS_QUERY_DATABASE: {
-    provide: DatabaseOrdersQuery,
-    useFactory: (connection: Connection) => {
-      return new DatabaseOrdersQuery(connection);
+    useFactory: (configService: ConfigService, connection: Connection) => {
+      const options = {
+        connection,
+      };
+      const dataSource = configService.get("data.source");
+      const factory = new OrdersQueryProviderFactory(options);
+      return factory.make(dataSource);
     },
-    inject: [CONNECTION_PROVIDER_TOKEN],
+    inject: [ConfigService, CONNECTION_PROVIDER_TOKEN],
   },
 };
 
 export const USE_CASES = {
-  GET_ORDERS: {
+  GET_ORDER: {
     provide: GetOrderUseCase,
-    useFactory: (orderRepository: OrderRepository) => {
-      return new GetOrderUseCase(orderRepository);
+    useFactory: (repositoryFactory: RepositoryFactory) => {
+      return new GetOrderUseCase(repositoryFactory);
+    },
+    inject: [TOKENS.REPOSITORY_FACTORY],
+  },
+  LIST_ORDERS: {
+    provide: ListOrdersUseCase,
+    useFactory: (ordersQuery: OrdersQuery) => {
+      return new ListOrdersUseCase(ordersQuery);
     },
     inject: [QUERY.ORDERS_QUERY.provide],
   },
@@ -98,21 +68,21 @@ export const USE_CASES = {
     useFactory: (repositoryFactory: RepositoryFactory, queue: Queue) => {
       return new PlaceOrderUseCase(repositoryFactory, queue);
     },
-    inject: [REPOSITORIES.REPOSITORY_FACTORY.provide, QUEUE_PROVIDER_TOKEN],
+    inject: [TOKENS.REPOSITORY_FACTORY, QUEUE_PROVIDER_TOKEN],
   },
   SIMULATE_FREIGHT: {
     provide: SimulateFreightUseCase,
     useFactory: (repositoryFactory: RepositoryFactory) => {
       return new SimulateFreightUseCase(repositoryFactory);
     },
-    inject: [REPOSITORIES.REPOSITORY_FACTORY.provide],
+    inject: [TOKENS.REPOSITORY_FACTORY],
   },
   VALIDATE_COUPON: {
     provide: ValidateCouponUseCase,
-    useFactory: (couponRepository: CouponRepository) => {
-      return new ValidateCouponUseCase(couponRepository);
+    useFactory: (repositoryFactory: RepositoryFactory) => {
+      return new ValidateCouponUseCase(repositoryFactory);
     },
-    inject: [REPOSITORIES.COUPON_REPOSITORY.provide],
+    inject: [TOKENS.REPOSITORY_FACTORY],
   },
 };
 

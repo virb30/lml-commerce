@@ -5,7 +5,7 @@ import { CouponRepository } from "../domain/repository/coupon.repository.interfa
 import { ProductRepository } from "../domain/repository/product.repository.interface";
 import { Dimensions } from "../domain/value-object/dimensions";
 import { Id } from "src/modules/shared/domain/value-object/id";
-import { MemoryRepositoryFactory } from "src/modules/shared/factory/memory.repository.factory";
+import { MemoryRepositoryFactory } from "../repository/factory/memory-repository.factory";
 import { Queue } from "../../queue/queue.interface";
 import { MemoryQueueAdapter } from "../../queue/adapter/memory/memory-queue.adapter";
 

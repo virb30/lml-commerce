@@ -1,5 +1,5 @@
 import { DomainEvent } from "src/modules/shared/domain/event/domain.event.interface";
-import { RepositoryFactory } from "src/modules/shared/domain/factory/repository-factory.interface";
+import { RepositoryFactory } from "src/modules/checkout/domain/factory/repository-factory.interface";
 import { Id } from "src/modules/shared/domain/value-object/id";
 import { StockEntry } from "../domain/entity/stock-entry.entity";
 import { StockEntryRepository } from "../domain/repository/stock-entry.repository.interface";

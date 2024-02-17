@@ -3,7 +3,7 @@ import { Connection } from "../database/connection/connection.interface";
 import { Provider } from "@nestjs/common";
 import { CONNECTION_PROVIDER_TOKEN } from "../database/database.providers";
 import { ConfigService } from "@nestjs/config";
-import { StockEntryRepositoryFactory } from "./repository/factory/stock-entry-repository.factory";
+import { StockEntryRepositoryProviderFactory } from "./factory/stock-entry-repository.provider.factory";
 import { TOKENS } from "./constants";
 import { StockEntryRepository } from "./domain/repository/stock-entry.repository.interface";
 
@@ -15,7 +15,8 @@ export const REPOSITORIES = {
         connection,
       };
       const dataSource = configService.get("data.source");
-      return StockEntryRepositoryFactory.make(dataSource, options);
+      const factory = new StockEntryRepositoryProviderFactory(options);
+      return factory.make(dataSource);
     },
     inject: [ConfigService, CONNECTION_PROVIDER_TOKEN],
   },

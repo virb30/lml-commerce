@@ -1,7 +1,5 @@
 import { NestFactory } from "@nestjs/core";
 import { AppModule } from "./modules/app.module";
-import * as iconv from "iconv-lite";
-iconv.encodingExists("utf8");
 
 const port = parseInt(process.env.PORT ?? "8008");
 

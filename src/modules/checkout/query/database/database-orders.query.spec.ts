@@ -1,8 +1,8 @@
 import { MysqlConnectionAdapter } from "src/modules/database/connection/mysql/mysql-connection.adapter";
 import { Email } from "src/modules/shared/domain/value-object/email";
 import { Id } from "src/modules/shared/domain/value-object/id";
-import { Order } from "../domain/entity/order";
-import { OrderRepositoryDatabase } from "../repository/database/order.repository";
+import { Order } from "../../domain/entity/order";
+import { OrderRepositoryDatabase } from "../../repository/database/order.repository";
 import { DatabaseOrdersQuery } from "./database-orders.query";
 import { dbConfig } from "src/modules/database/connection/mysql/config";
 
