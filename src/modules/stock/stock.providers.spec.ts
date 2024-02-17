@@ -1,31 +1,40 @@
-import { Test, TestingModule } from "@nestjs/testing";
-import { USE_CASES } from "./stock.providers";
+import { Test } from "@nestjs/testing";
 import { GetStockUseCase } from "./usecase/get-stock.usecase";
 import { StockModule } from "./stock.module";
-import { Connection } from "../database/connection/connection.interface";
-import { CONNECTION_PROVIDER_TOKEN } from "../database/database.providers";
+import { StockEntryRepositoryMemory } from "./repository/memory/stock-entry.repository";
+import { ConfigModule } from "../config/config.module";
+import { registerAs } from "@nestjs/config";
+import { StockEntryRepositoryDatabase } from "./repository/database/stock-entry.repository";
+import { TOKENS } from "./constants";
 
-describe("Usecase", () => {
-  let provider: any;
-  let module: TestingModule;
-  let connection: Connection;
+const registerDataSource = (source: string) => {
+  return registerAs("data", () => ({ source }));
+};
 
-  beforeEach(async () => {
-    module = await Test.createTestingModule({
-      imports: [StockModule],
-    }).compile();
+describe("StockProvider tests", () => {
+  describe("usecases tests", () => {
+    it("provides GetStockUseCase", async () => {
+      const module = await Test.createTestingModule({
+        imports: [StockModule],
+      }).compile();
+      const provider = module.get(GetStockUseCase);
 
-    connection = module.get(CONNECTION_PROVIDER_TOKEN);
+      expect(provider).toBeDefined();
+      expect(provider).toBeInstanceOf(GetStockUseCase);
+    });
   });
 
-  afterAll(async () => {
-    await connection.close();
-  });
+  describe("repositories tests", () => {
+    it.each([
+      { dataSource: "memory", instance: StockEntryRepositoryMemory },
+      { dataSource: "adapter", instance: StockEntryRepositoryDatabase },
+    ])("provides $instance.name", async ({ dataSource, instance }) => {
+      const module = await Test.createTestingModule({
+        imports: [ConfigModule.forFeature(registerDataSource(dataSource)), StockModule],
+      }).compile();
+      const provider = module.get(TOKENS.STOCK_ENTRY_REPOSITORY);
 
-  it("provides GetStockUseCase", () => {
-    provider = module.get(USE_CASES.GET_STOCK_USECASE.provide);
-
-    expect(provider).toBeDefined();
-    expect(provider).toBeInstanceOf(GetStockUseCase);
+      expect(provider).toBeInstanceOf(instance);
+    });
   });
 });

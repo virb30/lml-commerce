@@ -1,27 +1,23 @@
 import { GetStockUseCase } from "./usecase/get-stock.usecase";
-import { StockEntryRepository } from "./domain/repository/stock-entry.repository.interface";
-import { StockEntryRepositoryMemory } from "./repository/memory/stock-entry.repository";
-import { StockEntryRepositoryDatabase } from "./repository/database/stock-entry.repository";
 import { Connection } from "../database/connection/connection.interface";
 import { Provider } from "@nestjs/common";
 import { CONNECTION_PROVIDER_TOKEN } from "../database/database.providers";
-import { QUEUE_PROVIDER_TOKEN } from "../queue/queue.providers";
+import { ConfigService } from "@nestjs/config";
+import { StockEntryRepositoryFactory } from "./repository/factory/stock-entry-repository.factory";
+import { TOKENS } from "./constants";
+import { StockEntryRepository } from "./domain/repository/stock-entry.repository.interface";
 
 export const REPOSITORIES = {
   STOCK_ENTRY_REPOSITORY: {
-    provide: "StockEntryRepository",
-    useExisting: StockEntryRepositoryDatabase,
-  },
-  STOCK_ENTRY_MEMORY_REPOSITORY: {
-    provide: StockEntryRepositoryMemory,
-    useClass: StockEntryRepositoryMemory,
-  },
-  STOCK_ENTRY_DATABASE_REPOSITORY: {
-    provide: StockEntryRepositoryDatabase,
-    useFactory: (databaseProvider: Connection): StockEntryRepository => {
-      return new StockEntryRepositoryDatabase(databaseProvider);
+    provide: TOKENS.STOCK_ENTRY_REPOSITORY,
+    useFactory: (configService: ConfigService, connection: Connection) => {
+      const options = {
+        connection,
+      };
+      const dataSource = configService.get("data.source");
+      return StockEntryRepositoryFactory.make(dataSource, options);
     },
-    inject: [CONNECTION_PROVIDER_TOKEN],
+    inject: [ConfigService, CONNECTION_PROVIDER_TOKEN],
   },
 };
 
@@ -31,7 +27,7 @@ export const USE_CASES = {
     useFactory: (stockEntryRepository: StockEntryRepository) => {
       return new GetStockUseCase(stockEntryRepository);
     },
-    inject: [REPOSITORIES.STOCK_ENTRY_REPOSITORY.provide],
+    inject: [TOKENS.STOCK_ENTRY_REPOSITORY],
   },
 };
 
