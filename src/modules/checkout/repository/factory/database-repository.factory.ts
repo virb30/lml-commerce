@@ -1,9 +1,9 @@
-import { RepositoryFactory } from "../domain/factory/repository-factory.interface";
+import { RepositoryFactory } from "../../domain/factory/repository-factory.interface";
 import { CouponRepository } from "src/modules/checkout/domain/repository/coupon.repository.interface";
 import { OrderRepository } from "src/modules/checkout/domain/repository/order.repository.interface";
 import { ProductRepository } from "src/modules/checkout/domain/repository/product.repository.interface";
 import { StockEntryRepository } from "src/modules/stock/domain/repository/stock-entry.repository.interface";
-import { Connection } from "../../database/connection/connection.interface";
+import { Connection } from "../../../database/connection/connection.interface";
 import { CouponRepositoryDatabase } from "src/modules/checkout/repository/database/coupon.repository";
 import { OrderRepositoryDatabase } from "src/modules/checkout/repository/database/order.repository";
 import { ProductRepositoryDatabase } from "src/modules/checkout/repository/database/product.repository";

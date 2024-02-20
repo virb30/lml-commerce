@@ -1,10 +1,9 @@
 import { SimulateFreightUseCase } from "./simulate-freight.usecase";
 import { Product } from "../domain/entity/product";
 import { ProductRepository } from "../domain/repository/product.repository.interface";
-import { Dimensions } from "../domain/entity/dimensions";
+import { Dimensions } from "../domain/value-object/dimensions";
 import { Id } from "src/modules/shared/domain/value-object/id";
-import { MemoryRepositoryFactory } from "src/modules/shared/factory/memory.repository.factory";
-import { ProductRepositoryMemory } from "../repository/memory/product.repository";
+import { MemoryRepositoryFactory } from "../repository/factory/memory-repository.factory";
 
 describe("SimulateFreightUseCase tests", () => {
   const repositoryFactory = new MemoryRepositoryFactory();

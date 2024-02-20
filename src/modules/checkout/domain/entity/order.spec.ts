@@ -1,6 +1,6 @@
 import { Id } from "src/modules/shared/domain/value-object/id";
 import { Email } from "src/modules/shared/domain/value-object/email";
-import { Dimensions } from "./dimensions";
+import { Dimensions } from "../value-object/dimensions";
 import { Product } from "./product";
 import { Order } from "./order";
 import { Coupon } from "./coupon";

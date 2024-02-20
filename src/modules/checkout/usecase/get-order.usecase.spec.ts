@@ -1,13 +1,14 @@
 import { GetOrderUseCase } from "./get-order.usecase";
 import { Order } from "../domain/entity/order";
 import { Product } from "../domain/entity/product";
-import { Dimensions } from "../domain/entity/dimensions";
+import { Dimensions } from "../domain/value-object/dimensions";
 import { Email } from "src/modules/shared/domain/value-object/email";
 import { Id } from "src/modules/shared/domain/value-object/id";
-import { OrderRepositoryMemory } from "../repository/memory/order.repository";
+import { MemoryRepositoryFactory } from "../repository/factory/memory-repository.factory";
 
 describe("GetOrderUseCase tests", () => {
-  const orderRepository = new OrderRepositoryMemory();
+  const repositoryFactory = new MemoryRepositoryFactory();
+  const orderRepository = repositoryFactory.makeOrderRepository();
   let getOrderUseCase: GetOrderUseCase;
 
   const orderFixture = async () => {
@@ -19,7 +20,7 @@ describe("GetOrderUseCase tests", () => {
   };
 
   beforeAll(() => {
-    getOrderUseCase = new GetOrderUseCase(orderRepository);
+    getOrderUseCase = new GetOrderUseCase(repositoryFactory);
   });
 
   beforeEach(async () => {

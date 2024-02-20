@@ -1,8 +1,9 @@
+import { Usecase } from "src/modules/shared/usecase/usecase.interface";
 import { StockEntryRepository } from "../domain/repository/stock-entry.repository.interface";
 import { StockCalculator } from "../domain/service/stock-calculator.service";
 import { Id } from "src/modules/shared/domain/value-object/id";
 
-export class GetStockUseCase {
+export class GetStockUseCase implements Usecase {
   public constructor(private readonly stockEntryRepository: StockEntryRepository) {}
 
   public async execute(input: GetStockInput): Promise<GetStockOutput> {

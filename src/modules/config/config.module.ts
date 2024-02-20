@@ -1,6 +1,7 @@
-import { Module } from "@nestjs/common";
-import { ConfigModuleOptions, ConfigModule as NestConfigModule } from "@nestjs/config";
+import { DynamicModule, Module } from "@nestjs/common";
+import { ConfigFactory, ConfigModuleOptions, ConfigModule as NestConfigModule } from "@nestjs/config";
 import { join } from "path";
+import dataSourceConfig from "./data.source";
 
 type DB_SCHEMA_TYPE = {
   DB_TYPE: "mysql" | "sqlite";
@@ -26,6 +27,7 @@ export class ConfigModule extends NestConfigModule {
         join(process.cwd(), ".env"),
       ],
       ...otherOptions,
+      load: [dataSourceConfig, ...(Array.isArray(otherOptions?.load) ? otherOptions.load : [])],
     });
   }
 }

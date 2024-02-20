@@ -1,28 +1,26 @@
 import { Provider } from "@nestjs/common";
 import { CreateProductUseCase } from "./usecase/create-product.usecase";
 import { ProductRepository } from "./domain/repository/product.repository.interface";
-import { ProductRepositoryDatabase } from "./repository/database/product.repository";
-import { ProductRepositoryMemory } from "./repository/memory/product.repository";
 import { Connection } from "../database/connection/connection.interface";
 import { QUEUE_PROVIDER_TOKEN } from "../queue/queue.providers";
 import { Queue } from "../queue/queue.interface";
 import { CONNECTION_PROVIDER_TOKEN } from "../database/database.providers";
+import { TOKENS } from "./constants";
+import { ConfigService } from "@nestjs/config";
+import { ProductRepositoryProviderFactory } from "./factory/product-repository.provider.factory";
 
 export const REPOSITORIES = {
   PRODUCT_REPOSITORY: {
-    provide: "ProductRepository",
-    useExisting: ProductRepositoryDatabase,
-  },
-  PRODUCT_REPOSITORY_MEMORY: {
-    provide: ProductRepositoryMemory,
-    useClass: ProductRepositoryMemory,
-  },
-  PRODUCT_REPOSITORY_DATABASE: {
-    provide: ProductRepositoryDatabase,
-    useFactory: (connection: Connection) => {
-      return new ProductRepositoryDatabase(connection);
+    provide: TOKENS.PRODUCT_REPOSITORY,
+    useFactory: (configService: ConfigService, connection: Connection) => {
+      const dataSource = configService.get("data.source");
+      const options = {
+        connection,
+      };
+      const factory = new ProductRepositoryProviderFactory(options);
+      return factory.make(dataSource);
     },
-    inject: [CONNECTION_PROVIDER_TOKEN],
+    inject: [ConfigService, CONNECTION_PROVIDER_TOKEN],
   },
 };
 
@@ -32,7 +30,7 @@ export const USE_CASES = {
     useFactory: (productRepository: ProductRepository, queue: Queue) => {
       return new CreateProductUseCase(productRepository, queue);
     },
-    inject: [REPOSITORIES.PRODUCT_REPOSITORY.provide, QUEUE_PROVIDER_TOKEN],
+    inject: [TOKENS.PRODUCT_REPOSITORY, QUEUE_PROVIDER_TOKEN],
   },
 };
 

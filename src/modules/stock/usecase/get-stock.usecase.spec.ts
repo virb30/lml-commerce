@@ -1,11 +1,10 @@
 import { GetStockUseCase } from "./get-stock.usecase";
 import { StockEntry } from "../domain/entity/stock-entry.entity";
 import { Id } from "src/modules/shared/domain/value-object/id";
-import { MemoryRepositoryFactory } from "src/modules/shared/factory/memory.repository.factory";
+import { StockEntryRepositoryMemory } from "../repository/memory/stock-entry.repository";
 
 describe("GetStockUseCase tests", () => {
-  const repositoryFactory = new MemoryRepositoryFactory();
-  const stockEntryRepository = repositoryFactory.makeStockEntryRepository();
+  const stockEntryRepository = new StockEntryRepositoryMemory();
 
   beforeEach(async () => {
     await stockEntryRepository.clear();

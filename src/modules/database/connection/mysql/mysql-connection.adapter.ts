@@ -2,19 +2,28 @@ import { Connection } from "../connection.interface";
 import mysql from "mysql2";
 
 export class MysqlConnectionAdapter implements Connection {
-  private mysql: any;
+  private connection: any;
   constructor(options: MysqlConnectionOptions) {
     const connectionString = this.buildConnectionString(options);
-    this.mysql = mysql.createConnection(connectionString);
+    this.connection = mysql
+      .createPool({
+        database: options.dbName,
+        host: options.dbHost,
+        password: options.dbPass,
+        user: options.dbUser,
+        port: parseInt(options.dbPort),
+        charset: "utf8mb4",
+      })
+      .promise();
   }
 
   async query(statement: string, params?: any): Promise<any> {
-    const [result] = await this.mysql.promise().execute(statement, params);
+    const [result] = await this.connection.execute(statement, params);
     return result;
   }
 
   async close(): Promise<void> {
-    await this.mysql.promise().end();
+    await this.connection.end();
   }
 
   private buildConnectionString(options: MysqlConnectionOptions) {

@@ -1,5 +1,5 @@
 import { Freight } from "../domain/entity/freight";
-import { RepositoryFactory } from "src/modules/shared/domain/factory/repository-factory.interface";
+import { RepositoryFactory } from "src/modules/checkout/domain/factory/repository-factory.interface";
 import { ProductRepository } from "../domain/repository/product.repository.interface";
 import { Id } from "src/modules/shared/domain/value-object/id";
 

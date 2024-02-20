@@ -1,8 +1,8 @@
 import { Email } from "src/modules/shared/domain/value-object/email";
 import { Id } from "src/modules/shared/domain/value-object/id";
 import { Order } from "../domain/entity/order";
-import { GetOrdersUseCase } from "./get-orders.usecase";
-import { MemoryOrdersQuery } from "../query/memory-orders.query";
+import { ListOrdersUseCase } from "./list-orders.usecase";
+import { MemoryOrdersQuery } from "../query/memory/memory-orders.query";
 import { OrdersQuery } from "../query/orders.query.interface";
 
 const createOrder = (id: string, email: string, date: Date, total: number) => {
@@ -10,7 +10,7 @@ const createOrder = (id: string, email: string, date: Date, total: number) => {
   return order;
 };
 
-describe("GetOrdersUseCase tests", () => {
+describe("ListOrdersUseCase tests", () => {
   let ordersGateway: OrdersQuery;
 
   const ordersData = [
@@ -30,7 +30,7 @@ describe("GetOrdersUseCase tests", () => {
     { page: 2, limit: 2, expected: ordersData.slice(2, 4) },
     { page: 3, limit: 2, expected: ordersData.slice(4, 5) },
   ])("returns orders for page $page and limit $limit", async ({ page, limit, expected }) => {
-    const getOrdersUseCase = new GetOrdersUseCase(ordersGateway);
+    const getOrdersUseCase = new ListOrdersUseCase(ordersGateway);
 
     const ordersPage1 = await getOrdersUseCase.execute({
       email: "email@1234.com",
@@ -51,7 +51,7 @@ describe("GetOrdersUseCase tests", () => {
   });
 
   it("throws error if email has no orders", async () => {
-    const getOrdersUseCase = new GetOrdersUseCase(ordersGateway);
+    const getOrdersUseCase = new ListOrdersUseCase(ordersGateway);
     expect(async () => {
       await getOrdersUseCase.execute({
         email: "wrong@email.com",
@@ -62,7 +62,7 @@ describe("GetOrdersUseCase tests", () => {
   });
 
   it("throws an error if invalid page provided", async () => {
-    const getOrdersUseCase = new GetOrdersUseCase(ordersGateway);
+    const getOrdersUseCase = new ListOrdersUseCase(ordersGateway);
     expect(async () => {
       await getOrdersUseCase.execute({
         email: "email@1234.com",

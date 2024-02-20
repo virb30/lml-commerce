@@ -4,7 +4,7 @@ import { Id } from "src/modules/shared/domain/value-object/id";
 import { Email } from "src/modules/shared/domain/value-object/email";
 import { OrderRepository } from "../domain/repository/order.repository.interface";
 import { CouponRepository } from "../domain/repository/coupon.repository.interface";
-import { RepositoryFactory } from "src/modules/shared/domain/factory/repository-factory.interface";
+import { RepositoryFactory } from "src/modules/checkout/domain/factory/repository-factory.interface";
 import { OrderPlaced } from "../domain/event/order-placed";
 import { Queue } from "../../queue/queue.interface";
 

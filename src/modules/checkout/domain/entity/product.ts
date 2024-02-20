@@ -1,4 +1,4 @@
-import { Dimensions } from "./dimensions";
+import { Dimensions } from "../value-object/dimensions";
 import { Id } from "src/modules/shared/domain/value-object/id";
 
 export class Product {
