@@ -3,7 +3,6 @@ import { OrderPlaced } from "src/modules/checkout/domain/event/order-placed";
 import { Queue } from "../../queue/queue.interface";
 import { StockEntryRepository } from "../domain/repository/stock-entry.repository.interface";
 import { Inject, Injectable } from "@nestjs/common";
-import { ModuleRef } from "@nestjs/core";
 import { REPOSITORIES } from "../stock.providers";
 import { QUEUE_PROVIDER_TOKEN } from "src/modules/queue/queue.providers";
 
