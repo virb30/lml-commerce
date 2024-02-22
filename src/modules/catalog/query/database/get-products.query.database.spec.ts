@@ -1,13 +1,16 @@
-import { Connection } from "../../database/connection/connection.interface";
-import { MysqlConnectionAdapter } from "../../database/connection/mysql/mysql-connection.adapter";
-import { GetProductsQuery } from "./get-products.query";
+import { Connection } from "../../../database/connection/connection.interface";
+import { MysqlConnectionAdapter } from "../../../database/connection/mysql/mysql-connection.adapter";
+import { GetProductsQuery } from "../get-products.query.interface";
+import { GetProductsQueryDatabase } from "./get-products.query.database";
 import { dbConfig } from "src/modules/database/connection/mysql/config";
 
 describe("GetProductsQuery tests", () => {
   let databaseConnection: Connection;
+  let getProductsQuery: GetProductsQuery;
 
   beforeAll(() => {
     databaseConnection = new MysqlConnectionAdapter(dbConfig);
+    getProductsQuery = new GetProductsQueryDatabase(databaseConnection);
   });
 
   beforeEach(async () => {
@@ -31,10 +34,12 @@ describe("GetProductsQuery tests", () => {
     await databaseConnection.close();
   });
 
-  it("should get products list", async () => {
-    const input = {};
-    const getProductsQuery = new GetProductsQuery(databaseConnection);
-    const output = await getProductsQuery.execute(input);
+  it("gets all products", async () => {
+    const getProductsQuery = new GetProductsQueryDatabase(databaseConnection);
+    const output = await getProductsQuery.getAll({
+      page: 1,
+      perPage: 10,
+    });
     expect(output).toHaveLength(3);
     expect(output[0].id).toBe("1");
     expect(output[1].id).toBe("2");
@@ -42,13 +47,16 @@ describe("GetProductsQuery tests", () => {
   });
 
   it("should get products paginated", async () => {
-    const input = {
+    const output = await getProductsQuery.getAll({
       perPage: 1,
       page: 2,
-    };
-    const getProductsQuery = new GetProductsQuery(databaseConnection);
-    const output = await getProductsQuery.execute(input);
+    });
     expect(output).toHaveLength(1);
     expect(output[0].id).toBe("2");
+  });
+
+  it("counts products", async () => {
+    const total = await getProductsQuery.size();
+    expect(total).toBe(3);
   });
 });
