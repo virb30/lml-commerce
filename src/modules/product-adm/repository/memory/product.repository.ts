@@ -6,7 +6,12 @@ export class ProductRepositoryMemory implements ProductRepository {
   private products: Product[] = [];
 
   async save(product: Product): Promise<void> {
-    this.products.push(product);
+    const index = this.products.findIndex((storedProduct) => storedProduct.id.value === product.id.value);
+    if (index !== -1) {
+      this.products[index] = product;
+    } else {
+      this.products.push(product);
+    }
   }
 
   async findById(id: Id): Promise<Product> {
