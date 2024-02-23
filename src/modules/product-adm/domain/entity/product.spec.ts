@@ -32,7 +32,14 @@ describe("Product entity tests", () => {
   it("does not create a product with invalid price", () => {
     expect(() => {
       new Product(new Id(), "Produto Teste", -10);
-    }).toThrow(new Error("Invalid price"));
+    }).toThrow(new Error("Invalid value"));
+  });
+
+  it("does not change a product with invalid price", () => {
+    expect(() => {
+      const product = new Product(new Id(), "Produto Teste", 10);
+      product.changePrice(-10);
+    }).toThrow(new Error("Invalid value"));
   });
 
   it("truncates float price", () => {
@@ -40,5 +47,18 @@ describe("Product entity tests", () => {
     const product = new Product(id, "Produto Teste", 50.5);
     expect(product.price).toBe(50);
     expect(product.getFinalPrice()).toBe(0.5);
+  });
+
+  it("does not create a product with empty name", () => {
+    expect(() => {
+      new Product(new Id(), "", 10);
+    }).toThrow(new Error("Invalid name"));
+  });
+
+  it("does not change a product name with empty value", () => {
+    expect(() => {
+      const product = new Product(new Id(), "Produto Teste", 10);
+      product.changeName("");
+    }).toThrow(new Error("Invalid name"));
   });
 });
