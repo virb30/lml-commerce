@@ -1,8 +1,13 @@
 import { Connection } from "../../../database/connection/connection.interface";
 import { GetProductsQuery, GetProductsQueryInput, ProductOutput } from "../get-products.query.interface";
+import { PaginatableQueryDatabase } from "@modules/shared/query/database/paginatable.query.database";
 
-export class GetProductsQueryDatabase implements GetProductsQuery {
-  constructor(private connection: Connection) {}
+export class GetProductsQueryDatabase extends PaginatableQueryDatabase implements GetProductsQuery {
+  public PER_PAGE_LIMIT: number = 10;
+
+  constructor(private connection: Connection) {
+    super();
+  }
 
   async size(): Promise<number> {
     const [totalProducts] = await this.connection.query("SELECT COUNT(*) total FROM app.product;", []);
@@ -10,12 +15,7 @@ export class GetProductsQueryDatabase implements GetProductsQuery {
   }
 
   async getAll(criteria: GetProductsQueryInput): Promise<ProductOutput[]> {
-    const limit = criteria.perPage;
-
-    let offset = 0;
-    if (criteria.page) {
-      offset = (criteria.page - 1) * limit;
-    }
+    const { offset, limit } = this.getPagination(criteria.page, criteria.perPage);
 
     const productsData = await this.connection.query(
       "SELECT id, name, price, width, height, length, weight FROM app.product LIMIT ? OFFSET ?;",
