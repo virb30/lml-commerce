@@ -31,8 +31,8 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Run Migrations
-        run: mysql --host 127.0.0.1 --port=${{ job.services.mysql.ports[3306] }} -uroot app < ./migrations/database.sql
+      - name: Setup Database
+        run: mysql --host 127.0.0.1 --port=${{ job.services.mysql.ports[3306] }} -uroot app < ./backend/migrations/database.sql
 
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
@@ -40,8 +40,8 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: "npm"
       - run: npm install
-      - run: npm run lint
-      - run: npm test
+      - run: npm run lint:backend
+      - run: npm run test:backend
         env:
           DB_TYPE: mysql
           DB_PORT: ${{ job.services.mysql.ports[3306] }}
