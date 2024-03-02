@@ -1,6 +1,6 @@
-# LML Commerce
+# LML Commerce 
 
-An E-commerce project to practice and study concepts like, but not limited to:
+An eCommerce project to practice and study concepts like, but not limited to:
 
 * Domain-Driven Design
 * Clean Architecture
@@ -15,9 +15,17 @@ An E-commerce project to practice and study concepts like, but not limited to:
 * [Docker compose](https://docs.docker.com/compose/install/#installation-scenarios)
 * Node 20.x
 
-## How to use
+## Contents
 
-1. clone/fork this project
+This repo is composed by all lml-commerce components, including but not limited to:
+
+- backend - NestJs API
+- frontend - React SPA
+- database - Mysql
+
+## How to develop
+
+1. clone/fork this repository
 1. install dependencies
 1. rename .env.example and set your environment variables
 1. start database container
@@ -26,16 +34,24 @@ An E-commerce project to practice and study concepts like, but not limited to:
 
 ```console
 git clone https://github.com/virb30/lml-commerce.git
+cd lml-commerce
 npm install
-mv .env.example .env
+mv backend/.env.example backend/.env
 docker compose up -d
-npm test
-npm start
+npm run test:backend
+npm run dev
 ```
 
-Check if the server is running by accessing `http://localhost:<PORT>/health-check`
+This will start all packages of the project (backend and frontend)
 
-## Structure Standards
 
-- Directory names must be written in PascalCase
-- Directory names must be written in Singular
+### Instructions about dependencies install
+
+If you want to install a dependency that will be only available in one workspace (backend or frontend)
+and not globally use the `--prefix` option, eg:
+
+```console
+npm install --prefix frontend date-fns 
+```
+
+This command will install the `date-fns` library just for the frontend workspace.
