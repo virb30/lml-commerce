@@ -9,4 +9,4 @@ services:
     ports:
       - 3307:3306
     volumes:
-      - ./migrations:/docker-entrypoint-initdb.d
+      - ./backend/migrations:/docker-entrypoint-initdb.d
