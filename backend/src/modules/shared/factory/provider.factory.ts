@@ -6,7 +6,7 @@ export class ProviderFactory<T> {
     if (!instance) {
       throw new Error("Invalid instance");
     }
-    return new instance.className(instance.options) as T;
+    return new instance.className(...Object.values(instance.options)) as T;
   }
 }
 
