@@ -1,15 +1,11 @@
 import { Test } from "@nestjs/testing";
 import { ConfigModule } from "../config/config.module";
-import { registerAs } from "@nestjs/config";
 import { TOKENS } from "./constants";
 import { ProductAdmModule } from "./product-adm.module";
 import { CreateProductUseCase } from "./usecase/create-product.usecase";
 import { ProductRepositoryMemory } from "./repository/memory/product.repository";
 import { ProductRepositoryDatabase } from "./repository/database/product.repository";
-
-const registerDataSource = (source: string) => {
-  return registerAs("data", () => ({ source }));
-};
+import { registerDataSource } from "../../fixtures/data-source.fixture";
 
 describe("ProductAdmProvider tests", () => {
   describe("usecases tests", () => {

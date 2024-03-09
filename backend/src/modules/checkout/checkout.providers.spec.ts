@@ -1,8 +1,6 @@
 import { Test } from "@nestjs/testing";
 import { ConfigModule } from "../config/config.module";
-import { registerAs } from "@nestjs/config";
 import { CheckoutModule } from "./checkout.module";
-import { QueueModule } from "../queue/queue.module";
 import { GetOrderUseCase } from "./usecase/get-order.usecase";
 import { TOKENS } from "./constants";
 import { MemoryRepositoryFactory } from "./repository/factory/memory-repository.factory";
@@ -13,10 +11,7 @@ import { SimulateFreightUseCase } from "./usecase/simulate-freight.usecase";
 import { ValidateCouponUseCase } from "./usecase/validate-coupon.usecase";
 import { MemoryOrdersQuery } from "./query/memory/memory-orders.query";
 import { DatabaseOrdersQuery } from "./query/database/database-orders.query";
-
-const registerDataSource = (source: string) => {
-  return registerAs("data", () => ({ source }));
-};
+import { registerDataSource } from "../../fixtures/data-source.fixture";
 
 describe("CheckoutProviders tests", () => {
   describe("usecases tests", () => {

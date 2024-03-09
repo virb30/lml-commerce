@@ -1,17 +1,17 @@
 import { Test, TestingModule } from "@nestjs/testing";
 import { ProductAdmController } from "./product-adm.controller";
 import { ConfigModule } from "@modules/config/config.module";
-import { registerAs } from "@nestjs/config";
 import { CreateProductUseCase } from "../usecase/create-product.usecase";
 import { ProductAdmModule } from "../product-adm.module";
 import { UpdateProductUseCase } from "../usecase/update-product.usecase";
+import { registerDataSource } from "../../../fixtures/data-source.fixture";
 
 describe("ProductAdmController", () => {
   let controller: ProductAdmController;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [ConfigModule.forFeature(registerAs("data", () => ({ source: "memory" }))), ProductAdmModule],
+      imports: [ConfigModule.forFeature(registerDataSource("memory")), ProductAdmModule],
       controllers: [ProductAdmController],
       providers: [CreateProductUseCase, UpdateProductUseCase],
     }).compile();
