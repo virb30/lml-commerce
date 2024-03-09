@@ -1,4 +1,4 @@
-import { Connection } from "../../../database/connection/connection.interface";
+import { Connection } from "@modules/database/connection/connection.interface";
 import { GetProductsQuery, GetProductsQueryInput, ProductOutput } from "../get-products.query.interface";
 import { PaginatableQueryDatabase } from "@modules/shared/query/database/paginatable.query.database";
 
