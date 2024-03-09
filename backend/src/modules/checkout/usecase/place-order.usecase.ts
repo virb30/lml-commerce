@@ -50,6 +50,7 @@ export class PlaceOrderUseCase {
 
     return {
       total: order.total,
+      freight: order.getFreight(),
     };
   }
 }
@@ -63,4 +64,5 @@ export type PlaceOrderUseCaseInput = {
 
 export type PlaceOrderUseCaseOutput = {
   total: number;
+  freight?: number;
 };

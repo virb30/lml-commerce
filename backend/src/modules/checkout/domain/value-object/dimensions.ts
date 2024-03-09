@@ -4,7 +4,7 @@ export class Dimensions {
     public readonly width: number,
     public readonly length: number,
   ) {
-    if (height <= 0 || width <= 0 || length <= 0) {
+    if (height < 0 || width < 0 || length < 0) {
       throw new Error("Invalid values");
     }
   }

@@ -15,11 +15,10 @@ export class OrderController {
       })),
     };
     const output = await this.placeOrderUsecase.execute(input);
-    const data = {
+    return {
       total: output?.total,
+      freight: output?.freight,
     };
-
-    return data;
   }
 }
 

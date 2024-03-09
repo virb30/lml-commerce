@@ -8,15 +8,12 @@ import { ValidateCouponUseCase } from "./usecase/validate-coupon.usecase";
 import { Queue } from "../queue/queue.interface";
 import { QUEUE_PROVIDER_TOKEN } from "../queue/queue.providers";
 import { CONNECTION_PROVIDER_TOKEN } from "../database/database.providers";
-import { DatabaseOrdersQuery } from "./query/database/database-orders.query";
-import { MemoryOrdersQuery } from "./query/memory/memory-orders.query";
 import { ListOrdersUseCase } from "./usecase/list-orders.usecase";
 import { OrdersQuery } from "./query/orders.query.interface";
 import { ConfigService } from "@nestjs/config";
 import { RepositoryFactoryProviderFactory } from "./factory/repository-factory.provider.factory";
 import { TOKENS } from "./constants";
 import { OrdersQueryProviderFactory } from "./factory/orders-query.provider.factory";
-import dataSource from "../config/data.source";
 
 export const REPOSITORIES = {
   REPOSITORY_FACTORY: {

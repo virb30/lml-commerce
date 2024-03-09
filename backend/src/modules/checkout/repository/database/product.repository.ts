@@ -18,7 +18,7 @@ export class ProductRepositoryDatabase implements ProductRepository {
       new Id(product.id),
       product.name,
       parseFloat(product.price),
-      new Dimensions(product.height, product.width, product.length),
+      new Dimensions(product.height ?? 0, product.width ?? 0, product.length ?? 0),
       product.weight,
     );
 
