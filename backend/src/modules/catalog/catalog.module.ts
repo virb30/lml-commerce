@@ -1,7 +1,9 @@
 import { Module } from "@nestjs/common";
-import { provideCatalogUsecases } from "./catalog.providers";
+import { provideCatalogQueries, provideCatalogUsecases } from "./catalog.providers";
+import { CatalogController } from "./catalog.controller";
 
 @Module({
-  providers: [...provideCatalogUsecases()],
+  providers: [...provideCatalogQueries(), ...provideCatalogUsecases()],
+  controllers: [CatalogController],
 })
 export class CatalogModule {}
