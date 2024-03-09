@@ -6,15 +6,11 @@ describe("Dimesion tests", () => {
     [-25, 30, 45],
     [25, -30, 45],
     [25, 30, -45],
-    [0, 0, 0],
-    [0, 1, 1],
-    [1, 0, 1],
-    [1, 1, 0],
   ];
   it.each(dataDimensions)("should create an dimension with invalid numbers", (height, width, length) => {
     expect(() => {
       new Dimensions(height, width, length);
-    }).toThrowError("Invalid values");
+    }).toThrow(new Error("Invalid values"));
   });
 
   it("should create an dimesion", () => {

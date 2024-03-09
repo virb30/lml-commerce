@@ -39,6 +39,7 @@ describe("Place order use case tests", () => {
 
     expect(output).toStrictEqual({
       total: 3020,
+      freight: 0,
     });
   });
 
@@ -71,10 +72,11 @@ describe("Place order use case tests", () => {
 
     expect(output).toStrictEqual({
       total: 3010,
+      freight: 0,
     });
   });
 
-  it("should place an order with discount", async () => {
+  it("throws an error when placing an order with an inexistent coupon", async () => {
     expect(async () => {
       productRepository.save(new Product(new Id("1"), "Fone de ouvido", 10.0, new Dimensions(10, 20, 30), 0));
       productRepository.save(new Product(new Id("2"), "Bicicleta", 1500.0, new Dimensions(10, 20, 30), 0));
