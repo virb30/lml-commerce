@@ -27,12 +27,12 @@ export class CreateProductUseCase {
   }
 }
 
-type CreateProductInput = {
+export type CreateProductInput = {
   name: string;
   price: number;
 };
 
-type CreateProductOutput = {
+export type CreateProductOutput = {
   id: string;
   name: string;
   price: number;

@@ -1,7 +1,7 @@
 import { Connection } from "@modules/database/connection/connection.interface";
 import { ProductRepositoryMemory } from "../repository/memory/product.repository";
 import { ProductRepositoryDatabase } from "../repository/database/product.repository";
-import { ConstructableObject, ProviderFactory } from "@modules/shared/factory/provider.factory";
+import { ProviderFactory } from "@modules/shared/factory/provider.factory";
 import { ProductRepository } from "../domain/repository/product.repository.interface";
 
 export class ProductRepositoryProviderFactory extends ProviderFactory<ProductRepository> {

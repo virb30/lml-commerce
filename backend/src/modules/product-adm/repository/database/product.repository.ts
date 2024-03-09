@@ -1,10 +1,10 @@
-import { Connection } from "../../../database/connection/connection.interface";
+import { Connection } from "@modules/database/connection/connection.interface";
 import { Id } from "@modules/shared/domain/value-object/id";
 import { Product } from "../../domain/entity/product";
 import { ProductRepository } from "../../domain/repository/product.repository.interface";
 
 export class ProductRepositoryDatabase implements ProductRepository {
-  constructor(private connection: Connection) {}
+  constructor(private readonly connection: Connection) {}
 
   async save(product: Product): Promise<void> {
     const productExists = await this.exists(product.id.value);
@@ -49,7 +49,7 @@ export class ProductRepositoryDatabase implements ProductRepository {
   }
 
   private async update(product: Product): Promise<void> {
-    await this.connection.query("UPDATE INTO app.product SET name = ?, price = ?, updated_at = ? WHERE id = ?;", [
+    await this.connection.query("UPDATE app.product SET name = ?, price = ?, updated_at = ? WHERE id = ?;", [
       product.name,
       product.price,
       product.updatedAt,
