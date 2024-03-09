@@ -1,5 +1,5 @@
 import { Controller, Get, Query } from "@nestjs/common";
-import { ListProductsOutput, ListProductsUseCase } from "./usecase/list-products.usecase";
+import { ListProductsOutput, ListProductsUseCase } from "../usecase/list-products.usecase";
 
 @Controller("products")
 export class CatalogController {

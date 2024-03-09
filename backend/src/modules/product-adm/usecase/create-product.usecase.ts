@@ -3,8 +3,9 @@ import { Id } from "@modules/shared/domain/value-object/id";
 import { Product } from "../domain/entity/product";
 import { ProductCreated } from "../domain/event/product-created.event";
 import { ProductRepository } from "../domain/repository/product.repository.interface";
+import { Usecase } from "@modules/shared/usecase/usecase.interface";
 
-export class CreateProductUseCase {
+export class CreateProductUseCase implements Usecase {
   constructor(
     private readonly productRepository: ProductRepository,
     private readonly queue: Queue,

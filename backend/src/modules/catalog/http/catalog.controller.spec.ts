@@ -1,7 +1,7 @@
 import { Test, TestingModule } from "@nestjs/testing";
 import { CatalogController } from "./catalog.controller";
 import { Usecase } from "@modules/shared/usecase/usecase.interface";
-import { ListProductsUseCase } from "./usecase/list-products.usecase";
+import { ListProductsUseCase } from "../usecase/list-products.usecase";
 
 describe("CatalogController", () => {
   let controller: CatalogController;
