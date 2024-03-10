@@ -19,6 +19,6 @@ type GetStockInput = {
   productId: string;
 };
 
-type GetStockOutput = {
+export type GetStockOutput = {
   total: number;
 };

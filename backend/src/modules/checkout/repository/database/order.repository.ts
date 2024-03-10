@@ -9,7 +9,7 @@ import { Connection } from "../../../database/connection/connection.interface";
 export class OrderRepositoryDatabase implements OrderRepository {
   constructor(private connection: Connection) {}
 
-  public async getById(id: Id): Promise<Order> {
+  async getById(id: Id): Promise<Order> {
     const [orderData] = await this.connection.query("SELECT * FROM app.order WHERE id = ?", [id.value]);
 
     if (!orderData) {
@@ -44,7 +44,7 @@ export class OrderRepositoryDatabase implements OrderRepository {
     return order;
   }
 
-  public async save(order: Order): Promise<void> {
+  async save(order: Order): Promise<void> {
     await this.connection.query(
       "INSERT INTO app.order (id, email, code, sequency, total, issue_date, freight, coupon_code, coupon_percentage, coupon_discount_limit) VALUES (?,?,?,?,?,?,?,?,?,?)",
       [
@@ -71,7 +71,16 @@ export class OrderRepositoryDatabase implements OrderRepository {
     }
   }
 
-  public async clear(): Promise<void> {
+  async getNextSequence(): Promise<number> {
+    let maxSequence = 0;
+    const [sequenceData] = await this.connection.query("SELECT MAX(sequency) AS sequence FROM app.order", []);
+    if (sequenceData?.sequence) {
+      maxSequence = parseInt(sequenceData.sequence);
+    }
+    return maxSequence + 1;
+  }
+
+  async clear(): Promise<void> {
     await this.connection.query("DELETE FROM app.order_item", []);
     await this.connection.query("DELETE FROM app.order", []);
   }

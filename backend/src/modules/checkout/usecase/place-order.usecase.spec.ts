@@ -8,22 +8,26 @@ import { Id } from "@modules/shared/domain/value-object/id";
 import { MemoryRepositoryFactory } from "../repository/factory/memory-repository.factory";
 import { Queue } from "../../queue/queue.interface";
 import { MemoryQueueAdapter } from "../../queue/adapter/memory/memory-queue.adapter";
+import { OrderRepository } from "../domain/repository/order.repository.interface";
 
 describe("Place order use case tests", () => {
   const repositoryFactory = new MemoryRepositoryFactory();
   let productRepository: ProductRepository;
   let couponRepository: CouponRepository;
+  let orderRepository: OrderRepository;
   let queue: Queue;
 
   beforeEach(async () => {
     productRepository = repositoryFactory.makeProductRepository();
     couponRepository = repositoryFactory.makeCouponRepository();
+    orderRepository = repositoryFactory.makeOrderRepository();
     queue = new MemoryQueueAdapter();
+    await orderRepository.clear();
     await productRepository.clear();
     await couponRepository.clear();
   });
 
-  it("should place an order", async () => {
+  it("places an order", async () => {
     productRepository.save(new Product(new Id("1"), "Fone de ouvido", 10.0, new Dimensions(10, 20, 30), 0));
     productRepository.save(new Product(new Id("2"), "Bicicleta", 1500.0, new Dimensions(10, 20, 30), 0));
 
@@ -34,16 +38,16 @@ describe("Place order use case tests", () => {
         { id: "1", amount: 2 },
         { id: "2", amount: 2 },
       ],
+      date: new Date("2024-01-01T10:00:00"),
     };
     const output = await useCase.execute(input);
-
-    expect(output).toStrictEqual({
-      total: 3020,
-      freight: 0,
-    });
+    expect(output.id).toBeDefined();
+    expect(output.code).toBe("202400000001");
+    expect(output.total).toBe(3020);
+    expect(output.freight).toBe(0);
   });
 
-  it("should throw exception if product not exists ", async () => {
+  it("throws an error if product not exists ", async () => {
     expect(async () => {
       const useCase = new PlaceOrderUseCase(repositoryFactory, queue);
       const input = {
@@ -54,7 +58,7 @@ describe("Place order use case tests", () => {
     }).rejects.toThrow(new Error("Product not found"));
   });
 
-  it("should place an order with discount", async () => {
+  it("places an order with discount", async () => {
     couponRepository.save(new Coupon(new Id("1"), "VALE10", 10, 10.0, new Date("2023-10-15T00:00:00")));
     productRepository.save(new Product(new Id("1"), "Fone de ouvido", 10.0, new Dimensions(10, 20, 30), 0));
     productRepository.save(new Product(new Id("2"), "Bicicleta", 1500.0, new Dimensions(10, 20, 30), 0));
@@ -69,11 +73,10 @@ describe("Place order use case tests", () => {
       date: new Date("2023-10-10T23:59:59"),
     };
     const output = await useCase.execute(input);
-
-    expect(output).toStrictEqual({
-      total: 3010,
-      freight: 0,
-    });
+    expect(output.id).toBeDefined();
+    expect(output.code).toBe("202300000001");
+    expect(output.total).toBe(3010);
+    expect(output.freight).toBe(0);
   });
 
   it("throws an error when placing an order with an inexistent coupon", async () => {
