@@ -10,7 +10,7 @@ export class OrderController {
     const input = {
       email: body.email,
       items: body.items.map((item: ItemInput) => ({
-        id: item.product_id,
+        id: item.productId,
         amount: item.amount,
       })),
     };
@@ -23,6 +23,6 @@ export class OrderController {
 }
 
 type ItemInput = {
-  product_id: string;
+  productId: string;
   amount: number;
 };

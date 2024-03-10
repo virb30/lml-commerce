@@ -47,8 +47,8 @@ describe("OrderController tests", () => {
     const input = {
       email: "cliente@email.com",
       items: [
-        { product_id: "1", amount: 2 },
-        { product_id: "2", amount: 1 },
+        { productId: "1", amount: 2 },
+        { productId: "2", amount: 1 },
       ],
       date: "2023-01-01T10:00:00",
     };
