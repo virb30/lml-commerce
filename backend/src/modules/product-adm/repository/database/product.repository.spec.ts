@@ -19,7 +19,7 @@ describe("Product repository database tests", () => {
 
   it("inserts a product in database", async () => {
     const id = new Id();
-    const product = new Product(id, "Produto teste 1", 1000);
+    const product = new Product(id, "Produto teste 1", 10);
     await productRepository.save(product);
 
     const savedProduct = await productRepository.findById(id);

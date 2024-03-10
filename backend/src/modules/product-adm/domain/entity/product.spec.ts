@@ -23,30 +23,17 @@ describe("Product entity tests", () => {
     expect(product.createdAt).toBeDefined;
   });
 
-  it("calculates final price", () => {
-    const id = new Id();
-    const product = new Product(id, "Produto Teste", 1000);
-    expect(product.getFinalPrice()).toBe(10);
-  });
-
   it("does not create a product with invalid price", () => {
     expect(() => {
       new Product(new Id(), "Produto Teste", -10);
-    }).toThrow(new Error("Invalid value"));
+    }).toThrow(new Error("Invalid price"));
   });
 
   it("does not change a product with invalid price", () => {
     expect(() => {
       const product = new Product(new Id(), "Produto Teste", 10);
       product.changePrice(-10);
-    }).toThrow(new Error("Invalid value"));
-  });
-
-  it("truncates float price", () => {
-    const id = new Id();
-    const product = new Product(id, "Produto Teste", 50.5);
-    expect(product.price).toBe(50);
-    expect(product.getFinalPrice()).toBe(0.5);
+    }).toThrow(new Error("Invalid price"));
   });
 
   it("does not create a product with empty name", () => {

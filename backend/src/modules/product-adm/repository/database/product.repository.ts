@@ -26,7 +26,7 @@ export class ProductRepositoryDatabase implements ProductRepository {
     return new Product(
       new Id(productData.id),
       productData.name,
-      productData.price,
+      parseFloat(productData.price),
       new Date(productData.created_at),
       new Date(productData.updated_at),
     );

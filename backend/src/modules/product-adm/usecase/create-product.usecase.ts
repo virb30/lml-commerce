@@ -18,7 +18,6 @@ export class CreateProductUseCase {
       id: product.id.value,
       name: product.name,
       price: product.price,
-      finalPrice: product.getFinalPrice(),
       createdAt: product.createdAt,
     };
 
@@ -37,6 +36,5 @@ type CreateProductOutput = {
   id: string;
   name: string;
   price: number;
-  finalPrice: number;
   createdAt: Date;
 };

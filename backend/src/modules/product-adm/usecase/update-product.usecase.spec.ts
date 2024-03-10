@@ -15,19 +15,18 @@ describe("Should update product information", () => {
     productRepository = new ProductRepositoryMemory();
     queue = new MemoryQueueAdapter();
     const createProductUsecase = new CreateProductUseCase(productRepository, queue);
-    const { id } = await createProductUsecase.execute({ name: "Product before update", price: 1000 });
+    const { id } = await createProductUsecase.execute({ name: "Product before update", price: 10 });
     idProduct = id;
   });
 
   it("should update a product", async () => {
     const updateProductUsecase = new UpdateProductUseCase(productRepository, queue);
-    const afterUpdate = { id: idProduct, name: "Product after update", price: 2000 };
+    const afterUpdate = { id: idProduct, name: "Product after update", price: 20 };
     const result = await updateProductUsecase.execute(afterUpdate);
     expect(result).toEqual({
       id: afterUpdate.id,
       name: "Product after update",
-      price: 2000,
-      finalPrice: 20,
+      price: 20,
     });
   });
 
@@ -38,8 +37,7 @@ describe("Should update product information", () => {
     const expected = {
       id: idProduct,
       name: "Product after update",
-      price: 2000,
-      finalPrice: 20,
+      price: 20,
     };
     const productUpdate = new ProductUpdated(expected, date);
 
@@ -58,7 +56,7 @@ describe("Should update product information", () => {
   it("should throw an error when trying to update a non-existent product", async () => {
     const updateProductUsecase = new UpdateProductUseCase(productRepository, queue);
     await expect(
-      updateProductUsecase.execute({ id: "non-existent-id", name: "Product after update", price: 2000 }),
+      updateProductUsecase.execute({ id: "non-existent-id", name: "Product after update", price: 20 }),
     ).rejects.toThrow();
   });
 });
