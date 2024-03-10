@@ -5,7 +5,7 @@ Content-Type: application/json
     "email": "john.doe@email.com",
     "items": [
         {
-            "product_id": "78bb77de-22ce-46c8-a371-3908ee39bba6",
+            "productId": "96ce7305-c5ad-462f-95a6-c7ea1f7e9133",
             "amount": 2
         } 
     ]

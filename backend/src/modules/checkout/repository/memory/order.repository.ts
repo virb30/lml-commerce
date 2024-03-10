@@ -5,11 +5,11 @@ import { Id } from "@modules/shared/domain/value-object/id";
 export class OrderRepositoryMemory implements OrderRepository {
   private orders: Order[] = [];
 
-  public async save(order: Order): Promise<void> {
+  async save(order: Order): Promise<void> {
     this.orders.push(order);
   }
 
-  public async getById(id: Id): Promise<Order> {
+  async getById(id: Id): Promise<Order> {
     const order = this.orders.find((order) => {
       return order.id.value === id.value;
     });
@@ -21,7 +21,16 @@ export class OrderRepositoryMemory implements OrderRepository {
     return order;
   }
 
-  public async clear(): Promise<void> {
+  async clear(): Promise<void> {
     this.orders = [];
+  }
+
+  async getNextSequence(): Promise<number> {
+    if (this.orders.length === 0) {
+      return 1;
+    }
+    const sequences = this.orders.map((order) => order.sequency ?? 0);
+    const maxSequence = Math.max(...sequences);
+    return maxSequence + 1;
   }
 }

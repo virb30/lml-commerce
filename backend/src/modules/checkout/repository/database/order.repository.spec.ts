@@ -45,4 +45,18 @@ describe("Order repository", () => {
       await orderRepositoryDatabase.getById(new Id("1"));
     }).rejects.toThrow(new Error("Order not found"));
   });
+
+  it("gets next sequence if there is no order placed", async () => {
+    const nextSequence = await orderRepositoryDatabase.getNextSequence();
+    expect(nextSequence).toBe(1);
+  });
+
+  it("gets next sequence if there is an order placed", async () => {
+    const order = new Order(new Id("1"), new Email("cliente@email.com"), new Date("2023-01-01T00:00:00"), 1);
+    order.addItem(new Product(new Id("1"), "Bicicleta", 20.0, new Dimensions(10, 10, 2), 50), 1);
+    await orderRepositoryDatabase.save(order);
+
+    const nextSequence = await orderRepositoryDatabase.getNextSequence();
+    expect(nextSequence).toBe(2);
+  });
 });

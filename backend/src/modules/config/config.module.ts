@@ -1,5 +1,5 @@
-import { DynamicModule, Module } from "@nestjs/common";
-import { ConfigFactory, ConfigModuleOptions, ConfigModule as NestConfigModule } from "@nestjs/config";
+import { Module } from "@nestjs/common";
+import { ConfigModuleOptions, ConfigModule as NestConfigModule } from "@nestjs/config";
 import { join } from "path";
 import dataSourceConfig from "./data.source";
 

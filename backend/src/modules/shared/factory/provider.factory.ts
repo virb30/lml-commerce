@@ -6,7 +6,14 @@ export class ProviderFactory<T> {
     if (!instance) {
       throw new Error("Invalid instance");
     }
-    return new instance.className(instance.options) as T;
+    return this.constructObject(instance.className, instance.options);
+  }
+
+  private constructObject(className: ConstructableObject<T>, options: any): T {
+    if (!options) {
+      return new className() as T;
+    }
+    return new className(...Object.values(options)) as T;
   }
 }
 

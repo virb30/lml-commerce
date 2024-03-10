@@ -3,13 +3,9 @@ import { GetStockUseCase } from "./usecase/get-stock.usecase";
 import { StockModule } from "./stock.module";
 import { StockEntryRepositoryMemory } from "./repository/memory/stock-entry.repository";
 import { ConfigModule } from "../config/config.module";
-import { registerAs } from "@nestjs/config";
 import { StockEntryRepositoryDatabase } from "./repository/database/stock-entry.repository";
 import { TOKENS } from "./constants";
-
-const registerDataSource = (source: string) => {
-  return registerAs("data", () => ({ source }));
-};
+import { registerDataSource } from "../../fixtures/data-source.fixture";
 
 describe("StockProvider tests", () => {
   describe("usecases tests", () => {

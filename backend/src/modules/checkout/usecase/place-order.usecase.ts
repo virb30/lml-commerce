@@ -23,7 +23,8 @@ export class PlaceOrderUseCase {
   }
 
   public async execute(input: PlaceOrderUseCaseInput): Promise<PlaceOrderUseCaseOutput> {
-    const order = new Order(new Id(), new Email(input.email), input.date ?? new Date(), 1);
+    const sequence = await this.orderRepository.getNextSequence();
+    const order = new Order(new Id(), new Email(input.email), input.date ?? new Date(), sequence);
 
     for (const item of input.items) {
       const product = await this.productRepository.getById(new Id(item.id));
@@ -49,7 +50,10 @@ export class PlaceOrderUseCase {
     await this.queue.publish(orderPlaced);
 
     return {
+      id: order.id.value,
+      code: order.code.value,
       total: order.total,
+      freight: order.getFreight(),
     };
   }
 }
@@ -62,5 +66,8 @@ export type PlaceOrderUseCaseInput = {
 };
 
 export type PlaceOrderUseCaseOutput = {
+  id: string;
+  code: string;
   total: number;
+  freight?: number;
 };

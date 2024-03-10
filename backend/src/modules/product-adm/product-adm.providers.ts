@@ -8,6 +8,7 @@ import { CONNECTION_PROVIDER_TOKEN } from "../database/database.providers";
 import { TOKENS } from "./constants";
 import { ConfigService } from "@nestjs/config";
 import { ProductRepositoryProviderFactory } from "./factory/product-repository.provider.factory";
+import { UpdateProductUseCase } from "./usecase/update-product.usecase";
 
 export const REPOSITORIES = {
   PRODUCT_REPOSITORY: {
@@ -29,6 +30,13 @@ export const USE_CASES = {
     provide: CreateProductUseCase,
     useFactory: (productRepository: ProductRepository, queue: Queue) => {
       return new CreateProductUseCase(productRepository, queue);
+    },
+    inject: [TOKENS.PRODUCT_REPOSITORY, QUEUE_PROVIDER_TOKEN],
+  },
+  UPDATE_PRODUCT: {
+    provide: UpdateProductUseCase,
+    useFactory: (productRepository: ProductRepository, queue: Queue) => {
+      return new UpdateProductUseCase(productRepository, queue);
     },
     inject: [TOKENS.PRODUCT_REPOSITORY, QUEUE_PROVIDER_TOKEN],
   },
