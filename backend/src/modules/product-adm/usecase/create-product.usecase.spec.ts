@@ -18,13 +18,12 @@ describe("CreateProductUseCase tests", () => {
   it("creates a product", async () => {
     const input = {
       name: "Product 1",
-      price: 1000,
+      price: 10,
     };
     const output = await usecase.execute(input);
     expect(output.id).toBeDefined();
     expect(output.name).toBe(input.name);
     expect(output.price).toBe(input.price);
-    expect(output.finalPrice).toBe(10);
     expect(output.createdAt).toBeDefined();
   });
 
@@ -33,7 +32,7 @@ describe("CreateProductUseCase tests", () => {
 
     const input = {
       name: "Product 1",
-      price: 1000,
+      price: 10,
     };
     const output = await usecase.execute(input);
     expect(output.id).toBeDefined();

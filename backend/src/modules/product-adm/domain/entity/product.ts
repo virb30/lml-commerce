@@ -1,55 +1,39 @@
 import { Id } from "@modules/shared/domain/value-object/id";
-import { Currency } from "@modules/shared/domain/value-object/currency";
 
 export class Product {
-  private _price: Currency;
+  private _price: number;
+  private _name: string;
   readonly createdAt: Date = new Date();
   readonly updatedAt: Date = new Date();
 
   constructor(
     public readonly id: Id,
-    private _name: string,
+    name: string,
     price: number,
     createdAt?: Date,
     updatedAt?: Date,
   ) {
-    if (createdAt) {
-      this.createdAt = createdAt;
-    }
-    if (updatedAt) {
-      this.updatedAt = updatedAt;
-    }
-    this.setPrice(price);
-    this.validate();
+    if (createdAt) this.createdAt = createdAt;
+    if (updatedAt) this.updatedAt = updatedAt;
+    this.changeName(name);
+    this.changePrice(price);
   }
 
-  changeName(name: string) {
+  changeName(name: string): void {
     this._name = name;
-    this.validate();
+    if (!this._name) throw new Error("Invalid name");
   }
 
   get name(): string {
     return this._name;
   }
 
-  changePrice(price: number) {
-    this.setPrice(price);
-    this.validate();
+  changePrice(price: number): void {
+    this._price = price;
+    if (this._price < 0) throw new Error("Invalid price");
   }
 
   get price(): number {
-    return this._price.value;
-  }
-
-  getFinalPrice(): number {
-    return this._price.value / 100;
-  }
-
-  private validate() {
-    if (!this._name) throw new Error("Invalid name");
-  }
-
-  private setPrice(price: number): void {
-    this._price = new Currency(price);
+    return this._price;
   }
 }

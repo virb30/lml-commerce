@@ -19,7 +19,6 @@ export class UpdateProductUseCase {
       id: product.id.value,
       name: product.name,
       price: product.price,
-      finalPrice: product.getFinalPrice(),
     };
 
     const productCreated = new ProductUpdated(outputProduct, input.date ?? new Date());
@@ -40,5 +39,4 @@ type updateProductOutput = {
   id: string;
   name: string;
   price: number;
-  finalPrice: number;
 };
