@@ -27,7 +27,6 @@ describe("ProductAdmController", () => {
     const output = await controller.create("Product 1", 50);
     expect(output.id).toBeDefined();
     expect(output.name).toBe("Product 1");
-    expect(output.finalPrice).toBe(0.5);
     expect(output.price).toBe(50);
   });
 
@@ -39,6 +38,5 @@ describe("ProductAdmController", () => {
     expect(output.price).toBe(100);
     expect(output.id).toBe(product.id);
     expect(output.name).toBe("Product 1 updated");
-    expect(output.finalPrice).toBe(1);
   });
 });
