@@ -4,10 +4,17 @@ import { Id } from "@modules/shared/domain/value-object/id";
 import { MysqlConnectionAdapter } from "../../../database/connection/mysql/mysql-connection.adapter";
 import { ProductRepositoryDatabase } from "./product.repository";
 import { dbConfig } from "@modules/database/connection/mysql/config";
+import { BRLCurrency } from "@modules/shared/domain/value-object/currency/handlers/brl-currency";
+import { CurrencyFactory } from "@modules/shared/domain/value-object/currency/currency.factory";
 
 describe("Product Repository", () => {
   const connection = new MysqlConnectionAdapter(dbConfig);
   const productRepositoryDatabase = new ProductRepositoryDatabase(connection);
+
+  beforeAll(() => {
+    const factory = CurrencyFactory.getInstance();
+    factory.register("brl", BRLCurrency);
+  });
 
   afterAll(async () => {
     await productRepositoryDatabase.clear();
@@ -18,7 +25,7 @@ describe("Product Repository", () => {
     await productRepositoryDatabase.clear();
   });
   it("creates a product", async () => {
-    const product = new Product(new Id("1"), "Notebook Avell", 5600.0, new Dimensions(10, 20, 30), 5);
+    const product = new Product(new Id("1"), "Notebook Avell", new BRLCurrency(5600.0), new Dimensions(10, 20, 30), 5);
 
     await productRepositoryDatabase.save(product);
 

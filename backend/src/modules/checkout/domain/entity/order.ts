@@ -18,6 +18,7 @@ export class Order {
     public readonly email: Email,
     public readonly date: Date,
     public readonly sequency: number,
+    public readonly currency: string = "brl",
   ) {
     this.code = new OrderCode(date, sequency);
   }

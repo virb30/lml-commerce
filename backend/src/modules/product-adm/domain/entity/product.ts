@@ -1,7 +1,8 @@
+import { Currency } from "@modules/shared/domain/value-object/currency/currency";
 import { Id } from "@modules/shared/domain/value-object/id";
 
 export class Product {
-  private _price: number;
+  private _price: Currency;
   private _name: string;
   readonly createdAt: Date = new Date();
   readonly updatedAt: Date = new Date();
@@ -9,7 +10,7 @@ export class Product {
   constructor(
     public readonly id: Id,
     name: string,
-    price: number,
+    price: Currency,
     createdAt?: Date,
     updatedAt?: Date,
   ) {
@@ -28,12 +29,11 @@ export class Product {
     return this._name;
   }
 
-  changePrice(price: number): void {
+  changePrice(price: Currency): void {
     this._price = price;
-    if (this._price < 0) throw new Error("Invalid price");
   }
 
-  get price(): number {
+  get price(): Currency {
     return this._price;
   }
 }

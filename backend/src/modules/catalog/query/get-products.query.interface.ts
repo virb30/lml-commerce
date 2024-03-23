@@ -12,6 +12,7 @@ export type ProductOutput = {
   id: string;
   name: string;
   price: number;
+  currency: string;
   width?: number;
   height?: number;
   length?: number;

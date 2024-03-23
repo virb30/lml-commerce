@@ -63,6 +63,7 @@ export type PlaceOrderUseCaseInput = {
   items: { id: string; amount: number }[];
   coupon?: string;
   date?: Date;
+  currency?: string;
 };
 
 export type PlaceOrderUseCaseOutput = {

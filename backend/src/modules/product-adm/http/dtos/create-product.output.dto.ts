@@ -11,5 +11,8 @@ export class CreateProductOutputDto {
   price: number;
 
   @ApiProperty()
+  currency: string;
+
+  @ApiProperty()
   createdAt: Date;
 }

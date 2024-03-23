@@ -11,6 +11,7 @@ CREATE TABLE app.order (
     sequency BIGINT NOT NULL,
     issue_date DATETIME NOT NULL,
     total DECIMAL(10, 2) NOT NULL,
+    currency VARCHAR(3) NOT NULL DEFAULT 'brl',
     freight DECIMAL(10,2) NULL DEFAULT NULL,
     coupon_code VARCHAR(100) NULL DEFAULT NULL,
     coupon_percentage DECIMAL(3, 1) NULL DEFAULT NULL,
@@ -24,6 +25,7 @@ CREATE TABLE app.product (
     id CHAR(36) PRIMARY KEY NOT NULL,
     name VARCHAR(255) NOT NULL,
     price DECIMAL(10, 2) NOT NULL,
+    currency VARCHAR(3) NOT NULL DEFAULT 'brl',
     height INT DEFAULT NULL, 
     width INT DEFAULT NULL, 
     length INT DEFAULT NULL, 
@@ -37,6 +39,7 @@ CREATE TABLE app.order_item (
     id_order CHAR(36) NOT NULL,
     id_product CHAR(36) NOT NULL,
     price DECIMAL(10, 2) NOT NULL,
+    currency VARCHAR(3) NOT NULL DEFAULT 'brl',
     amount INT NOT NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id_order,id_product)

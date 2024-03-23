@@ -18,7 +18,7 @@ export class GetProductsQueryDatabase extends PaginatableQueryDatabase implement
     const { offset, limit } = this.getPagination(criteria.page, criteria.perPage);
 
     const productsData = await this.connection.query(
-      "SELECT id, name, price, width, height, length, weight FROM app.product LIMIT ? OFFSET ?;",
+      "SELECT id, name, price, currency, width, height, length, weight FROM app.product LIMIT ? OFFSET ?;",
       [limit.toString(), offset.toString()],
     );
 
@@ -26,6 +26,7 @@ export class GetProductsQueryDatabase extends PaginatableQueryDatabase implement
       id: productData.id,
       name: productData.name,
       price: parseFloat(productData.price),
+      currency: productData.currency,
       width: parseInt(productData.width),
       height: parseInt(productData.height),
       length: parseInt(productData.length),

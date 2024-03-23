@@ -10,6 +10,7 @@ import { ConfigModule } from "@modules/config/config.module";
 import { registerDataSource } from "../../../fixtures/data-source.fixture";
 import { RepositoryFactory } from "../domain/factory/repository-factory.interface";
 import { REPOSITORIES } from "../checkout.providers";
+import { BRLCurrency } from "@modules/shared/domain/value-object/currency/handlers/brl-currency";
 
 describe("OrderController tests", () => {
   let controller: OrderController;
@@ -41,8 +42,12 @@ describe("OrderController tests", () => {
   });
 
   it("places an order", async () => {
-    await productRepository.save(new Product(new Id("1"), "Fone de ouvido", 10.0, new Dimensions(1, 2, 3), 0.5));
-    await productRepository.save(new Product(new Id("2"), "Placa de vídeo", 3800.0, new Dimensions(2, 2, 5), 5));
+    await productRepository.save(
+      new Product(new Id("1"), "Fone de ouvido", new BRLCurrency(10.0), new Dimensions(1, 2, 3), 0.5),
+    );
+    await productRepository.save(
+      new Product(new Id("2"), "Placa de vídeo", new BRLCurrency(3800.0), new Dimensions(2, 2, 5), 5),
+    );
 
     const input = {
       email: "cliente@email.com",

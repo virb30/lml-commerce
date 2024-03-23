@@ -23,10 +23,15 @@ export class ProductAdmController {
   @ApiCreatedResponse({
     type: CreateProductOutputDto,
   })
-  async create(@Body("name") name: string, @Body("price") price: number): Promise<CreateProductOutput> {
+  async create(
+    @Body("name") name: string,
+    @Body("price") price: number,
+    @Body("currency") currency: string,
+  ): Promise<CreateProductOutput> {
     const input = {
       name,
       price,
+      currency,
     };
     const output = await this.createProduct.execute(input);
     return CreateProductPresenter.toJson(output);
@@ -42,11 +47,13 @@ export class ProductAdmController {
     @Param("productId") productId: string,
     @Body("name") name: string,
     @Body("price") price: number,
+    @Body("currency") currency: string,
   ): Promise<UpdateProductOutput> {
     const input = {
       id: productId,
       name,
       price,
+      currency,
     };
     const output = await this.updateProduct.execute(input);
     return UpdateProductPresenter.toJson(output);

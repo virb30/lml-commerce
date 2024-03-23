@@ -1,3 +1,4 @@
+import { Currency } from "@modules/shared/domain/value-object/currency/currency";
 import { Dimensions } from "../value-object/dimensions";
 import { Id } from "@modules/shared/domain/value-object/id";
 
@@ -5,7 +6,7 @@ export class Product {
   constructor(
     public readonly id: Id,
     public readonly name: string,
-    public readonly price: number,
+    public readonly price: Currency,
     public readonly dimensions?: Dimensions,
     public readonly weight?: number,
   ) {
