@@ -5,9 +5,17 @@ import { CreateProductUseCase } from "../usecase/create-product.usecase";
 import { ProductAdmModule } from "../product-adm.module";
 import { UpdateProductUseCase } from "../usecase/update-product.usecase";
 import { registerDataSource } from "../../../fixtures/data-source.fixture";
+import { CurrencyModule } from "@modules/currency/currency.module";
+import { CurrencyFactory } from "@modules/shared/domain/value-object/currency/currency.factory";
+import { BRLCurrency } from "@modules/shared/domain/value-object/currency/handlers/brl-currency";
 
 describe("ProductAdmController", () => {
   let controller: ProductAdmController;
+
+  beforeAll(() => {
+    const factory = CurrencyFactory.getInstance();
+    factory.register("brl", BRLCurrency);
+  });
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -24,17 +32,17 @@ describe("ProductAdmController", () => {
   });
 
   it("creates a product", async () => {
-    const output = await controller.create("Product 1", 50);
+    const output = await controller.create("Product 1", 50, "brl");
     expect(output.id).toBeDefined();
     expect(output.name).toBe("Product 1");
     expect(output.price).toBe(50);
   });
 
   it("updates a product", async () => {
-    const product = await controller.create("Product 1", 50);
+    const product = await controller.create("Product 1", 50, "brl");
     expect(product.id).toBeDefined();
 
-    const output = await controller.update(product.id, "Product 1 updated", 100);
+    const output = await controller.update(product.id, "Product 1 updated", 100, "brl");
     expect(output.price).toBe(100);
     expect(output.id).toBe(product.id);
     expect(output.name).toBe("Product 1 updated");

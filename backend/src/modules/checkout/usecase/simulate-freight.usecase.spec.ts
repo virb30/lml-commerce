@@ -4,6 +4,7 @@ import { ProductRepository } from "../domain/repository/product.repository.inter
 import { Dimensions } from "../domain/value-object/dimensions";
 import { Id } from "@modules/shared/domain/value-object/id";
 import { MemoryRepositoryFactory } from "../repository/factory/memory-repository.factory";
+import { BRLCurrency } from "@modules/shared/domain/value-object/currency/handlers/brl-currency";
 
 describe("SimulateFreightUseCase tests", () => {
   const repositoryFactory = new MemoryRepositoryFactory();
@@ -18,9 +19,11 @@ describe("SimulateFreightUseCase tests", () => {
   });
 
   it("should simulate freight", async () => {
-    productRepository.save(new Product(new Id("1"), "Licença Anti-virus", 200));
-    productRepository.save(new Product(new Id("2"), "Fone de ouvido", 200, new Dimensions(2, 2, 1), 1));
-    productRepository.save(new Product(new Id("3"), "Placa mãe", 1200, new Dimensions(10, 2, 1), 5));
+    productRepository.save(new Product(new Id("1"), "Licença Anti-virus", new BRLCurrency(200)));
+    productRepository.save(
+      new Product(new Id("2"), "Fone de ouvido", new BRLCurrency(200), new Dimensions(2, 2, 1), 1),
+    );
+    productRepository.save(new Product(new Id("3"), "Placa mãe", new BRLCurrency(1200), new Dimensions(10, 2, 1), 5));
     const usecase = new SimulateFreightUseCase(repositoryFactory);
     const input = {
       items: [

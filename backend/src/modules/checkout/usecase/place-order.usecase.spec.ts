@@ -9,6 +9,7 @@ import { MemoryRepositoryFactory } from "../repository/factory/memory-repository
 import { Queue } from "../../queue/queue.interface";
 import { MemoryQueueAdapter } from "../../queue/adapter/memory/memory-queue.adapter";
 import { OrderRepository } from "../domain/repository/order.repository.interface";
+import { BRLCurrency } from "@modules/shared/domain/value-object/currency/handlers/brl-currency";
 
 describe("Place order use case tests", () => {
   const repositoryFactory = new MemoryRepositoryFactory();
@@ -28,8 +29,12 @@ describe("Place order use case tests", () => {
   });
 
   it("places an order", async () => {
-    productRepository.save(new Product(new Id("1"), "Fone de ouvido", 10.0, new Dimensions(10, 20, 30), 0));
-    productRepository.save(new Product(new Id("2"), "Bicicleta", 1500.0, new Dimensions(10, 20, 30), 0));
+    productRepository.save(
+      new Product(new Id("1"), "Fone de ouvido", new BRLCurrency(10.0), new Dimensions(10, 20, 30), 0),
+    );
+    productRepository.save(
+      new Product(new Id("2"), "Bicicleta", new BRLCurrency(1500.0), new Dimensions(10, 20, 30), 0),
+    );
 
     const useCase = new PlaceOrderUseCase(repositoryFactory, queue);
     const input = {
@@ -60,8 +65,12 @@ describe("Place order use case tests", () => {
 
   it("places an order with discount", async () => {
     couponRepository.save(new Coupon(new Id("1"), "VALE10", 10, 10.0, new Date("2023-10-15T00:00:00")));
-    productRepository.save(new Product(new Id("1"), "Fone de ouvido", 10.0, new Dimensions(10, 20, 30), 0));
-    productRepository.save(new Product(new Id("2"), "Bicicleta", 1500.0, new Dimensions(10, 20, 30), 0));
+    productRepository.save(
+      new Product(new Id("1"), "Fone de ouvido", new BRLCurrency(10.0), new Dimensions(10, 20, 30), 0),
+    );
+    productRepository.save(
+      new Product(new Id("2"), "Bicicleta", new BRLCurrency(1500.0), new Dimensions(10, 20, 30), 0),
+    );
     const useCase = new PlaceOrderUseCase(repositoryFactory, queue);
     const input = {
       email: "cliente@email.com",
@@ -81,8 +90,12 @@ describe("Place order use case tests", () => {
 
   it("throws an error when placing an order with an inexistent coupon", async () => {
     expect(async () => {
-      productRepository.save(new Product(new Id("1"), "Fone de ouvido", 10.0, new Dimensions(10, 20, 30), 0));
-      productRepository.save(new Product(new Id("2"), "Bicicleta", 1500.0, new Dimensions(10, 20, 30), 0));
+      productRepository.save(
+        new Product(new Id("1"), "Fone de ouvido", new BRLCurrency(10.0), new Dimensions(10, 20, 30), 0),
+      );
+      productRepository.save(
+        new Product(new Id("2"), "Bicicleta", new BRLCurrency(1500.0), new Dimensions(10, 20, 30), 0),
+      );
       const useCase = new PlaceOrderUseCase(repositoryFactory, queue);
       const input = {
         email: "cliente@email.com",

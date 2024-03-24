@@ -4,6 +4,7 @@ import { Product } from "../domain/entity/product";
 import { ProductCreated } from "../domain/event/product-created.event";
 import { ProductRepository } from "../domain/repository/product.repository.interface";
 import { Usecase } from "@modules/shared/usecase/usecase.interface";
+import { CurrencyFactory } from "@modules/shared/domain/value-object/currency/currency.factory";
 
 export class CreateProductUseCase implements Usecase {
   constructor(
@@ -12,13 +13,15 @@ export class CreateProductUseCase implements Usecase {
   ) {}
 
   async execute(input: CreateProductInput): Promise<CreateProductOutput> {
-    const product = new Product(new Id(), input.name, input.price);
+    const price = CurrencyFactory.make(input.price, input.currency);
+    const product = new Product(new Id(), input.name, price);
     await this.productRepository.save(product);
 
     const payload = {
       id: product.id.value,
       name: product.name,
-      price: product.price,
+      price: product.price.value,
+      currency: product.price.code,
       createdAt: product.createdAt,
     };
 
@@ -31,11 +34,13 @@ export class CreateProductUseCase implements Usecase {
 export type CreateProductInput = {
   name: string;
   price: number;
+  currency: string;
 };
 
 export type CreateProductOutput = {
   id: string;
   name: string;
   price: number;
+  currency: string;
   createdAt: Date;
 };

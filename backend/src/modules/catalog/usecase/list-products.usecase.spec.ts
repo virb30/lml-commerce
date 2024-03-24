@@ -19,16 +19,16 @@ describe("ListProductsUseCase tests", () => {
   beforeEach(async () => {
     await databaseConnection.query("TRUNCATE TABLE app.product", []);
     await databaseConnection.query(
-      "INSERT INTO app.product (id, name, price, width, height, length, weight) values (?,?,?,?,?,?,?)",
-      ["1", "Product 1", 10.0, 1, 1, 1, 1],
+      "INSERT INTO app.product (id, name, price, currency, width, height, length, weight) values (?,?,?,?,?,?,?,?)",
+      ["1", "Product 1", 10.0, "brl", 1, 1, 1, 1],
     );
     await databaseConnection.query(
-      "INSERT INTO app.product (id, name, price, width, height, length, weight) values (?,?,?,?,?,?,?)",
-      ["2", "Product 2", 20.0, 2, 1, 2, 2],
+      "INSERT INTO app.product (id, name, price, currency, width, height, length, weight) values (?,?,?,?,?,?,?,?)",
+      ["2", "Product 2", 20.0, "brl", 2, 1, 2, 2],
     );
     await databaseConnection.query(
-      "INSERT INTO app.product (id, name, price, width, height, length, weight) values (?,?,?,?,?,?,?)",
-      ["3", "Product 3", 30.0, 3, 3, 1, 3],
+      "INSERT INTO app.product (id, name, price, currency, width, height, length, weight) values (?,?,?,?,?,?,?,?)",
+      ["3", "Product 3", 30.0, "brl", 3, 3, 1, 3],
     );
   });
 

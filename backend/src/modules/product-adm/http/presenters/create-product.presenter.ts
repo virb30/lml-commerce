@@ -7,6 +7,7 @@ export class CreateProductPresenter {
       id: dto.id,
       name: dto.name,
       price: dto.price,
+      currency: dto.currency,
       createdAt: dto.createdAt,
     };
   }

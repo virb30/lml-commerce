@@ -5,6 +5,7 @@ import { Dimensions } from "../domain/value-object/dimensions";
 import { Email } from "@modules/shared/domain/value-object/email";
 import { Id } from "@modules/shared/domain/value-object/id";
 import { MemoryRepositoryFactory } from "../repository/factory/memory-repository.factory";
+import { BRLCurrency } from "@modules/shared/domain/value-object/currency/handlers/brl-currency";
 
 describe("GetOrderUseCase tests", () => {
   const repositoryFactory = new MemoryRepositoryFactory();
@@ -13,7 +14,7 @@ describe("GetOrderUseCase tests", () => {
 
   const orderFixture = async () => {
     const order = new Order(new Id("1"), new Email("cliente@email.com"), new Date("2023-01-01T00:00:00"), 1);
-    const product = new Product(new Id("1"), "Fone de ouvido", 10.0, new Dimensions(10, 20, 30), 0);
+    const product = new Product(new Id("1"), "Fone de ouvido", new BRLCurrency(10.0), new Dimensions(10, 20, 30), 0);
     order.addItem(product, 1);
     await orderRepository.save(order);
     return order;
