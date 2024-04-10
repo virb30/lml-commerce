@@ -39,3 +39,14 @@ Check if the server is running by accessing `http://localhost:<PORT>/health-chec
 
 - Directory names must be written in PascalCase
 - Directory names must be written in Singular
+
+
+# Keycloak
+
+The docker-compose file provides a keycloak service and a standalone database to users separated from app db 
+to provide isolation between services and better maintenability.
+
+To access keycloak admin go to http://localhost:8080
+
+User: admin
+Password: admin
