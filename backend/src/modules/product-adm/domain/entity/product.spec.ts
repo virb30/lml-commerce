@@ -1,6 +1,7 @@
 import { Id } from "@modules/shared/domain/value-object/id";
 import { Product } from "./product";
 import { BRLCurrency } from "@modules/shared/domain/value-object/currency/handlers/brl-currency";
+import { InputError } from "@modules/shared/errors/input.error";
 
 describe("Product entity tests", () => {
   it("creates a product", () => {
@@ -27,13 +28,13 @@ describe("Product entity tests", () => {
   it("does not create a product with empty name", () => {
     expect(() => {
       new Product(new Id(), "", new BRLCurrency(10));
-    }).toThrow(new Error("Invalid name"));
+    }).toThrowErrorTypeWithMessage(InputError, "Invalid name");
   });
 
   it("does not change a product name with empty value", () => {
     expect(() => {
       const product = new Product(new Id(), "Produto Teste", new BRLCurrency(10));
       product.changeName("");
-    }).toThrow(new Error("Invalid name"));
+    }).toThrowErrorTypeWithMessage(InputError, "Invalid name");
   });
 });

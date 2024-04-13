@@ -2,6 +2,7 @@ import { Dimensions } from "../value-object/dimensions";
 import { Id } from "@modules/shared/domain/value-object/id";
 import { Product } from "./product";
 import { BRLCurrency } from "@modules/shared/domain/value-object/currency/handlers/brl-currency";
+import { InputError } from "@modules/shared/errors/input.error";
 
 describe("Product", () => {
   it("creates a product", () => {
@@ -34,6 +35,6 @@ describe("Product", () => {
   it("does not create a product with invalid weight", () => {
     expect(() => {
       new Product(new Id("1"), "Fone de ouvido", new BRLCurrency(10.0), new Dimensions(10, 20, 30), -1);
-    }).toThrow(new Error("Invalid weight"));
+    }).toThrowErrorTypeWithMessage(InputError, "Invalid weight");
   });
 });

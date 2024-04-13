@@ -1,3 +1,4 @@
+import { InputError } from "@modules/shared/errors/input.error";
 import { Dimensions } from "./dimensions";
 
 describe("Dimesion tests", () => {
@@ -10,7 +11,7 @@ describe("Dimesion tests", () => {
   it.each(dataDimensions)("should create an dimension with invalid numbers", (height, width, length) => {
     expect(() => {
       new Dimensions(height, width, length);
-    }).toThrow(new Error("Invalid values"));
+    }).toThrow(new InputError("Invalid values"));
   });
 
   it("should create an dimesion", () => {

@@ -1,0 +1,2 @@
+GET http://localhost:8010/health-check HTTP/1.1
+Accept: application/json
