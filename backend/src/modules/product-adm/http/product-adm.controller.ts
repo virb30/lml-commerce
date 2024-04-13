@@ -1,4 +1,4 @@
-import { Body, Controller, Param, Post, Put, UseGuards } from "@nestjs/common";
+import { Body, Controller, Inject, Param, Post, Put, UseGuards } from "@nestjs/common";
 import { CreateProductOutput, CreateProductUseCase } from "../usecase/create-product.usecase";
 import { UpdateProductOutput, UpdateProductUseCase } from "../usecase/update-product.usecase";
 import { ApiBody, ApiCreatedResponse, ApiOAuth2, ApiOkResponse, ApiParam, ApiSecurity, ApiTags } from "@nestjs/swagger";
@@ -11,21 +11,18 @@ import { UpdateProductOutputDto } from "./dtos/update-product.output.dto";
 import { AuthGuard } from "@modules/auth/auth.guard";
 import { UsecaseHandler } from "@modules/shared/http/controllers/usecase-handler.decorator";
 import { HttpExceptionHandler } from "@modules/shared/http/http-exception/http-exception-handler.interface";
-import { HttpExceptionHandlerFactory } from "@modules/shared/http/http-exception/http-exception-handler.factory";
 
 @ApiOAuth2([])
 @ApiTags("product-adm")
 @UseGuards(AuthGuard)
 @Controller("admin/products")
 export class ProductAdmController {
-  exceptionHandler: HttpExceptionHandler;
-
   constructor(
     private readonly createProduct: CreateProductUseCase,
     private readonly updateProduct: UpdateProductUseCase,
-  ) {
-    this.exceptionHandler = HttpExceptionHandlerFactory.create();
-  }
+    @Inject("HttpExceptionHandler")
+    private readonly exceptionHandler: HttpExceptionHandler,
+  ) {}
 
   @Post()
   @ApiBody({

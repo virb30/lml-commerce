@@ -4,6 +4,7 @@ import { InputError } from "@modules/shared/errors/input.error";
 import { NotFoundError } from "@modules/shared/errors/not-found.error";
 import { HttpExceptionHandlerFactory } from "../http-exception/http-exception-handler.factory";
 import { HttpExceptionHandler } from "../http-exception/http-exception-handler.interface";
+import { BadRequestException, InternalServerErrorException, NotFoundException } from "@nestjs/common";
 
 describe("UsecaseHandler tests", () => {
   let exceptionHandler: HttpExceptionHandler;
@@ -11,7 +12,7 @@ describe("UsecaseHandler tests", () => {
     exceptionHandler = HttpExceptionHandlerFactory.create();
   });
 
-  it("should rethrow usecase's error", async () => {
+  it("should throw BadRequestException for InputError", async () => {
     const usecase = new (class implements Usecase {
       execute(input?: any): Promise<any> {
         throw new InputError("Method not implemented.");
@@ -22,13 +23,13 @@ describe("UsecaseHandler tests", () => {
 
     expect(async () => {
       await handler.execute();
-    }).rejects.toThrowErrorTypeWithMessage(InputError, "Method not implemented.");
+    }).rejects.toThrowErrorTypeWithMessage(BadRequestException, "Method not implemented.");
   });
 
-  it("should throw a different error than usecase's with same message", async () => {
+  it("should throw NotFoundException for NotFoundError", async () => {
     const usecase = new (class implements Usecase {
       execute(input?: any): Promise<any> {
-        throw new InputError("Method not implemented.");
+        throw new NotFoundError("Method not implemented.");
       }
     })();
 
@@ -36,6 +37,20 @@ describe("UsecaseHandler tests", () => {
 
     expect(async () => {
       await handler.execute();
-    }).rejects.toThrowErrorTypeWithMessage(NotFoundError, "Method not implemented.");
+    }).rejects.toThrowErrorTypeWithMessage(NotFoundException, "Method not implemented.");
+  });
+
+  it("should throw InternalServerErrorException for any Error", async () => {
+    const usecase = new (class implements Usecase {
+      execute(input?: any): Promise<any> {
+        throw new Error("Method not implemented.");
+      }
+    })();
+
+    const handler = new UsecaseHandler(usecase, exceptionHandler);
+
+    expect(async () => {
+      await handler.execute();
+    }).rejects.toThrowErrorTypeWithMessage(InternalServerErrorException, "Method not implemented.");
   });
 });

@@ -10,6 +10,7 @@ import { CatalogModule } from "./catalog/catalog.module";
 import { QueueModule } from "./queue/queue.module";
 import { CurrencyModule } from "./currency/currency.module";
 import { AuthModule } from "./auth/auth.module";
+import { SharedModule } from "./shared/shared.module";
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { AuthModule } from "./auth/auth.module";
     DatabaseModule,
     CurrencyModule,
     AuthModule,
+    SharedModule,
     StockModule,
     ProductAdmModule,
     CheckoutModule,
