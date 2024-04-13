@@ -1,4 +1,4 @@
-import { BRLCurrency } from "./handlers/brl-currency";
+import { NotFoundError } from "@modules/shared/errors/not-found.error";
 
 export class CurrencyFactory {
   static instance: CurrencyFactory;
@@ -24,7 +24,7 @@ export class CurrencyFactory {
   static make(value: number, currency?: string) {
     const currencyMapper = CurrencyFactory.getInstance().currencyMapper;
     if (!currency || !currencyMapper[currency]) {
-      throw new Error("Currency not registered");
+      throw new NotFoundError("Currency not registered");
     }
     return new currencyMapper[currency](value);
   }

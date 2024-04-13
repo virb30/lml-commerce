@@ -9,16 +9,23 @@ import { UpdateProductInputDto } from "./dtos/update-product.input.dto";
 import { UpdateProductPresenter } from "./presenters/update-product.presenter";
 import { UpdateProductOutputDto } from "./dtos/update-product.output.dto";
 import { AuthGuard } from "@modules/auth/auth.guard";
+import { UsecaseHandler } from "@modules/shared/http/controllers/usecase-handler.decorator";
+import { HttpExceptionHandler } from "@modules/shared/http/http-exception/http-exception-handler.interface";
+import { HttpExceptionHandlerFactory } from "@modules/shared/http/http-exception/http-exception-handler.factory";
 
 @ApiOAuth2([])
 @ApiTags("product-adm")
 @UseGuards(AuthGuard)
 @Controller("admin/products")
 export class ProductAdmController {
+  exceptionHandler: HttpExceptionHandler;
+
   constructor(
     private readonly createProduct: CreateProductUseCase,
     private readonly updateProduct: UpdateProductUseCase,
-  ) {}
+  ) {
+    this.exceptionHandler = HttpExceptionHandlerFactory.create();
+  }
 
   @Post()
   @ApiBody({
@@ -37,7 +44,8 @@ export class ProductAdmController {
       price,
       currency,
     };
-    const output = await this.createProduct.execute(input);
+    const handler = new UsecaseHandler(this.createProduct, this.exceptionHandler);
+    const output = await handler.execute(input);
     return CreateProductPresenter.toJson(output);
   }
 
@@ -59,7 +67,8 @@ export class ProductAdmController {
       price,
       currency,
     };
-    const output = await this.updateProduct.execute(input);
+    const handler = new UsecaseHandler(this.updateProduct, this.exceptionHandler);
+    const output = await handler.execute(input);
     return UpdateProductPresenter.toJson(output);
   }
 }
