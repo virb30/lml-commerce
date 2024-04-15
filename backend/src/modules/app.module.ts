@@ -9,12 +9,14 @@ import { DatabaseModule } from "./database/database.module";
 import { CatalogModule } from "./catalog/catalog.module";
 import { QueueModule } from "./queue/queue.module";
 import { CurrencyModule } from "./currency/currency.module";
+import { AuthModule } from "./auth/auth.module";
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
     DatabaseModule,
     CurrencyModule,
+    AuthModule,
     StockModule,
     ProductAdmModule,
     CheckoutModule,

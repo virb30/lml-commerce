@@ -8,6 +8,7 @@ import { registerDataSource } from "../../../fixtures/data-source.fixture";
 import { CurrencyModule } from "@modules/currency/currency.module";
 import { CurrencyFactory } from "@modules/shared/domain/value-object/currency/currency.factory";
 import { BRLCurrency } from "@modules/shared/domain/value-object/currency/handlers/brl-currency";
+import { AuthModule } from "@modules/auth/auth.module";
 
 describe("ProductAdmController", () => {
   let controller: ProductAdmController;
@@ -19,7 +20,7 @@ describe("ProductAdmController", () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [ConfigModule.forFeature(registerDataSource("memory")), ProductAdmModule],
+      imports: [ConfigModule.forFeature(registerDataSource("memory")), AuthModule, ProductAdmModule],
       controllers: [ProductAdmController],
       providers: [CreateProductUseCase, UpdateProductUseCase],
     }).compile();

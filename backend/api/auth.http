@@ -1,0 +1,12 @@
+
+### Keycloak configurations
+GET http://localhost:8080/realms/lml-commerce/.well-known/openid-configuration HTTP/1.1
+
+### Generate Access Token
+POST http://localhost:8080/realms/lml-commerce/protocol/openid-connect/token
+Content-Type: application/x-www-form-urlencoded
+
+username=admin@lml-commerce.com
+&password=secret
+&grant_type=password
+&client_id=lml-commerce-client
