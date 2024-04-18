@@ -31,11 +31,8 @@ export class ProductAdmController {
   @ApiCreatedResponse({
     type: CreateProductOutputDto,
   })
-  async create(
-    @Body("name") name: string,
-    @Body("price") price: number,
-    @Body("currency") currency: string,
-  ): Promise<CreateProductOutput> {
+  async create(@Body() data: CreateProductInputDto): Promise<CreateProductOutput> {
+    const { name, price, currency } = data;
     const input = {
       name,
       price,
@@ -54,10 +51,9 @@ export class ProductAdmController {
   })
   async update(
     @Param("productId") productId: string,
-    @Body("name") name: string,
-    @Body("price") price: number,
-    @Body("currency") currency: string,
+    @Body() data: UpdateProductInputDto,
   ): Promise<UpdateProductOutput> {
+    const { name, price, currency } = data;
     const input = {
       id: productId,
       name,

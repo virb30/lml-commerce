@@ -33,17 +33,17 @@ describe("ProductAdmController", () => {
   });
 
   it("creates a product", async () => {
-    const output = await controller.create("Product 1", 50, "brl");
+    const output = await controller.create({ name: "Product 1", price: 50, currency: "brl" });
     expect(output.id).toBeDefined();
     expect(output.name).toBe("Product 1");
     expect(output.price).toBe(50);
   });
 
   it("updates a product", async () => {
-    const product = await controller.create("Product 1", 50, "brl");
+    const product = await controller.create({ name: "Product 1", price: 50, currency: "brl" });
     expect(product.id).toBeDefined();
 
-    const output = await controller.update(product.id, "Product 1 updated", 100, "brl");
+    const output = await controller.update(product.id, { name: "Product 1 updated", price: 100, currency: "brl" });
     expect(output.price).toBe(100);
     expect(output.id).toBe(product.id);
     expect(output.name).toBe("Product 1 updated");

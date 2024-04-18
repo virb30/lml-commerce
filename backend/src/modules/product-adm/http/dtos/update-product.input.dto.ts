@@ -10,4 +10,9 @@ export class UpdateProductInputDto {
     description: "Product price",
   })
   price: number;
+
+  @ApiProperty({
+    description: "Product currency type",
+  })
+  currency: string;
 }
