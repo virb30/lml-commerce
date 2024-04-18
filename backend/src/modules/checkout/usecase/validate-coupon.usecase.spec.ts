@@ -3,6 +3,7 @@ import { Coupon } from "../domain/entity/coupon";
 import { Id } from "@modules/shared/domain/value-object/id";
 import { CouponRepositoryMemory } from "../repository/memory/coupon.repository";
 import { MemoryRepositoryFactory } from "../repository/factory/memory-repository.factory";
+import { NotFoundError } from "@modules/shared/errors/not-found.error";
 
 describe("Validate Coupon Use Case tests", () => {
   const repositoryFactory = new MemoryRepositoryFactory();
@@ -46,6 +47,6 @@ describe("Validate Coupon Use Case tests", () => {
         date: new Date("2023-12-02T00:00:00"),
       };
       await validateCouponUseCase.execute(payload);
-    }).rejects.toThrow(new Error("Coupon not found"));
+    }).rejects.toThrowErrorTypeWithMessage(NotFoundError, "Coupon not found");
   });
 });

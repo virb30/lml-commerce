@@ -1,4 +1,4 @@
-import { Body, Controller, Param, Post, Put, UseGuards } from "@nestjs/common";
+import { Body, Controller, Inject, Param, Post, Put, UseGuards } from "@nestjs/common";
 import { CreateProductOutput, CreateProductUseCase } from "../usecase/create-product.usecase";
 import { UpdateProductOutput, UpdateProductUseCase } from "../usecase/update-product.usecase";
 import { ApiBody, ApiCreatedResponse, ApiOAuth2, ApiOkResponse, ApiParam, ApiSecurity, ApiTags } from "@nestjs/swagger";
@@ -9,6 +9,8 @@ import { UpdateProductInputDto } from "./dtos/update-product.input.dto";
 import { UpdateProductPresenter } from "./presenters/update-product.presenter";
 import { UpdateProductOutputDto } from "./dtos/update-product.output.dto";
 import { AuthGuard } from "@modules/auth/auth.guard";
+import { UsecaseHandler } from "@modules/shared/http/controllers/usecase-handler.decorator";
+import { HttpExceptionHandler } from "@modules/shared/http/http-exception/http-exception-handler.interface";
 
 @ApiOAuth2([])
 @ApiTags("product-adm")
@@ -18,6 +20,8 @@ export class ProductAdmController {
   constructor(
     private readonly createProduct: CreateProductUseCase,
     private readonly updateProduct: UpdateProductUseCase,
+    @Inject("HttpExceptionHandler")
+    private readonly exceptionHandler: HttpExceptionHandler,
   ) {}
 
   @Post()
@@ -37,7 +41,8 @@ export class ProductAdmController {
       price,
       currency,
     };
-    const output = await this.createProduct.execute(input);
+    const handler = new UsecaseHandler(this.createProduct, this.exceptionHandler);
+    const output = await handler.execute(input);
     return CreateProductPresenter.toJson(output);
   }
 
@@ -59,7 +64,8 @@ export class ProductAdmController {
       price,
       currency,
     };
-    const output = await this.updateProduct.execute(input);
+    const handler = new UsecaseHandler(this.updateProduct, this.exceptionHandler);
+    const output = await handler.execute(input);
     return UpdateProductPresenter.toJson(output);
   }
 }

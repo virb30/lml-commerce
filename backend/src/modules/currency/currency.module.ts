@@ -13,8 +13,6 @@ export class CurrencyModule {
 
     const dirPath = path.join(__dirname, "..", "shared", "domain", "value-object", "currency", "handlers");
 
-    console.log(dirPath);
-
     const files = readdirSync(dirPath).filter(
       (f) => !f.startsWith("_") && (f.endsWith("currency.ts") || f.endsWith("currency.js")),
     );

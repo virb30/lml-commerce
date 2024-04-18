@@ -1,3 +1,4 @@
+import { InputError } from "@modules/shared/errors/input.error";
 import { StockEntry } from "./stock-entry.entity";
 import { Id } from "@modules/shared/domain/value-object/id";
 
@@ -14,7 +15,7 @@ describe("StockEntry tests", () => {
     const productId = new Id("1");
 
     expect(() => {
-      const stockEntry = new StockEntry(productId, "in", quantity);
-    }).toThrow(new Error("Quantity cannot be less than or equal to 0"));
+      new StockEntry(productId, "in", quantity);
+    }).toThrowErrorTypeWithMessage(InputError, "Quantity cannot be less than or equal to 0");
   });
 });

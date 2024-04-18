@@ -5,10 +5,10 @@ import { CreateProductUseCase } from "../usecase/create-product.usecase";
 import { ProductAdmModule } from "../product-adm.module";
 import { UpdateProductUseCase } from "../usecase/update-product.usecase";
 import { registerDataSource } from "../../../fixtures/data-source.fixture";
-import { CurrencyModule } from "@modules/currency/currency.module";
 import { CurrencyFactory } from "@modules/shared/domain/value-object/currency/currency.factory";
 import { BRLCurrency } from "@modules/shared/domain/value-object/currency/handlers/brl-currency";
 import { AuthModule } from "@modules/auth/auth.module";
+import { SharedModule } from "@modules/shared/shared.module";
 
 describe("ProductAdmController", () => {
   let controller: ProductAdmController;
@@ -20,7 +20,7 @@ describe("ProductAdmController", () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [ConfigModule.forFeature(registerDataSource("memory")), AuthModule, ProductAdmModule],
+      imports: [ConfigModule.forFeature(registerDataSource("memory")), AuthModule, SharedModule, ProductAdmModule],
       controllers: [ProductAdmController],
       providers: [CreateProductUseCase, UpdateProductUseCase],
     }).compile();

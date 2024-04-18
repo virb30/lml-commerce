@@ -6,6 +6,7 @@ import { ProductRepositoryDatabase } from "./product.repository";
 import { dbConfig } from "@modules/database/connection/mysql/config";
 import { BRLCurrency } from "@modules/shared/domain/value-object/currency/handlers/brl-currency";
 import { CurrencyFactory } from "@modules/shared/domain/value-object/currency/currency.factory";
+import { NotFoundError } from "@modules/shared/errors/not-found.error";
 
 describe("Product Repository", () => {
   const connection = new MysqlConnectionAdapter(dbConfig);
@@ -36,6 +37,6 @@ describe("Product Repository", () => {
   it("throws an error if product not found", async () => {
     expect(async () => {
       await productRepositoryDatabase.getById(new Id("1"));
-    }).rejects.toThrow(new Error("Product not found"));
+    }).rejects.toThrowErrorTypeWithMessage(NotFoundError, "Product not found");
   });
 });

@@ -1,4 +1,5 @@
 import { Id } from "@modules/shared/domain/value-object/id";
+import { InputError } from "@modules/shared/errors/input.error";
 
 export class StockEntry {
   constructor(
@@ -11,7 +12,7 @@ export class StockEntry {
 
   validate(): void {
     if (this.quantity <= 0) {
-      throw new Error("Quantity cannot be less than or equal to 0");
+      throw new InputError("Quantity cannot be less than or equal to 0");
     }
   }
 }

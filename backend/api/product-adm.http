@@ -18,5 +18,6 @@ Content-Type: application/json
 
 {
     "name": "Updated Product 1",
+    "currency": "brl",
     "price": 3050
 }

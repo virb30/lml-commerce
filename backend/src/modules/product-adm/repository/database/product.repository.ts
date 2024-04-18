@@ -3,6 +3,7 @@ import { Id } from "@modules/shared/domain/value-object/id";
 import { Product } from "../../domain/entity/product";
 import { ProductRepository } from "../../domain/repository/product.repository.interface";
 import { CurrencyFactory } from "@modules/shared/domain/value-object/currency/currency.factory";
+import { NotFoundError } from "@modules/shared/errors/not-found.error";
 
 export class ProductRepositoryDatabase implements ProductRepository {
   constructor(private readonly connection: Connection) {}
@@ -22,7 +23,7 @@ export class ProductRepositoryDatabase implements ProductRepository {
       [id.value],
     );
     if (!productData) {
-      throw new Error("Product not found");
+      throw new NotFoundError("Product not found");
     }
     return new Product(
       new Id(productData.id),

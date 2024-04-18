@@ -1,3 +1,5 @@
+import { InputError } from "@modules/shared/errors/input.error";
+
 export class Dimensions {
   constructor(
     public readonly height: number,
@@ -5,7 +7,7 @@ export class Dimensions {
     public readonly length: number,
   ) {
     if (height < 0 || width < 0 || length < 0) {
-      throw new Error("Invalid values");
+      throw new InputError("Invalid values");
     }
   }
 

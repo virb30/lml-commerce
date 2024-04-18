@@ -4,6 +4,7 @@ import { Order } from "../domain/entity/order";
 import { ListOrdersUseCase } from "./list-orders.usecase";
 import { MemoryOrdersQuery } from "../query/memory/memory-orders.query";
 import { OrdersQuery } from "../query/orders.query.interface";
+import { NotFoundError } from "@modules/shared/errors/not-found.error";
 
 const createOrder = (id: string, email: string, date: Date, total: number) => {
   const order = new Order(new Id(id), new Email(email), date, total);
@@ -58,7 +59,7 @@ describe("ListOrdersUseCase tests", () => {
         page: 1,
         limit: 5,
       });
-    }).rejects.toThrow(new Error("No orders found for it email"));
+    }).rejects.toThrowErrorTypeWithMessage(NotFoundError, "No orders found for it email");
   });
 
   it("throws an error if invalid page provided", async () => {
@@ -69,6 +70,6 @@ describe("ListOrdersUseCase tests", () => {
         page: 2,
         limit: 5,
       });
-    }).rejects.toThrow(new Error("No orders found for it email"));
+    }).rejects.toThrowErrorTypeWithMessage(NotFoundError, "No orders found for it email");
   });
 });

@@ -7,6 +7,7 @@ import { UpdateProductUseCase } from "./update-product.usecase";
 import { ProductUpdated } from "../domain/event/product-updated.evet";
 import { CurrencyFactory } from "@modules/shared/domain/value-object/currency/currency.factory";
 import { BRLCurrency } from "@modules/shared/domain/value-object/currency/handlers/brl-currency";
+import { NotFoundError } from "@modules/shared/errors/not-found.error";
 
 describe("Should update product information", () => {
   let productRepository: ProductRepository;
@@ -65,6 +66,6 @@ describe("Should update product information", () => {
     const updateProductUsecase = new UpdateProductUseCase(productRepository, queue);
     await expect(
       updateProductUsecase.execute({ id: "non-existent-id", name: "Product after update", price: 20, currency: "brl" }),
-    ).rejects.toThrow();
+    ).rejects.toThrowErrorTypeWithMessage(NotFoundError, "Product not found");
   });
 });

@@ -6,6 +6,7 @@ import { Email } from "@modules/shared/domain/value-object/email";
 import { Id } from "@modules/shared/domain/value-object/id";
 import { Connection } from "../../../database/connection/connection.interface";
 import { CurrencyFactory } from "@modules/shared/domain/value-object/currency/currency.factory";
+import { NotFoundError } from "@modules/shared/errors/not-found.error";
 
 export class OrderRepositoryDatabase implements OrderRepository {
   constructor(private connection: Connection) {}
@@ -14,7 +15,7 @@ export class OrderRepositoryDatabase implements OrderRepository {
     const [orderData] = await this.connection.query("SELECT * FROM app.order WHERE id = ?", [id.value]);
 
     if (!orderData) {
-      throw new Error("Order not found");
+      throw new NotFoundError("Order not found");
     }
 
     const order = new Order(

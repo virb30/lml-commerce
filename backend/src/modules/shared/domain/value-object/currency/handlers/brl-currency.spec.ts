@@ -1,3 +1,4 @@
+import { InputError } from "@modules/shared/errors/input.error";
 import { BRLCurrency } from "./brl-currency";
 
 describe("BRLCurrency tests", () => {
@@ -11,6 +12,6 @@ describe("BRLCurrency tests", () => {
   it("does not create a currency with invalid value", () => {
     expect(() => {
       new BRLCurrency(-10.5);
-    }).toThrow(new Error("Invalid value"));
+    }).toThrowErrorTypeWithMessage(InputError, "Invalid value");
   });
 });

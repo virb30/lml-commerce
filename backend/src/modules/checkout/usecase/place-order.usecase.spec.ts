@@ -10,6 +10,7 @@ import { Queue } from "../../queue/queue.interface";
 import { MemoryQueueAdapter } from "../../queue/adapter/memory/memory-queue.adapter";
 import { OrderRepository } from "../domain/repository/order.repository.interface";
 import { BRLCurrency } from "@modules/shared/domain/value-object/currency/handlers/brl-currency";
+import { NotFoundError } from "@modules/shared/errors/not-found.error";
 
 describe("Place order use case tests", () => {
   const repositoryFactory = new MemoryRepositoryFactory();
@@ -60,7 +61,7 @@ describe("Place order use case tests", () => {
         items: [{ id: "1", amount: 1 }],
       };
       await useCase.execute(input);
-    }).rejects.toThrow(new Error("Product not found"));
+    }).rejects.toThrowErrorTypeWithMessage(NotFoundError, "Product not found");
   });
 
   it("places an order with discount", async () => {
@@ -107,6 +108,6 @@ describe("Place order use case tests", () => {
         date: new Date("2023-11-01T23:59:59"),
       };
       await useCase.execute(input);
-    }).rejects.toThrow(new Error("Coupon not found"));
+    }).rejects.toThrowErrorTypeWithMessage(NotFoundError, "Coupon not found");
   });
 });

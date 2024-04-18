@@ -6,6 +6,7 @@ import { Email } from "@modules/shared/domain/value-object/email";
 import { Id } from "@modules/shared/domain/value-object/id";
 import { MemoryRepositoryFactory } from "../repository/factory/memory-repository.factory";
 import { BRLCurrency } from "@modules/shared/domain/value-object/currency/handlers/brl-currency";
+import { NotFoundError } from "@modules/shared/errors/not-found.error";
 
 describe("GetOrderUseCase tests", () => {
   const repositoryFactory = new MemoryRepositoryFactory();
@@ -36,6 +37,6 @@ describe("GetOrderUseCase tests", () => {
   it("should throw exception if order not found", async () => {
     expect(async () => {
       await getOrderUseCase.execute({ id: "Invalid ID" });
-    }).rejects.toThrow(new Error("Order not found"));
+    }).rejects.toThrowErrorTypeWithMessage(NotFoundError, "Order not found");
   });
 });

@@ -7,12 +7,13 @@ import { ProductRepositoryMemory } from "./repository/memory/product.repository"
 import { ProductRepositoryDatabase } from "./repository/database/product.repository";
 import { registerDataSource } from "../../fixtures/data-source.fixture";
 import { AuthModule } from "@modules/auth/auth.module";
+import { SharedModule } from "@modules/shared/shared.module";
 
 describe("ProductAdmProvider tests", () => {
   describe("usecases tests", () => {
     it("provides CreateProductUseCase", async () => {
       const module = await Test.createTestingModule({
-        imports: [AuthModule, ProductAdmModule],
+        imports: [AuthModule, SharedModule, ProductAdmModule],
       }).compile();
       const provider = module.get(CreateProductUseCase);
 
@@ -27,7 +28,7 @@ describe("ProductAdmProvider tests", () => {
       { dataSource: "adapter", instance: ProductRepositoryDatabase },
     ])("provides $instance.name", async ({ dataSource, instance }) => {
       const module = await Test.createTestingModule({
-        imports: [ConfigModule.forFeature(registerDataSource(dataSource)), AuthModule, ProductAdmModule],
+        imports: [ConfigModule.forFeature(registerDataSource(dataSource)), AuthModule, SharedModule, ProductAdmModule],
       }).compile();
       const provider = module.get(TOKENS.PRODUCT_REPOSITORY);
 

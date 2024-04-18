@@ -1,6 +1,7 @@
 import { Currency } from "@modules/shared/domain/value-object/currency/currency";
 import { Dimensions } from "../value-object/dimensions";
 import { Id } from "@modules/shared/domain/value-object/id";
+import { InputError } from "@modules/shared/errors/input.error";
 
 export class Product {
   constructor(
@@ -10,7 +11,7 @@ export class Product {
     public readonly dimensions?: Dimensions,
     public readonly weight?: number,
   ) {
-    if (weight && weight < 0) throw new Error("Invalid weight");
+    if (weight && weight < 0) throw new InputError("Invalid weight");
   }
 
   public getDensity(): number {

@@ -1,3 +1,4 @@
+import { NotFoundError } from "@modules/shared/errors/not-found.error";
 import { Coupon } from "../../domain/entity/coupon";
 import { CouponRepository } from "../../domain/repository/coupon.repository.interface";
 
@@ -14,7 +15,7 @@ export class CouponRepositoryMemory implements CouponRepository {
     });
 
     if (!coupon) {
-      throw new Error("Coupon not found");
+      throw new NotFoundError("Coupon not found");
     }
 
     return coupon;
