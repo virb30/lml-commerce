@@ -1,7 +1,7 @@
 import { ProductRepository } from "../../domain/repository/product.repository.interface";
 import { Product } from "../../domain/entity/product";
 import { Id } from "@modules/shared/domain/value-object/id";
-
+import { NotFoundError } from "@modules/shared/errors/not-found.error";
 export class ProductRepositoryMemory implements ProductRepository {
   private products: Product[] = [];
 
@@ -11,7 +11,7 @@ export class ProductRepositoryMemory implements ProductRepository {
     });
 
     if (!product) {
-      throw new Error("Product not found");
+      throw new NotFoundError("Product not found");
     }
 
     return product;

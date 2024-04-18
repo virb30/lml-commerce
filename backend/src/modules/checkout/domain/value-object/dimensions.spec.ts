@@ -11,7 +11,7 @@ describe("Dimesion tests", () => {
   it.each(dataDimensions)("should create an dimension with invalid numbers", (height, width, length) => {
     expect(() => {
       new Dimensions(height, width, length);
-    }).toThrow(new InputError("Invalid values"));
+    }).toThrowErrorTypeWithMessage(InputError, "Invalid values");
   });
 
   it("should create an dimesion", () => {

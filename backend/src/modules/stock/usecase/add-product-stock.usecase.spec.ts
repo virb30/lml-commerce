@@ -5,6 +5,8 @@ import { Product } from "../domain/entity/product.entity";
 import { Id } from "@modules/shared/domain/value-object/id";
 import { MemoryQueueAdapter } from "@modules/queue/adapter/memory/memory-queue.adapter";
 import { StockProductAdded } from "../domain/event/stock-product-added.event";
+import { NotFoundError } from "@modules/shared/errors/not-found.error";
+import { InputError } from "@modules/shared/errors/input.error";
 
 describe("Add product stock UseCase", () => {
   const stockEntryRepository = new StockEntryRepositoryMemory();
@@ -36,7 +38,7 @@ describe("Add product stock UseCase", () => {
     };
     expect(async () => {
       await usecase.execute(input);
-    }).rejects.toThrow(new Error("Product not found"));
+    }).rejects.toThrowErrorTypeWithMessage(NotFoundError, "Product not found");
   });
 
   it("should throw an error if the quantity is not valid", async () => {
@@ -47,7 +49,7 @@ describe("Add product stock UseCase", () => {
     };
     expect(async () => {
       await usecase.execute(input);
-    }).rejects.toThrow(new Error("Quantity cannot be less than or equal to 0"));
+    }).rejects.toThrowErrorTypeWithMessage(InputError, "Quantity cannot be less than or equal to 0");
   });
 
   it("Should add a product stock and trigger event", async () => {

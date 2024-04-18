@@ -1,3 +1,4 @@
+import { NotFoundError } from "@modules/shared/errors/not-found.error";
 import { Order } from "../../domain/entity/order";
 import { OrderRepository } from "../../domain/repository/order.repository.interface";
 import { Id } from "@modules/shared/domain/value-object/id";
@@ -15,7 +16,7 @@ export class OrderRepositoryMemory implements OrderRepository {
     });
 
     if (!order) {
-      throw new Error("Order not found");
+      throw new NotFoundError("Order not found");
     }
 
     return order;

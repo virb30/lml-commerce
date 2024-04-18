@@ -4,6 +4,7 @@ import { Dimensions } from "../../domain/value-object/dimensions";
 import { Id } from "@modules/shared/domain/value-object/id";
 import { Connection } from "../../../database/connection/connection.interface";
 import { CurrencyFactory } from "@modules/shared/domain/value-object/currency/currency.factory";
+import { NotFoundError } from "@modules/shared/errors/not-found.error";
 
 export class ProductRepositoryDatabase implements ProductRepository {
   constructor(private connection: Connection) {}
@@ -15,7 +16,7 @@ export class ProductRepositoryDatabase implements ProductRepository {
     );
 
     if (!product) {
-      throw new Error("Product not found");
+      throw new NotFoundError("Product not found");
     }
 
     const productItem = new Product(

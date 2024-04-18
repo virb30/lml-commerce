@@ -11,7 +11,6 @@ export class AppController {
   @Get("health-check")
   @ApiOkResponse({ description: "Returns ok if system is healthy", type: HealthCheckOutputDto })
   healtCheck(): HealthCheckOutputDto {
-    throw new Error();
     return { ok: true };
   }
 }

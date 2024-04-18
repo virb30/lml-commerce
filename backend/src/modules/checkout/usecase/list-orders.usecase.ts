@@ -1,5 +1,6 @@
 import { Email } from "@modules/shared/domain/value-object/email";
 import { OrderDTO, OrdersQuery } from "../query/orders.query.interface";
+import { NotFoundError } from "@modules/shared/errors/not-found.error";
 
 export class ListOrdersUseCase {
   constructor(private ordersGateway: OrdersQuery) {}
@@ -8,7 +9,7 @@ export class ListOrdersUseCase {
     const { orders } = await this.ordersGateway.findByEmail(new Email(input.email), input.page, input.limit);
 
     if (!orders.length) {
-      throw new Error("No orders found for it email");
+      throw new NotFoundError("No orders found for it email");
     }
 
     return orders.map((order: OrderDTO) => ({

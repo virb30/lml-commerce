@@ -9,6 +9,7 @@ import { Coupon } from "../../domain/entity/coupon";
 import { dbConfig } from "@modules/database/connection/mysql/config";
 import { BRLCurrency } from "@modules/shared/domain/value-object/currency/handlers/brl-currency";
 import { CurrencyFactory } from "@modules/shared/domain/value-object/currency/currency.factory";
+import { NotFoundError } from "@modules/shared/errors/not-found.error";
 
 describe("Order repository", () => {
   const connection = new MysqlConnectionAdapter(dbConfig);
@@ -50,7 +51,7 @@ describe("Order repository", () => {
   it("throws an error if order not found", async () => {
     expect(async () => {
       await orderRepositoryDatabase.getById(new Id("1"));
-    }).rejects.toThrow(new Error("Order not found"));
+    }).rejects.toThrowErrorTypeWithMessage(NotFoundError, "Order not found");
   });
 
   it("gets next sequence if there is no order placed", async () => {

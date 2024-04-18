@@ -2,6 +2,7 @@ import { Coupon } from "../../domain/entity/coupon";
 import { CouponRepository } from "../../domain/repository/coupon.repository.interface";
 import { Id } from "@modules/shared/domain/value-object/id";
 import { Connection } from "../../../database/connection/connection.interface";
+import { NotFoundError } from "@modules/shared/errors/not-found.error";
 
 export class CouponRepositoryDatabase implements CouponRepository {
   constructor(private connection: Connection) {}
@@ -10,7 +11,7 @@ export class CouponRepositoryDatabase implements CouponRepository {
     const [couponData] = await this.connection.query("SELECT * FROM app.coupon WHERE BINARY code = ?", [code]);
 
     if (!couponData) {
-      throw new Error("Coupon not found");
+      throw new NotFoundError("Coupon not found");
     }
 
     return new Coupon(
