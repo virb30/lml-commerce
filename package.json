@@ -12,7 +12,8 @@
         "dev:frontend": "npm run --prefix frontend dev",
         "format:backend": "npm run --prefix backend format",
         "lint:backend": "npm run --prefix backend lint",
-        "test:backend": "npm run --prefix backend test"
+        "test:backend": "npm run --prefix backend test",
+        "test:cov:backend": "npm run --prefix backend test:cov"
     },
     "dependencies": {
         "dotenv": "^16.3.1",
@@ -21,6 +22,7 @@
     "devDependencies": {
         "@commitlint/cli": "^18.0.0",
         "@commitlint/config-conventional": "^18.0.0",
+        "@golevelup/ts-jest": "^0.5.0",
         "@stylistic/eslint-plugin": "^1.5.3",
         "@stylistic/eslint-plugin-ts": "^1.5.3",
         "@typescript-eslint/eslint-plugin": "^6.8.0",

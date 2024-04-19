@@ -1,20 +1,32 @@
 import { Body, Controller, Inject, Param, Post, Put, UseGuards } from "@nestjs/common";
 import { CreateProductOutput, CreateProductUseCase } from "../usecase/create-product.usecase";
 import { UpdateProductOutput, UpdateProductUseCase } from "../usecase/update-product.usecase";
-import { ApiBody, ApiCreatedResponse, ApiOAuth2, ApiOkResponse, ApiParam, ApiSecurity, ApiTags } from "@nestjs/swagger";
+import {
+  ApiBody,
+  ApiCreatedResponse,
+  ApiForbiddenResponse,
+  ApiOAuth2,
+  ApiOkResponse,
+  ApiParam,
+  ApiProperty,
+  ApiSecurity,
+  ApiTags,
+  ApiUnauthorizedResponse,
+} from "@nestjs/swagger";
 import { CreateProductInputDto } from "./dtos/create-product.input.dto";
 import { CreateProductOutputDto } from "./dtos/create-product.output.dto";
 import { CreateProductPresenter } from "./presenters/create-product.presenter";
 import { UpdateProductInputDto } from "./dtos/update-product.input.dto";
 import { UpdateProductPresenter } from "./presenters/update-product.presenter";
 import { UpdateProductOutputDto } from "./dtos/update-product.output.dto";
-import { AuthGuard } from "@modules/auth/auth.guard";
+import { AuthenticationGuard } from "@modules/auth/authentication.guard";
 import { UsecaseHandler } from "@modules/shared/http/controllers/usecase-handler.decorator";
 import { HttpExceptionHandler } from "@modules/shared/http/http-exception/http-exception-handler.interface";
+import { AuthorizationGuard } from "@modules/auth/authorization.guard";
 
-@ApiOAuth2([])
+@ApiOAuth2(["roles"])
 @ApiTags("product-adm")
-@UseGuards(AuthGuard)
+@UseGuards(AuthenticationGuard, new AuthorizationGuard("lml-commerce-client", ["product-admin"]))
 @Controller("admin/products")
 export class ProductAdmController {
   constructor(
