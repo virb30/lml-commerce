@@ -119,6 +119,6 @@ describe("Order tests", () => {
 
     expect(() => {
       order.confirmPayment();
-    }).toThrow(new Error("Cannot confirm a cancelled order"));
+    }).toThrow(new Error("Cannot confirm order"));
   });
 });
