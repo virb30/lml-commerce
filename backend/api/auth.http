@@ -10,3 +10,4 @@ username=admin@lml-commerce.com
 &password=secret
 &grant_type=password
 &client_id=lml-commerce-client
+&scope=roles
