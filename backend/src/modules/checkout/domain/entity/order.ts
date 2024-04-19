@@ -6,12 +6,14 @@ import { Product } from "./product";
 import { Freight } from "./freight";
 import { Coupon } from "./coupon";
 import { OrderCoupon } from "./order-coupon";
+import { OrderStatus } from "../value-object/order-status";
 
 export class Order {
   private _items: OrderItem[] = [];
   public readonly code: OrderCode;
   public freight = new Freight();
   public coupon?: OrderCoupon;
+  private _status: OrderStatus;
 
   constructor(
     public readonly id: Id,
@@ -19,8 +21,10 @@ export class Order {
     public readonly date: Date,
     public readonly sequency: number,
     public readonly currency: string = "brl",
+    status = OrderStatus.Pending,
   ) {
     this.code = new OrderCode(date, sequency);
+    this._status = status;
   }
 
   public applyCoupon(coupon: Coupon): void {
@@ -68,5 +72,34 @@ export class Order {
 
   private getItem(productId: Id): OrderItem | undefined {
     return this._items.find((item) => item.productId.value == productId.value);
+  }
+
+  public get status(): string {
+    return this._status;
+  }
+
+  cancel() {
+    if (this._status !== OrderStatus.Pending) throw new Error("Cannot cancel order");
+    this._status = OrderStatus.Cancelled;
+  }
+
+  confirmPayment() {
+    if (this._status !== OrderStatus.Pending) throw new Error("Cannot confirm order");
+    this._status = OrderStatus.Confirmed;
+  }
+
+  prepareSend() {
+    if (this._status !== OrderStatus.Confirmed) throw new Error("Order must be confirmed");
+    this._status = OrderStatus.Separation;
+  }
+
+  dispatch() {
+    if (this._status !== OrderStatus.Confirmed) throw new Error("Order must be confirmed");
+    this._status = OrderStatus.Transporting;
+  }
+
+  finish() {
+    if (this._status !== OrderStatus.Transporting) throw new Error("Cannot finish order");
+    this._status = OrderStatus.Done;
   }
 }

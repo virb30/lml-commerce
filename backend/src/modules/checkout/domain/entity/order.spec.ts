@@ -5,6 +5,7 @@ import { Product } from "./product";
 import { Order } from "./order";
 import { Coupon } from "./coupon";
 import { BRLCurrency } from "@modules/shared/domain/value-object/currency/handlers/brl-currency";
+import { OrderStatus } from "../value-object/order-status";
 
 describe("Order tests", () => {
   it("should create an order", () => {
@@ -14,6 +15,7 @@ describe("Order tests", () => {
     expect(order.items).toHaveLength(1);
     expect(order.total).toBe(10);
     expect(order.code.value).toEqual("202300000001");
+    expect(order.status).toBe(OrderStatus.Pending);
   });
 
   it("should create an order with two items", () => {
@@ -23,6 +25,7 @@ describe("Order tests", () => {
     expect(order.items).toHaveLength(2);
     expect(order.total).toBe(50.0);
     expect(order.code.value).toEqual("202300000001");
+    expect(order.status).toBe(OrderStatus.Pending);
   });
 
   it("should increment amount on duplicated items", async () => {
@@ -36,6 +39,7 @@ describe("Order tests", () => {
 
     expect(order.items).toHaveLength(2);
     expect(order.total).toBe(45.0);
+    expect(order.status).toBe(OrderStatus.Pending);
   });
 
   it("should create an order with two items and calculate freight", () => {
@@ -48,6 +52,7 @@ describe("Order tests", () => {
     expect(order.items).toHaveLength(2);
     expect(order.total).toBe(1270);
     expect(order.code.value).toEqual("202300000001");
+    expect(order.status).toBe(OrderStatus.Pending);
   });
 
   it("should create an order with two items and calculate freight and apply coupon", () => {
@@ -62,6 +67,7 @@ describe("Order tests", () => {
     expect(order.items).toHaveLength(2);
     expect(order.total).toBe(1263);
     expect(order.code.value).toEqual("202300000001");
+    expect(order.status).toBe(OrderStatus.Pending);
   });
 
   it("should create an order and apply expired coupon", () => {
@@ -76,5 +82,43 @@ describe("Order tests", () => {
     expect(order.items).toHaveLength(2);
     expect(order.total).toBe(1270);
     expect(order.code.value).toEqual("202300000001");
+    expect(order.status).toBe(OrderStatus.Pending);
+  });
+
+  it("should cancel an order", () => {
+    const order = new Order(new Id("1"), new Email("cliente@email.com"), new Date("2023-01-01T00:00:00"), 1);
+    const product = new Product(new Id("1"), "Fone de ouvido", new BRLCurrency(10.0), new Dimensions(10, 20, 30), 0);
+    order.addItem(product, 1);
+    expect(order.status).toBe(OrderStatus.Pending);
+
+    order.cancel();
+
+    expect(order.status).toBe(OrderStatus.Cancelled);
+  });
+
+  it("should confirm an order", () => {
+    const order = new Order(new Id("1"), new Email("cliente@email.com"), new Date("2023-01-01T00:00:00"), 1);
+    const product = new Product(new Id("1"), "Fone de ouvido", new BRLCurrency(10.0), new Dimensions(10, 20, 30), 0);
+    order.addItem(product, 1);
+    expect(order.status).toBe(OrderStatus.Pending);
+
+    order.confirmPayment();
+
+    expect(order.status).toBe(OrderStatus.Confirmed);
+  });
+
+  it("should not confirm a cancelled order", () => {
+    const order = new Order(new Id("1"), new Email("cliente@email.com"), new Date("2023-01-01T00:00:00"), 1);
+    const product = new Product(new Id("1"), "Fone de ouvido", new BRLCurrency(10.0), new Dimensions(10, 20, 30), 0);
+    order.addItem(product, 1);
+    expect(order.status).toBe(OrderStatus.Pending);
+
+    order.cancel();
+
+    expect(order.status).toBe(OrderStatus.Cancelled);
+
+    expect(() => {
+      order.confirmPayment();
+    }).toThrow(new Error("Cannot confirm order"));
   });
 });
