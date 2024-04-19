@@ -1,5 +1,5 @@
 import { JwtService } from "@nestjs/jwt";
-import { AuthGuard } from "./auth.guard";
+import { AuthenticationGuard } from "./authentication.guard";
 import { createMock } from "@golevelup/ts-jest";
 import { ExecutionContext, UnauthorizedException } from "@nestjs/common";
 
@@ -25,7 +25,7 @@ describe("AuthGuard Tests", () => {
       verify: jwtVerifyMock,
     });
 
-    guard = new AuthGuard(jwtService);
+    guard = new AuthenticationGuard(jwtService);
   });
 
   it("should return true and not save user payload if context type is not http", () => {

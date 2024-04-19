@@ -1,7 +1,8 @@
 import { Global, Module } from "@nestjs/common";
-import { JwtModule, JwtService } from "@nestjs/jwt";
+import { JwtModule } from "@nestjs/jwt";
 import { ConfigService } from "@nestjs/config";
-import { AuthGuard } from "./auth.guard";
+import { AuthenticationGuard } from "./authentication.guard";
+import { AuthorizationGuard } from "./authorization.guard";
 
 @Global()
 @Module({
@@ -20,6 +21,6 @@ import { AuthGuard } from "./auth.guard";
       inject: [ConfigService],
     }),
   ],
-  providers: [AuthGuard],
+  providers: [AuthenticationGuard, AuthorizationGuard],
 })
 export class AuthModule {}
