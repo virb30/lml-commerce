@@ -65,7 +65,13 @@ describe("Place order use case tests", () => {
   });
 
   it("places an order with discount", async () => {
-    couponRepository.save(new Coupon(new Id("1"), "VALE10", 10, 10.0, new Date("2023-10-15T00:00:00")));
+    const coupon = Coupon.create({
+      code: "VALE10",
+      percentage: 10,
+      discountLimit: 10.0,
+      expirationDate: new Date("2023-10-15T00:00:00"),
+    });
+    couponRepository.save(coupon);
     productRepository.save(
       new Product(new Id("1"), "Fone de ouvido", new BRLCurrency(10.0), new Dimensions(10, 20, 30), 0),
     );

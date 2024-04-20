@@ -51,10 +51,16 @@ describe("Order tests", () => {
   });
 
   it("should create an order with two items and calculate freight and apply coupon", () => {
+    const couponProps = {
+      code: "VALE10",
+      percentage: 10,
+      discountLimit: 10.0,
+      expirationDate: new Date("2023-12-01T00:00:00"),
+    };
     const order = new Order(new Id("1"), new Email("cliente@email.com"), new Date("2023-01-01T00:00:00"), 1);
     const product1 = new Product(new Id("1"), "Bicicleta", new BRLCurrency(20.0), new Dimensions(10, 10, 2), 50);
     const product2 = new Product(new Id("2"), "Pneu de trator", new BRLCurrency(30.0), new Dimensions(20, 20, 10), 20);
-    const coupon = Coupon.restore(new Id("1"), "VALE10", 10, 10.0, new Date("2023-12-01T00:00:00"));
+    const coupon = Coupon.create(couponProps);
     order.addItem(product1, 2);
     order.addItem(product2, 1);
     order.applyCoupon(coupon);
@@ -65,10 +71,16 @@ describe("Order tests", () => {
   });
 
   it("should create an order and apply expired coupon", () => {
+    const couponProps = {
+      code: "VALE10",
+      percentage: 10,
+      discountLimit: 10.0,
+      expirationDate: new Date("2022-12-31T23:59:59"),
+    };
     const order = new Order(new Id("1"), new Email("cliente@email.com"), new Date("2023-01-01T00:00:00"), 1);
     const product1 = new Product(new Id("1"), "Bicicleta", new BRLCurrency(20.0), new Dimensions(10, 10, 2), 50);
     const product2 = new Product(new Id("2"), "Pneu de trator", new BRLCurrency(30.0), new Dimensions(20, 20, 10), 20);
-    const coupon = Coupon.restore(new Id("1"), "VALE10", 10, 10.0, new Date("2022-12-31T23:59:59"));
+    const coupon = Coupon.create(couponProps);
     order.addItem(product1, 2);
     order.addItem(product2, 1);
     order.applyCoupon(coupon);

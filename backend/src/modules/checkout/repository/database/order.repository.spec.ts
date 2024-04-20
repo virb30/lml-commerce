@@ -40,7 +40,13 @@ describe("Order repository", () => {
   it("saves an order and coupon", async () => {
     const order = new Order(new Id("1"), new Email("cliente@email.com"), new Date("2023-01-01T00:00:00"), 1);
     const product = new Product(new Id("1"), "Bicicleta", new BRLCurrency(20.0), new Dimensions(10, 10, 2), 50);
-    const coupon = new Coupon(new Id("1"), "VALE10", 10, 10.0, new Date("2023-12-31T23:59:59"));
+
+    const coupon = Coupon.create({
+      code: "VALE10",
+      percentage: 10,
+      discountLimit: 10.0,
+      expirationDate: new Date("2023-12-31T23:59:59"),
+    });
     order.addItem(product, 2);
     order.applyCoupon(coupon);
     await orderRepositoryDatabase.save(order);
