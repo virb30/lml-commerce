@@ -6,20 +6,42 @@ import { Product } from "./product";
 import { Coupon } from "./coupon";
 import { OrderCoupon } from "./order-coupon";
 
+type OrderProps = {
+  id: Id;
+  email: Email;
+  date: Date;
+  sequence: number;
+  currency?: string;
+};
+
+export type CreateOrderProps = Omit<OrderProps, "id">;
+
+export type RestoreOrderProps = OrderProps & {
+  currency?: string;
+  coupon?: OrderCoupon;
+  freight: number;
+  items: OrderItem[];
+};
+
 export class Order {
-  private _items: OrderItem[] = [];
+  readonly id: Id;
+  readonly email: Email;
+  readonly date: Date;
+  readonly sequency: number;
+  readonly currency: string;
   readonly code: OrderCode;
   coupon?: OrderCoupon;
+
+  private _items: OrderItem[] = [];
   private _freight: number = 0;
 
-  constructor(
-    readonly id: Id,
-    readonly email: Email,
-    readonly date: Date,
-    readonly sequency: number,
-    readonly currency: string = "brl",
-  ) {
-    this.code = new OrderCode(date, sequency);
+  private constructor({ id, email, date, sequence, currency }: OrderProps) {
+    this.id = id;
+    this.email = email;
+    this.date = date;
+    this.currency = currency ?? "brl";
+    this.sequency = sequence;
+    this.code = new OrderCode(date, sequence);
   }
 
   applyCoupon(coupon: Coupon): void {
@@ -70,5 +92,17 @@ export class Order {
 
   private getItem(productId: Id): OrderItem | undefined {
     return this._items.find((item) => item.productId.value == productId.value);
+  }
+
+  static create(props: CreateOrderProps): Order {
+    return new Order({ id: new Id(), ...props });
+  }
+
+  static restore({ id, email, date, sequence, currency, ...props }: RestoreOrderProps): Order {
+    const order = new Order({ id, email, date, sequence, currency });
+    order.coupon = props.coupon;
+    order.items = props.items;
+    order.changeFreight(props.freight);
+    return order;
   }
 }

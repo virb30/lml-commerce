@@ -1,4 +1,4 @@
-import { Order } from "../../domain/entity/order";
+import { Order, RestoreOrderProps } from "../../domain/entity/order";
 import { OrderCoupon } from "../../domain/entity/order-coupon";
 import { OrderItem } from "../../domain/entity/order-item";
 import { OrderRepository } from "../../domain/repository/order.repository.interface";
@@ -18,37 +18,37 @@ export class OrderRepositoryDatabase implements OrderRepository {
       throw new NotFoundError("Order not found");
     }
 
-    const order = new Order(
-      new Id(orderData.id),
-      new Email(orderData.email),
-      new Date(orderData.issue_date),
-      orderData.sequency,
-    );
-
+    let coupon = undefined;
     if (orderData.coupon_code) {
-      order.coupon = new OrderCoupon(
+      coupon = new OrderCoupon(
         orderData.coupon_code,
         parseFloat(orderData.coupon_percentage),
         parseFloat(orderData.coupon_discount_limit),
       );
     }
 
-    order.changeFreight(parseFloat(orderData.freight));
-
     const orderItemsData = await this.connection.query(
       "SELECT id_product, currency, price, amount FROM app.order_item WHERE id_order = ?",
-      [order.id.value],
+      [orderData.id],
     );
 
-    order.items = orderItemsData.map((orderItem: any) => {
-      return new OrderItem(
-        new Id(orderItem.id_product),
-        CurrencyFactory.make(parseFloat(orderItem.price), orderItem.currency),
-        parseInt(orderItem.amount),
-      );
-    });
+    const orderProps: RestoreOrderProps = {
+      id: new Id(orderData.id),
+      email: new Email(orderData.email),
+      date: new Date(orderData.issue_date),
+      sequence: parseInt(orderData.sequency),
+      freight: parseFloat(orderData.freight),
+      items: orderItemsData.map((orderItem: any) => {
+        return new OrderItem(
+          new Id(orderItem.id_product),
+          CurrencyFactory.make(parseFloat(orderItem.price), orderItem.currency),
+          parseInt(orderItem.amount),
+        );
+      }),
+      coupon,
+    };
 
-    return order;
+    return Order.restore(orderProps);
   }
 
   async save(order: Order): Promise<void> {

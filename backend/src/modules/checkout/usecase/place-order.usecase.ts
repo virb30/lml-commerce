@@ -15,7 +15,7 @@ export class PlaceOrderUseCase {
   private couponRepository: CouponRepository;
 
   constructor(
-    private repositoryFactory: RepositoryFactory,
+    repositoryFactory: RepositoryFactory,
     private queue: Queue,
     private calculateFreightGateway: CalculateFreightGateway,
   ) {
@@ -26,7 +26,7 @@ export class PlaceOrderUseCase {
 
   public async execute(input: PlaceOrderUseCaseInput): Promise<PlaceOrderUseCaseOutput> {
     const sequence = await this.orderRepository.getNextSequence();
-    const order = new Order(new Id(), new Email(input.email), input.date ?? new Date(), sequence);
+    const order = Order.create({ email: new Email(input.email), date: input.date ?? new Date(), sequence });
 
     const orderItems = [];
     for (const item of input.items) {
