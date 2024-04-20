@@ -73,10 +73,14 @@ export const USE_CASES = {
   },
   PLACE_ORDER: {
     provide: PlaceOrderUseCase,
-    useFactory: (repositoryFactory: RepositoryFactory, queue: Queue) => {
-      return new PlaceOrderUseCase(repositoryFactory, queue);
+    useFactory: (
+      repositoryFactory: RepositoryFactory,
+      queue: Queue,
+      calculateFreightGateway: CalculateFreightGateway,
+    ) => {
+      return new PlaceOrderUseCase(repositoryFactory, queue, calculateFreightGateway);
     },
-    inject: [TOKENS.REPOSITORY_FACTORY, QUEUE_PROVIDER_TOKEN],
+    inject: [TOKENS.REPOSITORY_FACTORY, QUEUE_PROVIDER_TOKEN, GATEWAYS.CALCULATE_FREIGHT.provide],
   },
   SIMULATE_FREIGHT: {
     provide: SimulateFreightUseCase,

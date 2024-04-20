@@ -3,33 +3,32 @@ import { Email } from "@modules/shared/domain/value-object/email";
 import { Id } from "@modules/shared/domain/value-object/id";
 import { OrderItem } from "./order-item";
 import { Product } from "./product";
-import { Freight } from "./freight";
 import { Coupon } from "./coupon";
 import { OrderCoupon } from "./order-coupon";
 
 export class Order {
   private _items: OrderItem[] = [];
-  public readonly code: OrderCode;
-  public freight = new Freight();
-  public coupon?: OrderCoupon;
+  readonly code: OrderCode;
+  coupon?: OrderCoupon;
+  private _freight: number = 0;
 
   constructor(
-    public readonly id: Id,
-    public readonly email: Email,
-    public readonly date: Date,
-    public readonly sequency: number,
-    public readonly currency: string = "brl",
+    readonly id: Id,
+    readonly email: Email,
+    readonly date: Date,
+    readonly sequency: number,
+    readonly currency: string = "brl",
   ) {
     this.code = new OrderCode(date, sequency);
   }
 
-  public applyCoupon(coupon: Coupon): void {
+  applyCoupon(coupon: Coupon): void {
     if (coupon.isValid(this.date)) {
       this.coupon = new OrderCoupon(coupon.code, coupon.percentage, coupon.discountLimit);
     }
   }
 
-  public addItem(product: Product, amount: number): void {
+  addItem(product: Product, amount: number): void {
     const orderItem = this.getItem(product.id);
 
     if (orderItem) {
@@ -37,10 +36,9 @@ export class Order {
     } else {
       this._items.push(new OrderItem(product.id, product.price, amount));
     }
-    this.freight.addItem(product, amount);
   }
 
-  public get total(): number {
+  get total(): number {
     let total = this._items.reduce((sum, orderItem) => {
       sum += orderItem.total;
       return sum;
@@ -50,20 +48,24 @@ export class Order {
       total -= this.coupon.calculateDiscount(total);
     }
 
-    total += this.freight.getTotal();
+    total += this.freight;
     return total;
   }
 
-  public get items(): OrderItem[] {
+  get items(): OrderItem[] {
     return this._items;
   }
 
-  public set items(items: OrderItem[]) {
+  set items(items: OrderItem[]) {
     this._items = items;
   }
 
-  public getFreight(): number {
-    return this.freight.getTotal();
+  get freight() {
+    return this._freight;
+  }
+
+  changeFreight(freight: number): void {
+    this._freight = freight;
   }
 
   private getItem(productId: Id): OrderItem | undefined {

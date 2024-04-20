@@ -33,7 +33,7 @@ export class OrderRepositoryDatabase implements OrderRepository {
       );
     }
 
-    order.freight.total = parseFloat(orderData.freight);
+    order.changeFreight(parseFloat(orderData.freight));
 
     const orderItemsData = await this.connection.query(
       "SELECT id_product, currency, price, amount FROM app.order_item WHERE id_order = ?",
@@ -62,7 +62,7 @@ export class OrderRepositoryDatabase implements OrderRepository {
         order.total,
         order.currency,
         order.date,
-        order.getFreight(),
+        order.freight,
         order.coupon?.code ?? null,
         order.coupon?.percentage ?? null,
         order.coupon?.discountLimit ?? null,
