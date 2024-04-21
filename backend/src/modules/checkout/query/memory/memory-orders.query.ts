@@ -5,12 +5,12 @@ import { FindByEmailOutput, OrdersQuery, OrderDTO } from "../orders.query.interf
 export class MemoryOrdersQuery implements OrdersQuery {
   private orders: OrderDTO[];
 
-  constructor(orders: Order[] = []) {
+  constructor(orders: OrderDTO[] = []) {
     this.orders = orders.map((order) => ({
-      id: order.id.value,
-      code: order.code.value,
+      id: order.id,
+      code: order.code,
       date: order.date,
-      email: order.email.value,
+      email: order.email,
       total: order.total,
     }));
   }

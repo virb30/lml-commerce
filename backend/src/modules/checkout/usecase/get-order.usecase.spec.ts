@@ -14,7 +14,11 @@ describe("GetOrderUseCase tests", () => {
   let getOrderUseCase: GetOrderUseCase;
 
   const orderFixture = async () => {
-    const order = new Order(new Id("1"), new Email("cliente@email.com"), new Date("2023-01-01T00:00:00"), 1);
+    const order = Order.create({
+      email: new Email("cliente@email.com"),
+      date: new Date("2023-01-01T00:00:00"),
+      sequence: 1,
+    });
     const product = new Product(new Id("1"), "Fone de ouvido", new BRLCurrency(10.0), new Dimensions(10, 20, 30), 0);
     order.addItem(product, 1);
     await orderRepository.save(order);
@@ -30,7 +34,7 @@ describe("GetOrderUseCase tests", () => {
   });
   it("should get order by id", async () => {
     const order = await orderFixture();
-    const output = await getOrderUseCase.execute({ id: "1" });
+    const output = await getOrderUseCase.execute({ id: order.id.value });
     expect(order.id).toEqual(output.id);
   });
 

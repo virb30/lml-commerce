@@ -11,6 +11,8 @@ import { MemoryQueueAdapter } from "../../queue/adapter/memory/memory-queue.adap
 import { OrderRepository } from "../domain/repository/order.repository.interface";
 import { BRLCurrency } from "@modules/shared/domain/value-object/currency/handlers/brl-currency";
 import { NotFoundError } from "@modules/shared/errors/not-found.error";
+import { CalculateFreightGateway } from "../gateway/calculate-freight.gateway.interface";
+import { CalculateFreightMemoryGateway } from "../gateway/memory/calculate-freight-memory.gateway";
 
 describe("Place order use case tests", () => {
   const repositoryFactory = new MemoryRepositoryFactory();
@@ -18,12 +20,16 @@ describe("Place order use case tests", () => {
   let couponRepository: CouponRepository;
   let orderRepository: OrderRepository;
   let queue: Queue;
+  let calculateFreightGateway: CalculateFreightGateway;
+  let useCase: PlaceOrderUseCase;
 
   beforeEach(async () => {
     productRepository = repositoryFactory.makeProductRepository();
     couponRepository = repositoryFactory.makeCouponRepository();
     orderRepository = repositoryFactory.makeOrderRepository();
     queue = new MemoryQueueAdapter();
+    calculateFreightGateway = new CalculateFreightMemoryGateway();
+    useCase = new PlaceOrderUseCase(repositoryFactory, queue, calculateFreightGateway);
     await orderRepository.clear();
     await productRepository.clear();
     await couponRepository.clear();
@@ -37,7 +43,7 @@ describe("Place order use case tests", () => {
       new Product(new Id("2"), "Bicicleta", new BRLCurrency(1500.0), new Dimensions(10, 20, 30), 0),
     );
 
-    const useCase = new PlaceOrderUseCase(repositoryFactory, queue);
+    const useCase = new PlaceOrderUseCase(repositoryFactory, queue, calculateFreightGateway);
     const input = {
       email: "cliente@email.com",
       items: [
@@ -55,7 +61,6 @@ describe("Place order use case tests", () => {
 
   it("throws an error if product not exists ", async () => {
     expect(async () => {
-      const useCase = new PlaceOrderUseCase(repositoryFactory, queue);
       const input = {
         email: "cliente@email.com",
         items: [{ id: "1", amount: 1 }],
@@ -72,7 +77,6 @@ describe("Place order use case tests", () => {
     productRepository.save(
       new Product(new Id("2"), "Bicicleta", new BRLCurrency(1500.0), new Dimensions(10, 20, 30), 0),
     );
-    const useCase = new PlaceOrderUseCase(repositoryFactory, queue);
     const input = {
       email: "cliente@email.com",
       items: [
@@ -97,7 +101,6 @@ describe("Place order use case tests", () => {
       productRepository.save(
         new Product(new Id("2"), "Bicicleta", new BRLCurrency(1500.0), new Dimensions(10, 20, 30), 0),
       );
-      const useCase = new PlaceOrderUseCase(repositoryFactory, queue);
       const input = {
         email: "cliente@email.com",
         items: [
