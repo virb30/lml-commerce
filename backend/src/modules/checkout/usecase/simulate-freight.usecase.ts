@@ -1,22 +1,29 @@
-import { Freight } from "../domain/entity/freight";
 import { RepositoryFactory } from "@modules/checkout/domain/factory/repository-factory.interface";
 import { ProductRepository } from "../domain/repository/product.repository.interface";
 import { Id } from "@modules/shared/domain/value-object/id";
+import { CalculateFreightGateway } from "../gateway/calculate-freight.gateway.interface";
 
 export class SimulateFreightUseCase {
   private productRepository: ProductRepository;
 
-  constructor(repositoryFactory: RepositoryFactory) {
+  constructor(
+    repositoryFactory: RepositoryFactory,
+    private calculateFreightGateway: CalculateFreightGateway,
+  ) {
     this.productRepository = repositoryFactory.makeProductRepository();
   }
 
-  public async execute(input: SimulateFreightUseCaseInput): Promise<SimulateFreightUseCaseOutput> {
-    const freight = new Freight();
+  async execute(input: SimulateFreightUseCaseInput): Promise<SimulateFreightUseCaseOutput> {
+    let orderItems = [];
     for (const item of input.items) {
       const product = await this.productRepository.getById(new Id(item.id));
-      freight.addItem(product, item.quantity);
+      orderItems.push({
+        volume: product.getVolume(),
+        density: product.getDensity(),
+        quantity: item.quantity,
+      });
     }
-    const total = freight.getTotal();
+    const total = await this.calculateFreightGateway.calculate(orderItems);
     return {
       total,
     };

@@ -14,6 +14,8 @@ import { ConfigService } from "@nestjs/config";
 import { RepositoryFactoryProviderFactory } from "./factory/repository-factory.provider.factory";
 import { TOKENS } from "./constants";
 import { OrdersQueryProviderFactory } from "./factory/orders-query.provider.factory";
+import { CalculateFreightMemoryGateway } from "./gateway/memory/calculate-freight-memory.gateway";
+import { CalculateFreightGateway } from "./gateway/calculate-freight.gateway.interface";
 
 export const REPOSITORIES = {
   REPOSITORY_FACTORY: {
@@ -45,6 +47,15 @@ export const QUERY = {
   },
 };
 
+export const GATEWAYS = {
+  CALCULATE_FREIGHT: {
+    provide: "CalculateFreightGateway",
+    useFactory: () => {
+      return new CalculateFreightMemoryGateway();
+    },
+  },
+};
+
 export const USE_CASES = {
   GET_ORDER: {
     provide: GetOrderUseCase,
@@ -62,17 +73,21 @@ export const USE_CASES = {
   },
   PLACE_ORDER: {
     provide: PlaceOrderUseCase,
-    useFactory: (repositoryFactory: RepositoryFactory, queue: Queue) => {
-      return new PlaceOrderUseCase(repositoryFactory, queue);
+    useFactory: (
+      repositoryFactory: RepositoryFactory,
+      queue: Queue,
+      calculateFreightGateway: CalculateFreightGateway,
+    ) => {
+      return new PlaceOrderUseCase(repositoryFactory, queue, calculateFreightGateway);
     },
-    inject: [TOKENS.REPOSITORY_FACTORY, QUEUE_PROVIDER_TOKEN],
+    inject: [TOKENS.REPOSITORY_FACTORY, QUEUE_PROVIDER_TOKEN, GATEWAYS.CALCULATE_FREIGHT.provide],
   },
   SIMULATE_FREIGHT: {
     provide: SimulateFreightUseCase,
-    useFactory: (repositoryFactory: RepositoryFactory) => {
-      return new SimulateFreightUseCase(repositoryFactory);
+    useFactory: (repositoryFactory: RepositoryFactory, calculateFreightGateway: CalculateFreightGateway) => {
+      return new SimulateFreightUseCase(repositoryFactory, calculateFreightGateway);
     },
-    inject: [TOKENS.REPOSITORY_FACTORY],
+    inject: [TOKENS.REPOSITORY_FACTORY, GATEWAYS.CALCULATE_FREIGHT.provide],
   },
   VALIDATE_COUPON: {
     provide: ValidateCouponUseCase,
@@ -93,4 +108,8 @@ export function provideCheckoutRepositories(): Provider[] {
 
 export function provideCheckoutQueries(): Provider[] {
   return Object.values(QUERY);
+}
+
+export function provideCheckoutGateways(): Provider[] {
+  return Object.values(GATEWAYS);
 }

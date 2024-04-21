@@ -30,15 +30,23 @@ describe("Order repository", () => {
   });
 
   it("saves an order", async () => {
-    const order = new Order(new Id("1"), new Email("cliente@email.com"), new Date("2023-01-01T00:00:00"), 1);
+    const order = Order.create({
+      email: new Email("cliente@email.com"),
+      date: new Date("2023-01-01T00:00:00"),
+      sequence: 1,
+    });
     order.addItem(new Product(new Id("1"), "Bicicleta", new BRLCurrency(20.0), new Dimensions(10, 10, 2), 50), 1);
     await orderRepositoryDatabase.save(order);
-    const orderData = await orderRepositoryDatabase.getById(new Id("1"));
+    const orderData = await orderRepositoryDatabase.getById(order.id);
     expect(orderData).toEqual(order);
   });
 
   it("saves an order and coupon", async () => {
-    const order = new Order(new Id("1"), new Email("cliente@email.com"), new Date("2023-01-01T00:00:00"), 1);
+    const order = Order.create({
+      email: new Email("cliente@email.com"),
+      date: new Date("2023-01-01T00:00:00"),
+      sequence: 1,
+    });
     const product = new Product(new Id("1"), "Bicicleta", new BRLCurrency(20.0), new Dimensions(10, 10, 2), 50);
 
     const coupon = Coupon.create({
@@ -50,7 +58,7 @@ describe("Order repository", () => {
     order.addItem(product, 2);
     order.applyCoupon(coupon);
     await orderRepositoryDatabase.save(order);
-    const orderData = await orderRepositoryDatabase.getById(new Id("1"));
+    const orderData = await orderRepositoryDatabase.getById(order.id);
     expect(orderData).toEqual(order);
   });
 
@@ -66,7 +74,11 @@ describe("Order repository", () => {
   });
 
   it("gets next sequence if there is an order placed", async () => {
-    const order = new Order(new Id("1"), new Email("cliente@email.com"), new Date("2023-01-01T00:00:00"), 1);
+    const order = Order.create({
+      email: new Email("cliente@email.com"),
+      date: new Date("2023-01-01T00:00:00"),
+      sequence: 1,
+    });
     order.addItem(new Product(new Id("1"), "Bicicleta", new BRLCurrency(20.0), new Dimensions(10, 10, 2), 50), 1);
     await orderRepositoryDatabase.save(order);
 

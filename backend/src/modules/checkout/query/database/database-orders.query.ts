@@ -9,7 +9,7 @@ export class DatabaseOrdersQuery implements OrdersQuery {
     const offset = (page - 1) * limit;
 
     const ordersData = await this.connection.query(
-      "SELECT id, code, issue_date, total, email FROM app.order WHERE email = ? LIMIT ?, ?",
+      "SELECT id, code, issue_date, total, email FROM app.order WHERE email = ? ORDER BY issue_date DESC LIMIT ?, ?",
       [email.value, offset.toString(), limit.toString()],
     );
 

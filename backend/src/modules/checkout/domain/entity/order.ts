@@ -3,33 +3,54 @@ import { Email } from "@modules/shared/domain/value-object/email";
 import { Id } from "@modules/shared/domain/value-object/id";
 import { OrderItem } from "./order-item";
 import { Product } from "./product";
-import { Freight } from "./freight";
 import { Coupon } from "./coupon";
 import { OrderCoupon } from "./order-coupon";
 
-export class Order {
-  private _items: OrderItem[] = [];
-  public readonly code: OrderCode;
-  public freight = new Freight();
-  public coupon?: OrderCoupon;
+type OrderProps = {
+  id: Id;
+  email: Email;
+  date: Date;
+  sequence: number;
+  currency?: string;
+};
 
-  constructor(
-    public readonly id: Id,
-    public readonly email: Email,
-    public readonly date: Date,
-    public readonly sequency: number,
-    public readonly currency: string = "brl",
-  ) {
-    this.code = new OrderCode(date, sequency);
+export type CreateOrderProps = Omit<OrderProps, "id">;
+
+export type RestoreOrderProps = OrderProps & {
+  currency?: string;
+  coupon?: OrderCoupon;
+  freight: number;
+  items: OrderItem[];
+};
+
+export class Order {
+  readonly id: Id;
+  readonly email: Email;
+  readonly date: Date;
+  readonly sequency: number;
+  readonly currency: string;
+  readonly code: OrderCode;
+  coupon?: OrderCoupon;
+
+  private _items: OrderItem[] = [];
+  private _freight: number = 0;
+
+  private constructor({ id, email, date, sequence, currency }: OrderProps) {
+    this.id = id;
+    this.email = email;
+    this.date = date;
+    this.currency = currency ?? "brl";
+    this.sequency = sequence;
+    this.code = new OrderCode(date, sequence);
   }
 
-  public applyCoupon(coupon: Coupon): void {
+  applyCoupon(coupon: Coupon): void {
     if (coupon.isValid(this.date)) {
       this.coupon = new OrderCoupon(coupon.code, coupon.percentage, coupon.discountLimit);
     }
   }
 
-  public addItem(product: Product, amount: number): void {
+  addItem(product: Product, amount: number): void {
     const orderItem = this.getItem(product.id);
 
     if (orderItem) {
@@ -37,10 +58,9 @@ export class Order {
     } else {
       this._items.push(new OrderItem(product.id, product.price, amount));
     }
-    this.freight.addItem(product, amount);
   }
 
-  public get total(): number {
+  get total(): number {
     let total = this._items.reduce((sum, orderItem) => {
       sum += orderItem.total;
       return sum;
@@ -50,23 +70,39 @@ export class Order {
       total -= this.coupon.calculateDiscount(total);
     }
 
-    total += this.freight.getTotal();
+    total += this.freight;
     return total;
   }
 
-  public get items(): OrderItem[] {
+  get items(): OrderItem[] {
     return this._items;
   }
 
-  public set items(items: OrderItem[]) {
+  set items(items: OrderItem[]) {
     this._items = items;
   }
 
-  public getFreight(): number {
-    return this.freight.getTotal();
+  get freight() {
+    return this._freight;
+  }
+
+  changeFreight(freight: number): void {
+    this._freight = freight;
   }
 
   private getItem(productId: Id): OrderItem | undefined {
     return this._items.find((item) => item.productId.value == productId.value);
+  }
+
+  static create(props: CreateOrderProps): Order {
+    return new Order({ id: new Id(), ...props });
+  }
+
+  static restore({ id, email, date, sequence, currency, ...props }: RestoreOrderProps): Order {
+    const order = new Order({ id, email, date, sequence, currency });
+    order.coupon = props.coupon;
+    order.items = props.items;
+    order.changeFreight(props.freight);
+    return order;
   }
 }
