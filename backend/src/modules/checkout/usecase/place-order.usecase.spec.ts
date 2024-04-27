@@ -22,6 +22,18 @@ describe("Place order use case tests", () => {
   let queue: Queue;
   let calculateFreightGateway: CalculateFreightGateway;
   let useCase: PlaceOrderUseCase;
+  const product1 = Product.create({
+    name: "Fone de ouvido",
+    price: new BRLCurrency(10.0),
+    dimensions: new Dimensions(10, 20, 30),
+    weight: 0,
+  });
+  const product2 = Product.create({
+    name: "Bicicleta",
+    price: new BRLCurrency(1500.0),
+    dimensions: new Dimensions(10, 20, 30),
+    weight: 0,
+  });
 
   beforeEach(async () => {
     productRepository = repositoryFactory.makeProductRepository();
@@ -33,22 +45,17 @@ describe("Place order use case tests", () => {
     await orderRepository.clear();
     await productRepository.clear();
     await couponRepository.clear();
+    await productRepository.save(product1);
+    await productRepository.save(product2);
   });
 
   it("places an order", async () => {
-    productRepository.save(
-      new Product(new Id("1"), "Fone de ouvido", new BRLCurrency(10.0), new Dimensions(10, 20, 30), 0),
-    );
-    productRepository.save(
-      new Product(new Id("2"), "Bicicleta", new BRLCurrency(1500.0), new Dimensions(10, 20, 30), 0),
-    );
-
     const useCase = new PlaceOrderUseCase(repositoryFactory, queue, calculateFreightGateway);
     const input = {
       email: "cliente@email.com",
       items: [
-        { id: "1", amount: 2 },
-        { id: "2", amount: 2 },
+        { id: product1.id.value, amount: 2 },
+        { id: product2.id.value, amount: 2 },
       ],
       date: new Date("2024-01-01T10:00:00"),
     };
@@ -63,7 +70,7 @@ describe("Place order use case tests", () => {
     expect(async () => {
       const input = {
         email: "cliente@email.com",
-        items: [{ id: "1", amount: 1 }],
+        items: [{ id: "invalidId", amount: 1 }],
       };
       await useCase.execute(input);
     }).rejects.toThrowErrorTypeWithMessage(NotFoundError, "Product not found");
@@ -77,17 +84,11 @@ describe("Place order use case tests", () => {
       expirationDate: new Date("2023-10-15T00:00:00"),
     });
     couponRepository.save(coupon);
-    productRepository.save(
-      new Product(new Id("1"), "Fone de ouvido", new BRLCurrency(10.0), new Dimensions(10, 20, 30), 0),
-    );
-    productRepository.save(
-      new Product(new Id("2"), "Bicicleta", new BRLCurrency(1500.0), new Dimensions(10, 20, 30), 0),
-    );
     const input = {
       email: "cliente@email.com",
       items: [
-        { id: "1", amount: 2 },
-        { id: "2", amount: 2 },
+        { id: product1.id.value, amount: 2 },
+        { id: product2.id.value, amount: 2 },
       ],
       coupon: "VALE10",
       date: new Date("2023-10-10T23:59:59"),
@@ -101,17 +102,11 @@ describe("Place order use case tests", () => {
 
   it("throws an error when placing an order with an inexistent coupon", async () => {
     expect(async () => {
-      productRepository.save(
-        new Product(new Id("1"), "Fone de ouvido", new BRLCurrency(10.0), new Dimensions(10, 20, 30), 0),
-      );
-      productRepository.save(
-        new Product(new Id("2"), "Bicicleta", new BRLCurrency(1500.0), new Dimensions(10, 20, 30), 0),
-      );
       const input = {
         email: "cliente@email.com",
         items: [
-          { id: "1", amount: 2 },
-          { id: "2", amount: 2 },
+          { id: product1.id.value, amount: 2 },
+          { id: product2.id.value, amount: 2 },
         ],
         coupon: "VALE10",
         date: new Date("2023-11-01T23:59:59"),

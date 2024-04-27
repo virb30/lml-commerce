@@ -15,7 +15,12 @@ describe("Order tests", () => {
       date: new Date("2023-01-01T00:00:00"),
       sequence: 1,
     });
-    const product = new Product(new Id("1"), "Fone de ouvido", new BRLCurrency(10.0), new Dimensions(10, 20, 30), 0);
+    const product = Product.create({
+      name: "Fone de ouvido",
+      price: new BRLCurrency(10.0),
+      dimensions: new Dimensions(10, 20, 30),
+      weight: 0,
+    });
     order.addItem(product, 1);
     expect(order.items).toHaveLength(1);
     expect(order.total).toBe(10);
@@ -28,8 +33,20 @@ describe("Order tests", () => {
       date: new Date("2023-01-01T00:00:00"),
       sequence: 1,
     });
-    order.addItem(new Product(new Id("1"), "Bicicleta (digital)", new BRLCurrency(20.0)), 1);
-    order.addItem(new Product(new Id("2"), "Pneu de trator (digital)", new BRLCurrency(30.0)), 1);
+    order.addItem(
+      Product.create({
+        name: "Bicicleta (digital)",
+        price: new BRLCurrency(20.0),
+      }),
+      1,
+    );
+    order.addItem(
+      Product.create({
+        name: "Pneu de trator (digital)",
+        price: new BRLCurrency(30.0),
+      }),
+      1,
+    );
     expect(order.items).toHaveLength(2);
     expect(order.total).toBe(50.0);
     expect(order.code.value).toEqual("202300000001");
@@ -41,15 +58,15 @@ describe("Order tests", () => {
       date: new Date("2023-01-01T00:00:00"),
       sequence: 1,
     });
-    const product1 = new Product(new Id("1"), "Bicicleta (Digital)", new BRLCurrency(20.0));
-    const product2 = new Product(new Id("2"), "Fone de ouvido (Digital)", new BRLCurrency(5.0));
-
+    const product1 = Product.create({
+      name: "Bicicleta (Digital)",
+      price: new BRLCurrency(20.0),
+    });
     order.addItem(product1, 1);
-    order.addItem(product2, 1);
     order.addItem(product1, 1);
-
-    expect(order.items).toHaveLength(2);
-    expect(order.total).toBe(45.0);
+    expect(order.items).toHaveLength(1);
+    expect(order.items[0].amount).toBe(2);
+    expect(order.total).toBe(40.0);
   });
 
   it("should create an order and change freight", () => {
@@ -58,19 +75,23 @@ describe("Order tests", () => {
       date: new Date("2023-01-01T00:00:00"),
       sequence: 1,
     });
-    const product1 = new Product(new Id("1"), "Bicicleta", new BRLCurrency(20.0), new Dimensions(10, 10, 2), 50);
-    const product2 = new Product(new Id("2"), "Pneu de trator", new BRLCurrency(30.0), new Dimensions(20, 20, 10), 20);
-    order.addItem(product1, 1);
-    order.addItem(product1, 1);
-    order.addItem(product2, 1);
+    order.addItem(
+      Product.create({
+        name: "Bicicleta",
+        price: new BRLCurrency(20.0),
+        dimensions: new Dimensions(10, 10, 2),
+        weight: 50,
+      }),
+      1,
+    );
     order.changeFreight(1200);
-    expect(order.items).toHaveLength(2);
+    expect(order.items).toHaveLength(1);
     expect(order.freight).toBe(1200);
-    expect(order.total).toBe(1270);
+    expect(order.total).toBe(1220);
     expect(order.code.value).toEqual("202300000001");
   });
 
-  it("should create an order with two items, change freight and apply coupon", () => {
+  it("should create an order with one item, change freight and apply coupon", () => {
     const order = Order.create({
       email: new Email("cliente@email.com"),
       date: new Date("2023-01-01T00:00:00"),
@@ -82,16 +103,21 @@ describe("Order tests", () => {
       discountLimit: 10.0,
       expirationDate: new Date("2023-12-01T00:00:00"),
     });
-    const product1 = new Product(new Id("1"), "Bicicleta", new BRLCurrency(20.0), new Dimensions(10, 10, 2), 50);
-    const product2 = new Product(new Id("2"), "Pneu de trator", new BRLCurrency(30.0), new Dimensions(20, 20, 10), 20);
-    
-    order.addItem(product1, 2);
-    order.addItem(product2, 1);
+
+    order.addItem(
+      Product.create({
+        name: "Bicicleta",
+        price: new BRLCurrency(20.0),
+        dimensions: new Dimensions(10, 10, 2),
+        weight: 50,
+      }),
+      1,
+    );
     order.applyCoupon(coupon);
     order.changeFreight(1200);
     expect(order.coupon?.code).toEqual("VALE10");
-    expect(order.items).toHaveLength(2);
-    expect(order.total).toBe(1263);
+    expect(order.items).toHaveLength(1);
+    expect(order.total).toBe(1218);
     expect(order.code.value).toEqual("202300000001");
   });
 
@@ -101,21 +127,25 @@ describe("Order tests", () => {
       date: new Date("2023-01-01T00:00:00"),
       sequence: 1,
     });
-    const coupon = Coupon.create( {
+    const coupon = Coupon.create({
       code: "VALE10",
       percentage: 10,
       discountLimit: 10.0,
       expirationDate: new Date("2022-12-31T23:59:59"),
     });
-    const product1 = new Product(new Id("1"), "Bicicleta", new BRLCurrency(20.0), new Dimensions(10, 10, 2), 50);
-    const product2 = new Product(new Id("2"), "Pneu de trator", new BRLCurrency(30.0), new Dimensions(20, 20, 10), 20);
-    
-    order.addItem(product1, 2);
-    order.addItem(product2, 1);
+    order.addItem(
+      Product.create({
+        name: "Bicicleta",
+        price: new BRLCurrency(20.0),
+        dimensions: new Dimensions(10, 10, 2),
+        weight: 50,
+      }),
+      1,
+    );
     order.applyCoupon(coupon);
     expect(order.coupon).toBeUndefined();
-    expect(order.items).toHaveLength(2);
-    expect(order.total).toBe(70);
+    expect(order.items).toHaveLength(1);
+    expect(order.total).toBe(20);
     expect(order.code.value).toEqual("202300000001");
   });
 

@@ -26,11 +26,15 @@ describe("Product Repository", () => {
     await productRepositoryDatabase.clear();
   });
   it("creates a product", async () => {
-    const product = new Product(new Id("1"), "Notebook Avell", new BRLCurrency(5600.0), new Dimensions(10, 20, 30), 5);
-
+    const productProps = {
+      name: "Notebook Avell",
+      price: new BRLCurrency(5600.0),
+      dimensions: new Dimensions(10, 20, 30),
+      weight: 5,
+    };
+    const product = Product.create(productProps);
     await productRepositoryDatabase.save(product);
-
-    const dbProduct = await productRepositoryDatabase.getById(new Id("1"));
+    const dbProduct = await productRepositoryDatabase.getById(product.id);
     expect(dbProduct).toStrictEqual(product);
   });
 

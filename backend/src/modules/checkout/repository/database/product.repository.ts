@@ -10,24 +10,20 @@ export class ProductRepositoryDatabase implements ProductRepository {
   constructor(private connection: Connection) {}
 
   public async getById(id: Id): Promise<Product> {
-    const [product] = await this.connection.query(
+    const [productData] = await this.connection.query(
       "SELECT id, name, currency, price, height, width, length, weight FROM app.product WHERE id =?",
       [id.value],
     );
-
-    if (!product) {
+    if (!productData) {
       throw new NotFoundError("Product not found");
     }
-
-    const productItem = new Product(
-      new Id(product.id),
-      product.name,
-      CurrencyFactory.make(parseFloat(product.price), product.currency),
-      new Dimensions(product.height ?? 0, product.width ?? 0, product.length ?? 0),
-      product.weight,
-    );
-
-    return productItem;
+    return Product.restore({
+      id: new Id(productData.id),
+      name: productData.name,
+      price: CurrencyFactory.make(parseFloat(productData.price), productData.currency),
+      dimensions: new Dimensions(productData.height ?? 0, productData.width ?? 0, productData.length ?? 0),
+      weight: productData.weight,
+    });
   }
 
   public async save(product: Product): Promise<void> {

@@ -14,6 +14,7 @@ import { NotFoundError } from "@modules/shared/errors/not-found.error";
 describe("Order repository", () => {
   const connection = new MysqlConnectionAdapter(dbConfig);
   const orderRepositoryDatabase = new OrderRepositoryDatabase(connection);
+  let product: Product;
 
   beforeAll(() => {
     const factory = CurrencyFactory.getInstance();
@@ -22,6 +23,12 @@ describe("Order repository", () => {
 
   beforeEach(async () => {
     await orderRepositoryDatabase.clear();
+    product = Product.create({
+      name: "Bicicleta",
+      price: new BRLCurrency(20.0),
+      dimensions: new Dimensions(10, 10, 2),
+      weight: 50,
+    });
   });
 
   afterAll(async () => {
@@ -35,7 +42,7 @@ describe("Order repository", () => {
       date: new Date("2023-01-01T00:00:00"),
       sequence: 1,
     });
-    order.addItem(new Product(new Id("1"), "Bicicleta", new BRLCurrency(20.0), new Dimensions(10, 10, 2), 50), 1);
+    order.addItem(product, 1);
     await orderRepositoryDatabase.save(order);
     const orderData = await orderRepositoryDatabase.getById(order.id);
     expect(orderData).toEqual(order);
@@ -47,8 +54,6 @@ describe("Order repository", () => {
       date: new Date("2023-01-01T00:00:00"),
       sequence: 1,
     });
-    const product = new Product(new Id("1"), "Bicicleta", new BRLCurrency(20.0), new Dimensions(10, 10, 2), 50);
-
     const coupon = Coupon.create({
       code: "VALE10",
       percentage: 10,
@@ -79,9 +84,8 @@ describe("Order repository", () => {
       date: new Date("2023-01-01T00:00:00"),
       sequence: 1,
     });
-    order.addItem(new Product(new Id("1"), "Bicicleta", new BRLCurrency(20.0), new Dimensions(10, 10, 2), 50), 1);
+    order.addItem(product, 1);
     await orderRepositoryDatabase.save(order);
-
     const nextSequence = await orderRepositoryDatabase.getNextSequence();
     expect(nextSequence).toBe(2);
   });
