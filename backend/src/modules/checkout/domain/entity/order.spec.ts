@@ -151,8 +151,14 @@ describe("Order tests", () => {
 
   it("should restore an order", () => {
     const items = [
-      new OrderItem(new Id("1"), new BRLCurrency(1000), 1),
-      new OrderItem(new Id("2"), new BRLCurrency(10), 2),
+      OrderItem.create({
+        price: new BRLCurrency(1000),
+        amount: 1,
+      }),
+      OrderItem.create({
+        price: new BRLCurrency(10),
+        amount: 2,
+      }),
     ];
     const coupon = new OrderCoupon("VALE10", 10, 0);
     const order = Order.restore({

@@ -12,12 +12,12 @@ describe("OrderItem", () => {
     weight: 0,
   });
   it("calculates item total", () => {
-    const item = new OrderItem(product.id, product.price, 2);
+    const item = OrderItem.create({ price: product.price, amount: 2 });
     expect(item.total).toEqual(20);
   });
 
   it("increments amount if item is duplicated", () => {
-    const item = new OrderItem(product.id, product.price, 1);
+    const item = OrderItem.create({ price: product.price, amount: 1 });
     item.incrementAmount(2);
     expect(item.amount).toEqual(3);
     expect(item.total).toEqual(30.0);
