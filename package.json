@@ -13,7 +13,8 @@
         "format:backend": "npm run --prefix backend format",
         "lint:backend": "npm run --prefix backend lint",
         "test:backend": "npm run --prefix backend test",
-        "test:cov:backend": "npm run --prefix backend test:cov"
+        "test:cov:backend": "npm run --prefix backend test:cov",
+        "test:frontend": "npm run --prefix frontend test"
     },
     "dependencies": {
         "dotenv": "^16.3.1",
