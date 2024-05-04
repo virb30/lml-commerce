@@ -25,12 +25,11 @@ describe("Product repository database tests", () => {
   });
 
   it("inserts a product in database", async () => {
-    const id = new Id();
-    const product = new Product(id, "Produto teste 1", new BRLCurrency(10));
+    const product = Product.create({ name: "Produto teste 1", price: new BRLCurrency(10) });
     await productRepository.save(product);
 
-    const savedProduct = await productRepository.findById(id);
-    expect(savedProduct.id.value).toBe(id.value);
+    const savedProduct = await productRepository.findById(product.id);
+    expect(savedProduct.id.value).toBe(product.id.value);
     expect(savedProduct.name).toBe(product.name);
     expect(savedProduct.price.value).toBe(product.price.value);
     expect(savedProduct.price.code).toBe(product.price.code);
