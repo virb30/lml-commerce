@@ -2,23 +2,39 @@ import { Currency } from "@modules/shared/domain/value-object/currency/currency"
 import { Id } from "@modules/shared/domain/value-object/id";
 import { InputError } from "@modules/shared/errors/input.error";
 
+type productProps = {
+  id: Id;
+  name: string;
+  price: Currency;
+  createdAt: Date;
+  updatedAt: Date;
+};
+
+export type productPropsCreate = Omit<productProps, "id" | "createdAt" | "updatedAt">;
+export type productPropsRestore = productProps;
+
 export class Product {
+  readonly id: Id;
   private _price: Currency;
   private _name: string;
-  readonly createdAt: Date = new Date();
-  readonly updatedAt: Date = new Date();
+  readonly createdAt: Date;
+  readonly updatedAt: Date;
 
-  constructor(
-    public readonly id: Id,
-    name: string,
-    price: Currency,
-    createdAt?: Date,
-    updatedAt?: Date,
-  ) {
-    if (createdAt) this.createdAt = createdAt;
-    if (updatedAt) this.updatedAt = updatedAt;
+  constructor({ id, name, price, createdAt, updatedAt }: productProps) {
+    this.id = id;
+    this.createdAt = createdAt;
+    this.updatedAt = updatedAt;
     this.changeName(name);
     this.changePrice(price);
+  }
+
+  static create(props: productPropsCreate): Product {
+    const now = new Date();
+    return new Product({ id: new Id(), createdAt: now, updatedAt: now, ...props });
+  }
+
+  static restore(props: productPropsRestore): Product {
+    return new Product(props);
   }
 
   changeName(name: string): void {

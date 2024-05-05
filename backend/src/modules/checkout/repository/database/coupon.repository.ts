@@ -14,13 +14,13 @@ export class CouponRepositoryDatabase implements CouponRepository {
       throw new NotFoundError("Coupon not found");
     }
 
-    return new Coupon(
-      new Id(couponData.id),
-      couponData.code,
-      parseFloat(couponData.percentage),
-      parseFloat(couponData.discount_limit),
-      new Date(couponData.expiration_date),
-    );
+    return Coupon.restore({
+      id: new Id(couponData.id),
+      code: couponData.code,
+      percentage: parseFloat(couponData.percentage),
+      discountLimit: parseFloat(couponData.discount_limit),
+      expirationDate: new Date(couponData.expiration_date),
+    });
   }
 
   public async save(coupon: Coupon): Promise<void> {

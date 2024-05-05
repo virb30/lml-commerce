@@ -14,7 +14,7 @@ export class CreateProductUseCase implements Usecase {
 
   async execute(input: CreateProductInput): Promise<CreateProductOutput> {
     const price = CurrencyFactory.make(input.price, input.currency);
-    const product = new Product(new Id(), input.name, price);
+    const product = Product.create({ name: input.name, price });
     await this.productRepository.save(product);
 
     const payload = {

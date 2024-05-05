@@ -3,7 +3,6 @@ import { OrderController } from "./order.controller";
 import { OrderRepository } from "../domain/repository/order.repository.interface";
 import { ProductRepository } from "../domain/repository/product.repository.interface";
 import { Product } from "../domain/entity/product";
-import { Id } from "@modules/shared/domain/value-object/id";
 import { Dimensions } from "../domain/value-object/dimensions";
 import { CheckoutModule } from "../checkout.module";
 import { ConfigModule } from "@modules/config/config.module";
@@ -17,6 +16,18 @@ describe("OrderController tests", () => {
   let repositoryFactory: RepositoryFactory;
   let productRepository: ProductRepository;
   let orderRepository: OrderRepository;
+  const product1 = Product.create({
+    name: "Fone de ouvido",
+    price: new BRLCurrency(10.0),
+    dimensions: new Dimensions(1, 2, 3),
+    weight: 0.5,
+  });
+  const product2 = Product.create({
+    name: "Bicicleta",
+    price: new BRLCurrency(3800.0),
+    dimensions: new Dimensions(2, 2, 5),
+    weight: 5,
+  });
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -42,24 +53,17 @@ describe("OrderController tests", () => {
   });
 
   it("places an order", async () => {
-    await productRepository.save(
-      new Product(new Id("1"), "Fone de ouvido", new BRLCurrency(10.0), new Dimensions(1, 2, 3), 0.5),
-    );
-    await productRepository.save(
-      new Product(new Id("2"), "Placa de vídeo", new BRLCurrency(3800.0), new Dimensions(2, 2, 5), 5),
-    );
-
+    await productRepository.save(product1);
+    await productRepository.save(product2);
     const input = {
       email: "cliente@email.com",
       items: [
-        { productId: "1", amount: 2 },
-        { productId: "2", amount: 1 },
+        { productId: product1.id.value, amount: 2 },
+        { productId: product2.id.value, amount: 1 },
       ],
       date: "2023-01-01T10:00:00",
     };
-
     const output = await controller.create(input);
-
     expect(output.total).toBe(3880.0);
     expect(output.freight).toBe(60.0);
   });

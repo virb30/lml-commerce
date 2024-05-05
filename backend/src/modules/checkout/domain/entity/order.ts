@@ -56,7 +56,13 @@ export class Order {
     if (orderItem) {
       orderItem.incrementAmount(amount);
     } else {
-      this._items.push(new OrderItem(product.id, product.price, amount));
+      this._items.push(
+        OrderItem.restore({
+          productId: product.id,
+          price: product.price,
+          amount,
+        }),
+      );
     }
   }
 

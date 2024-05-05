@@ -19,8 +19,15 @@ describe("GetOrderUseCase tests", () => {
       date: new Date("2023-01-01T00:00:00"),
       sequence: 1,
     });
-    const product = new Product(new Id("1"), "Fone de ouvido", new BRLCurrency(10.0), new Dimensions(10, 20, 30), 0);
-    order.addItem(product, 1);
+    order.addItem(
+      Product.create({
+        name: "Fone de ouvido",
+        price: new BRLCurrency(10.0),
+        dimensions: new Dimensions(1, 2, 3),
+        weight: 0.5,
+      }),
+      1,
+    );
     await orderRepository.save(order);
     return order;
   };

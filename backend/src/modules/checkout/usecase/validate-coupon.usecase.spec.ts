@@ -14,7 +14,13 @@ describe("Validate Coupon Use Case tests", () => {
   });
 
   it("I should validate an unexpired coupon code", async () => {
-    await couponRepository.save(new Coupon(new Id("1"), "VALE10", 10, 10.0, new Date("2023-12-02T00:00:00")));
+    const coupon = Coupon.create({
+      code: "VALE10",
+      percentage: 10,
+      discountLimit: 10.0,
+      expirationDate: new Date("2023-12-02T00:00:00"),
+    });
+    await couponRepository.save(coupon);
     const validateCouponUseCase = new ValidateCouponUseCase(repositoryFactory);
     const payload = {
       code: "VALE10",
@@ -27,7 +33,13 @@ describe("Validate Coupon Use Case tests", () => {
   });
 
   it("does not validate an expired coupon", async () => {
-    await couponRepository.save(new Coupon(new Id("1"), "VALE10", 10, 10.0, new Date("2023-12-01T00:00:00")));
+    const coupon = Coupon.create({
+      code: "VALE10",
+      percentage: 10,
+      discountLimit: 10.0,
+      expirationDate: new Date("2023-12-01T00:00:00"),
+    });
+    await couponRepository.save(coupon);
     const validateCouponUseCase = new ValidateCouponUseCase(repositoryFactory);
     const payload = {
       code: "VALE10",

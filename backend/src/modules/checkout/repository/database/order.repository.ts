@@ -39,11 +39,11 @@ export class OrderRepositoryDatabase implements OrderRepository {
       sequence: parseInt(orderData.sequency),
       freight: parseFloat(orderData.freight),
       items: orderItemsData.map((orderItem: any) => {
-        return new OrderItem(
-          new Id(orderItem.id_product),
-          CurrencyFactory.make(parseFloat(orderItem.price), orderItem.currency),
-          parseInt(orderItem.amount),
-        );
+        return OrderItem.restore({
+          productId: new Id(orderItem.id_product),
+          price: CurrencyFactory.make(parseFloat(orderItem.price), orderItem.currency),
+          amount: parseInt(orderItem.amount),
+        });
       }),
       coupon,
     };
