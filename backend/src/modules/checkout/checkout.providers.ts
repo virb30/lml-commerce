@@ -54,7 +54,7 @@ export const GATEWAYS = {
     provide: "CalculateFreightGateway",
     useFactory: (configService: ConfigService) => {
       const freightUrl = configService.get("FREIGHT_URL");
-      return new CalculateFreightGatewayHttp(new HttpClientAxiosAdapter(freightUrl));
+      return new CalculateFreightMemoryGateway();
     },
     inject: [ConfigService],
   },
