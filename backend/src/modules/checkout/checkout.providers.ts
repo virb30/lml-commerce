@@ -16,6 +16,8 @@ import { TOKENS } from "./constants";
 import { OrdersQueryProviderFactory } from "./factory/orders-query.provider.factory";
 import { CalculateFreightMemoryGateway } from "./gateway/memory/calculate-freight-memory.gateway";
 import { CalculateFreightGateway } from "./gateway/calculate-freight.gateway.interface";
+import { HttpClientAxiosAdapter } from "@modules/shared/http/http-client/http-client-axios.adapter";
+import { CalculateFreightGatewayHttp } from "./gateway/http/calculate-freight-http.gateway";
 
 export const REPOSITORIES = {
   REPOSITORY_FACTORY: {
@@ -50,9 +52,11 @@ export const QUERY = {
 export const GATEWAYS = {
   CALCULATE_FREIGHT: {
     provide: "CalculateFreightGateway",
-    useFactory: () => {
-      return new CalculateFreightMemoryGateway();
+    useFactory: (configService: ConfigService) => {
+      const freightUrl = configService.get("FREIGHT_URL");
+      return new CalculateFreightGatewayHttp(new HttpClientAxiosAdapter(freightUrl));
     },
+    inject: [ConfigService],
   },
 };
 
