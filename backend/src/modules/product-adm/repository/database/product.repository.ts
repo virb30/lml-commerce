@@ -25,13 +25,13 @@ export class ProductRepositoryDatabase implements ProductRepository {
     if (!productData) {
       throw new NotFoundError("Product not found");
     }
-    return new Product(
-      new Id(productData.id),
-      productData.name,
-      CurrencyFactory.make(parseFloat(productData.price), productData.currency),
-      new Date(productData.created_at),
-      new Date(productData.updated_at),
-    );
+    return Product.restore({
+      id: new Id(productData.id),
+      name: productData.name,
+      price: CurrencyFactory.make(parseFloat(productData.price), productData.currency),
+      createdAt: new Date(productData.created_at),
+      updatedAt: new Date(productData.updated_at),
+    });
   }
 
   async clear(): Promise<void> {

@@ -19,7 +19,12 @@ describe("CouponRepository tests", () => {
   });
 
   it("saves a coupon", async () => {
-    const coupon = new Coupon(new Id("1"), "VALE10", 10, 10.0, new Date("2023-12-01T00:00:00"));
+    const coupon = Coupon.create({
+      code: "VALE10",
+      percentage: 10,
+      discountLimit: 10.0,
+      expirationDate: new Date("2023-12-01T00:00:00"),
+    });
     await couponRepositoryDatabase.save(coupon);
     const dbCoupon = await couponRepositoryDatabase.getByCode("VALE10");
     expect(dbCoupon).toStrictEqual(coupon);

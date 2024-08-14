@@ -6,8 +6,14 @@ import { InputError } from "@modules/shared/errors/input.error";
 
 describe("Product", () => {
   it("creates a product", () => {
-    const product = new Product(new Id("1"), "Fone de ouvido", new BRLCurrency(10.0), new Dimensions(1, 2, 3), 6);
-    expect(product.id.value).toEqual("1");
+    const productProps = {
+      name: "Fone de ouvido",
+      price: new BRLCurrency(10.0),
+      dimensions: new Dimensions(1, 2, 3),
+      weight: 6,
+    };
+    const product = Product.create(productProps);
+    expect(product.id).toBeInstanceOf(Id);
     expect(product.name).toEqual("Fone de ouvido");
     expect(product.price.value).toBe(10.0);
     expect(product.getDensity()).toBe(1);
@@ -15,8 +21,12 @@ describe("Product", () => {
   });
 
   it("creates a product without dimensions", () => {
-    const product = new Product(new Id("1"), "Fone de ouvido", new BRLCurrency(10.0));
-    expect(product.id.value).toEqual("1");
+    const productProps = {
+      name: "Fone de ouvido",
+      price: new BRLCurrency(10.0),
+    };
+    const product = Product.create(productProps);
+    expect(product.id).toBeInstanceOf(Id);
     expect(product.name).toEqual("Fone de ouvido");
     expect(product.price.value).toBe(10.0);
     expect(product.getDensity()).toBe(0);
@@ -24,8 +34,13 @@ describe("Product", () => {
   });
 
   it("creates a product without weight", () => {
-    const product = new Product(new Id("1"), "Fone de ouvido", new BRLCurrency(10.0), new Dimensions(1, 2, 3));
-    expect(product.id.value).toEqual("1");
+    const productProps = {
+      name: "Fone de ouvido",
+      price: new BRLCurrency(10.0),
+      dimensions: new Dimensions(1, 2, 3),
+    };
+    const product = Product.create(productProps);
+    expect(product.id).toBeInstanceOf(Id);
     expect(product.name).toEqual("Fone de ouvido");
     expect(product.price.value).toBe(10.0);
     expect(product.getDensity()).toBe(0);
@@ -34,7 +49,13 @@ describe("Product", () => {
 
   it("does not create a product with invalid weight", () => {
     expect(() => {
-      new Product(new Id("1"), "Fone de ouvido", new BRLCurrency(10.0), new Dimensions(10, 20, 30), -1);
+      const productProps = {
+        name: "Fone de ouvido",
+        price: new BRLCurrency(10.0),
+        dimensions: new Dimensions(10, 20, 30),
+        weight: -1,
+      };
+      Product.create(productProps);
     }).toThrowErrorTypeWithMessage(InputError, "Invalid weight");
   });
 });
