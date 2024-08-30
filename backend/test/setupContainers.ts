@@ -25,7 +25,7 @@ export default async function setupContainers() {
 
   const config = getDbConfig({
     dbHost: dbContainer.getHost(),
-    dbPort: dbContainer.getMappedPort(3306),
+    dbPort: 3306,
   });
   const connection = new MysqlConnectionAdapter(config);
   await migrate(connection);
