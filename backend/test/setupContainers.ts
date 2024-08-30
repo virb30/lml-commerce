@@ -24,6 +24,9 @@ export default async function setupContainers() {
     .start();
 
   const config = getDbConfig({
+    dbUser: "root",
+    dbPass: "123456",
+    dbName: "app",
     dbHost: dbContainer.getHost(),
     dbPort: 3306,
   });
