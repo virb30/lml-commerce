@@ -11,7 +11,7 @@ export class MysqlConnectionAdapter implements Connection {
         host: options.dbHost,
         password: options.dbPass,
         user: options.dbUser,
-        port: parseInt(options.dbPort),
+        port: options.dbPort,
         charset: "utf8mb4",
       })
       .promise();
@@ -34,7 +34,7 @@ export class MysqlConnectionAdapter implements Connection {
 
 export type MysqlConnectionOptions = {
   dbHost: string;
-  dbPort: string;
+  dbPort: number;
   dbUser: string;
   dbPass: string;
   dbName: string;

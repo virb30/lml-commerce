@@ -1,15 +1,14 @@
 import { MysqlConnectionAdapter } from "@modules/database/connection/mysql/mysql-connection.adapter";
 import { Email } from "@modules/shared/domain/value-object/email";
-import { Id } from "@modules/shared/domain/value-object/id";
 import { Order } from "../../domain/entity/order";
 import { OrderRepositoryDatabase } from "../../repository/database/order.repository";
 import { DatabaseOrdersQuery } from "./database-orders.query";
-import { dbConfig } from "@modules/database/connection/mysql/config";
+import { initDb } from "@test/initDb";
 
 describe("DatabaseOrdersQuery tests", () => {
-  const connection = new MysqlConnectionAdapter(dbConfig);
-  const orderRepository = new OrderRepositoryDatabase(connection);
-  const ordersGateway = new DatabaseOrdersQuery(connection);
+  const db = initDb(MysqlConnectionAdapter);
+  let orderRepository: OrderRepositoryDatabase;
+  let ordersGateway: DatabaseOrdersQuery;
   let ordersData: Order[];
 
   const ordersFixture = async () => {
@@ -40,14 +39,14 @@ describe("DatabaseOrdersQuery tests", () => {
     ordersData = [order1, order2, order3, order4];
   };
 
+  beforeAll(() => {
+    orderRepository = new OrderRepositoryDatabase(db.connection);
+    ordersGateway = new DatabaseOrdersQuery(db.connection);
+  });
+
   beforeEach(async () => {
     await orderRepository.clear();
     await ordersFixture();
-  });
-
-  afterAll(async () => {
-    await orderRepository.clear();
-    await connection.close();
   });
 
   it("returns empty list", async () => {

@@ -12,7 +12,7 @@ export const databaseProvider = {
       dbHost: configService.get("DB_HOST"),
       dbName: configService.get("DB_NAME"),
       dbPass: configService.get("DB_PASS"),
-      dbPort: configService.get("DB_PORT"),
+      dbPort: parseInt(configService.get("DB_PORT")),
       dbUser: configService.get("DB_USER"),
     };
     return DbConnectionFactory.make(dbType, dbOptions);

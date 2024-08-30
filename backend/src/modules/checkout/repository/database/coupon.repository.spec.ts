@@ -2,16 +2,15 @@ import { Coupon } from "../../domain/entity/coupon";
 import { Id } from "@modules/shared/domain/value-object/id";
 import { MysqlConnectionAdapter } from "../../../database/connection/mysql/mysql-connection.adapter";
 import { CouponRepositoryDatabase } from "./coupon.repository";
-import { dbConfig } from "@modules/database/connection/mysql/config";
 import { NotFoundError } from "@modules/shared/errors/not-found.error";
+import { initDb } from "@test/initDb";
 
 describe("CouponRepository tests", () => {
-  const connection = new MysqlConnectionAdapter(dbConfig);
-  const couponRepositoryDatabase = new CouponRepositoryDatabase(connection);
+  const db = initDb(MysqlConnectionAdapter);
+  let couponRepositoryDatabase: CouponRepositoryDatabase;
 
-  afterAll(async () => {
-    await couponRepositoryDatabase.clear();
-    await connection.close();
+  beforeAll(() => {
+    couponRepositoryDatabase = new CouponRepositoryDatabase(db.connection);
   });
 
   beforeEach(async () => {
@@ -26,8 +25,9 @@ describe("CouponRepository tests", () => {
   });
 
   it("throws an error coupon not found", async () => {
-    expect(async () => {
-      await couponRepositoryDatabase.getByCode("VALE100");
-    }).rejects.toThrowErrorTypeWithMessage(NotFoundError, "Coupon not found");
+    await expect(couponRepositoryDatabase.getByCode("VALE100")).rejects.toThrowErrorTypeWithMessage(
+      NotFoundError,
+      "Coupon not found",
+    );
   });
 });

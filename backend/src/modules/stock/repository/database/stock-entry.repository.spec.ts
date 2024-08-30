@@ -2,19 +2,18 @@ import { StockEntry } from "../../domain/entity/stock-entry.entity";
 import { Id } from "@modules/shared/domain/value-object/id";
 import { MysqlConnectionAdapter } from "../../../database/connection/mysql/mysql-connection.adapter";
 import { StockEntryRepositoryDatabase } from "./stock-entry.repository";
-import { dbConfig } from "@modules/database/connection/mysql/config";
+import { initDb } from "@test/initDb";
 
 describe("StockEntryRepositoryDatabase tests", () => {
-  const connection = new MysqlConnectionAdapter(dbConfig);
-  const stockEntryRepository = new StockEntryRepositoryDatabase(connection);
+  const db = initDb(MysqlConnectionAdapter);
+  let stockEntryRepository: StockEntryRepositoryDatabase;
+
+  beforeAll(() => {
+    stockEntryRepository = new StockEntryRepositoryDatabase(db.connection);
+  });
 
   beforeEach(async () => {
     await stockEntryRepository.clear();
-  });
-
-  afterAll(async () => {
-    await stockEntryRepository.clear();
-    await connection.close();
   });
 
   it("should create stock entries", async () => {

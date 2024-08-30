@@ -16,7 +16,7 @@ export type DbConnectionType = "mysql" | "postgres";
 
 export type DbConnectionOptions = {
   dbHost: string;
-  dbPort: string;
+  dbPort: number;
   dbUser: string;
   dbPass: string;
   dbName: string;

@@ -4,6 +4,12 @@
         "paths": {
             "@modules/*": [
                 "backend/src/modules/*"
+            ],
+            "@migrations/*": [
+                "backend/migrations/*"
+            ],
+            "@test/*": [
+                "backend/test/*"
             ]
         }
     },
@@ -13,6 +19,7 @@
     ],
     "include": [
         "src",
+        "migrations",
         "test", 
         "__tests__"    
     ],

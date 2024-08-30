@@ -6,27 +6,23 @@ import { Email } from "@modules/shared/domain/value-object/email";
 import { Dimensions } from "../../domain/value-object/dimensions";
 import { MysqlConnectionAdapter } from "../../../database/connection/mysql/mysql-connection.adapter";
 import { Coupon } from "../../domain/entity/coupon";
-import { dbConfig } from "@modules/database/connection/mysql/config";
 import { BRLCurrency } from "@modules/shared/domain/value-object/currency/handlers/brl-currency";
 import { CurrencyFactory } from "@modules/shared/domain/value-object/currency/currency.factory";
 import { NotFoundError } from "@modules/shared/errors/not-found.error";
+import { initDb } from "@test/initDb";
 
 describe("Order repository", () => {
-  const connection = new MysqlConnectionAdapter(dbConfig);
-  const orderRepositoryDatabase = new OrderRepositoryDatabase(connection);
+  const db = initDb(MysqlConnectionAdapter);
+  let orderRepositoryDatabase: OrderRepositoryDatabase;
 
   beforeAll(() => {
+    orderRepositoryDatabase = new OrderRepositoryDatabase(db.connection);
     const factory = CurrencyFactory.getInstance();
     factory.register("brl", BRLCurrency);
   });
 
   beforeEach(async () => {
     await orderRepositoryDatabase.clear();
-  });
-
-  afterAll(async () => {
-    await orderRepositoryDatabase.clear();
-    await connection.close();
   });
 
   it("saves an order", async () => {
@@ -57,9 +53,10 @@ describe("Order repository", () => {
   });
 
   it("throws an error if order not found", async () => {
-    expect(async () => {
-      await orderRepositoryDatabase.getById(new Id("1"));
-    }).rejects.toThrowErrorTypeWithMessage(NotFoundError, "Order not found");
+    await expect(orderRepositoryDatabase.getById(new Id("1"))).rejects.toThrowErrorTypeWithMessage(
+      NotFoundError,
+      "Order not found",
+    );
   });
 
   it("gets next sequence if there is no order placed", async () => {

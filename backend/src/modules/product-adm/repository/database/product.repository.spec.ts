@@ -2,26 +2,22 @@ import { MysqlConnectionAdapter } from "../../../database/connection/mysql/mysql
 import { Id } from "@modules/shared/domain/value-object/id";
 import { Product } from "../../domain/entity/product";
 import { ProductRepositoryDatabase } from "./product.repository";
-import { dbConfig } from "@modules/database/connection/mysql/config";
 import { BRLCurrency } from "@modules/shared/domain/value-object/currency/handlers/brl-currency";
 import { CurrencyFactory } from "@modules/shared/domain/value-object/currency/currency.factory";
+import { initDb } from "@test/initDb";
 
 describe("Product repository database tests", () => {
-  const connection = new MysqlConnectionAdapter(dbConfig);
-  const productRepository = new ProductRepositoryDatabase(connection);
+  const db = initDb(MysqlConnectionAdapter);
+  let productRepository: ProductRepositoryDatabase;
 
   beforeAll(() => {
+    productRepository = new ProductRepositoryDatabase(db.connection);
     const factory = CurrencyFactory.getInstance();
     factory.register("brl", BRLCurrency);
   });
 
   beforeEach(async () => {
     await productRepository.clear();
-  });
-
-  afterAll(async () => {
-    await productRepository.clear();
-    await connection.close();
   });
 
   it("inserts a product in database", async () => {

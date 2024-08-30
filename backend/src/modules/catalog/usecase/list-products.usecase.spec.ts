@@ -1,17 +1,18 @@
 import { ListProductsUseCase } from "./list-products.usecase";
 import { Connection } from "@modules/database/connection/connection.interface";
 import { MysqlConnectionAdapter } from "@modules/database/connection/mysql/mysql-connection.adapter";
-import { dbConfig } from "@modules/database/connection/mysql/config";
 import { GetProductsQuery } from "../query/get-products.query.interface";
 import { GetProductsQueryDatabase } from "../query/database/get-products.query.database";
+import { initDb } from "../../../../test/initDb";
 
 describe("ListProductsUseCase tests", () => {
+  const db = initDb(MysqlConnectionAdapter);
   let databaseConnection: Connection;
   let getProductsQuery: GetProductsQuery;
   let usecase: ListProductsUseCase;
 
-  beforeAll(() => {
-    databaseConnection = new MysqlConnectionAdapter(dbConfig);
+  beforeAll(async () => {
+    databaseConnection = db.connection;
     getProductsQuery = new GetProductsQueryDatabase(databaseConnection);
     usecase = new ListProductsUseCase(getProductsQuery);
   });
@@ -30,11 +31,6 @@ describe("ListProductsUseCase tests", () => {
       "INSERT INTO app.product (id, name, price, currency, width, height, length, weight) values (?,?,?,?,?,?,?,?)",
       ["3", "Product 3", 30.0, "brl", 3, 3, 1, 3],
     );
-  });
-
-  afterAll(async () => {
-    await databaseConnection.query("TRUNCATE TABLE app.product", []);
-    await databaseConnection.close();
   });
 
   it("returns products list", async () => {

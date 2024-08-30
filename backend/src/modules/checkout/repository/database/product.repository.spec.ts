@@ -3,23 +3,19 @@ import { Dimensions } from "../../domain/value-object/dimensions";
 import { Id } from "@modules/shared/domain/value-object/id";
 import { MysqlConnectionAdapter } from "../../../database/connection/mysql/mysql-connection.adapter";
 import { ProductRepositoryDatabase } from "./product.repository";
-import { dbConfig } from "@modules/database/connection/mysql/config";
 import { BRLCurrency } from "@modules/shared/domain/value-object/currency/handlers/brl-currency";
 import { CurrencyFactory } from "@modules/shared/domain/value-object/currency/currency.factory";
 import { NotFoundError } from "@modules/shared/errors/not-found.error";
+import { initDb } from "@test/initDb";
 
 describe("Product Repository", () => {
-  const connection = new MysqlConnectionAdapter(dbConfig);
-  const productRepositoryDatabase = new ProductRepositoryDatabase(connection);
+  const db = initDb(MysqlConnectionAdapter);
+  let productRepositoryDatabase: ProductRepositoryDatabase;
 
   beforeAll(() => {
+    productRepositoryDatabase = new ProductRepositoryDatabase(db.connection);
     const factory = CurrencyFactory.getInstance();
     factory.register("brl", BRLCurrency);
-  });
-
-  afterAll(async () => {
-    await productRepositoryDatabase.clear();
-    await connection.close();
   });
 
   beforeEach(async () => {
@@ -35,8 +31,9 @@ describe("Product Repository", () => {
   });
 
   it("throws an error if product not found", async () => {
-    expect(async () => {
-      await productRepositoryDatabase.getById(new Id("1"));
-    }).rejects.toThrowErrorTypeWithMessage(NotFoundError, "Product not found");
+    await expect(productRepositoryDatabase.getById(new Id("1"))).rejects.toThrowErrorTypeWithMessage(
+      NotFoundError,
+      "Product not found",
+    );
   });
 });

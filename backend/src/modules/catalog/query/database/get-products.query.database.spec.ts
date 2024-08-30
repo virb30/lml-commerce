@@ -1,15 +1,16 @@
+import { initDb } from "@test/initDb";
 import { Connection } from "../../../database/connection/connection.interface";
 import { MysqlConnectionAdapter } from "../../../database/connection/mysql/mysql-connection.adapter";
 import { GetProductsQuery } from "../get-products.query.interface";
 import { GetProductsQueryDatabase } from "./get-products.query.database";
-import { dbConfig } from "@modules/database/connection/mysql/config";
 
 describe("GetProductsQuery tests", () => {
+  const db = initDb(MysqlConnectionAdapter);
   let databaseConnection: Connection;
   let getProductsQuery: GetProductsQuery;
 
   beforeAll(() => {
-    databaseConnection = new MysqlConnectionAdapter(dbConfig);
+    databaseConnection = db.connection;
     getProductsQuery = new GetProductsQueryDatabase(databaseConnection);
   });
 
@@ -27,11 +28,6 @@ describe("GetProductsQuery tests", () => {
       "INSERT INTO app.product (id, name, price, currency, width, height, length, weight) values (?,?,?,?,?,?,?,?)",
       ["3", "Product 3", 30.0, "brl", 3, 3, 1, 3],
     );
-  });
-
-  afterAll(async () => {
-    await databaseConnection.query("TRUNCATE TABLE app.product", []);
-    await databaseConnection.close();
   });
 
   it("gets all products", async () => {
