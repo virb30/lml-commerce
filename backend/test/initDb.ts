@@ -8,6 +8,9 @@ export function initDb(connectionClass: new (...args: any[]) => Connection) {
   beforeAll(async () => {
     const containerRuntimeClient = await getContainerRuntimeClient();
     const config = getDbConfig({
+      dbUser: "root",
+      dbPass: "123456",
+      dbName: "app",
       dbHost: containerRuntimeClient.info.containerRuntime.host,
       dbPort: 3306,
     });
