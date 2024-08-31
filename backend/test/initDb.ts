@@ -1,18 +1,17 @@
 import { Connection } from "@modules/database/connection/connection.interface";
 import { getDbConfig } from "@modules/database/connection/mysql/config";
-import { getContainerRuntimeClient } from "testcontainers";
+import { startDbContainer } from "./setupContainers";
 
 export function initDb(connectionClass: new (...args: any[]) => Connection) {
   let _connection: Connection;
 
   beforeAll(async () => {
-    const containerRuntimeClient = await getContainerRuntimeClient();
+    const dbContainer = await startDbContainer();
     const config = getDbConfig({
-      dbUser: "root",
-      dbPass: "123456",
-      dbName: "app",
-      dbHost: containerRuntimeClient.info.containerRuntime.host,
-      dbPort: 3306,
+      dbName: dbContainer.getDatabase(),
+      dbPass: dbContainer.getRootPassword(),
+      dbHost: dbContainer.getHost(),
+      dbPort: dbContainer.getMappedPort(3306),
     });
     _connection = new connectionClass(config);
   }, 30000);

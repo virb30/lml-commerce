@@ -42,10 +42,10 @@ jobs:
       - run: npm install
       - run: npm run lint:backend
       - run: npm run test:backend
-        # env:
-        #   DB_TYPE: mysql
-        #   DB_PORT: ${{ job.services.mysql.ports[3306] }}
-        #   DB_HOST: 127.0.0.1
-        #   DB_USER: root
-        #   DB_PASS: ""
-        #   DB_NAME: app
+        env:
+          DB_TYPE: mysql
+          DB_PORT: 3306
+          DB_HOST: localhost
+          DB_USER: root
+          DB_PASS: "123456"
+          DB_NAME: app
