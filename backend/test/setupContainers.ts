@@ -12,6 +12,9 @@ export async function startDbContainer(containerName: string = "db-container") {
     .withReuse()
     .withRootPassword("123456")
     .withExposedPorts(3306)
+    .withTmpFs({
+      "/var/lib/mysql": "rw",
+    })
     .withBindMounts([
       {
         source: sourceVolume,
